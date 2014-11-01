@@ -1,0 +1,22 @@
+{
+  "name": "js_learn_example",
+  "version": "1.0.0",
+  "homepage": "https://github.com/builden/js_learn_example",
+  "authors": [
+    "builden <billdeng@qq.com>"
+  ],
+  "description": "for jslearn",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "nodejs",
+    "cocos2d-js"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "~1.7.0",
+    "moment": "~2.8.3",
+    "jquery": "~2.1.1"
+  }
+}
