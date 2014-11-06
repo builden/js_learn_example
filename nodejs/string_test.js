@@ -1,5 +1,5 @@
 function main() {
-
+    replaceTest();
 }
 
 /**
@@ -7,7 +7,7 @@ function main() {
  * @return {[type]} [description]
  */
 function replaceTest() {
-
+    console.log('test');
 }
 
 main();
