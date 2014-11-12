@@ -3,3 +3,8 @@ node_modules/*
 bower_components/*
 nodejs/image_dst/*
 nodejs/image_src/*
+.settings/
+publish/
+runtime/
+tools/
+frameworks/
