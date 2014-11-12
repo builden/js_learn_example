@@ -4,7 +4,7 @@
         "isWindowTop":false,
         "name":"BirthdayGame",
         "width":480,
-        "height":852,
+        "height":720,
         "entry":"main.js",
         "consolePort":6050,
         "uploadPort":6060,
