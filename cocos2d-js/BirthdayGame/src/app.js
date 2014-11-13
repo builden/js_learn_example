@@ -31,35 +31,17 @@ var HelloWorldLayer = cc.Layer.extend({
         menu.y = 0;
         this.addChild(menu, 1);
 
-        /////////////////////////////
-        // 3. add your codes below...
-        // add a label shows "Hello World"
-        // create and initialize a label
-        var helloLabel = new cc.LabelTTF("Hello World", "Arial", 38);
-        // position the label on the center of the screen
-        helloLabel.x = size.width / 2;
-        helloLabel.y = 0;
-        // add the label as a child to this layer
-        this.addChild(helloLabel, 5);
+        var texture = cc.textureCache.addImage(res.GameTest_png);
+        var w = texture.width / 4;
+        var h = texture.height / 5;
+        console.log("text " + w + " " + h);
+        for (var i = 0; i < 4; i++) {
+            for (var j = 0; j < 5; j++) {
+                var rc = cc.rect(i * w, j * h, w - 4, h - 4);
+                Ltc.exNode(new cc.Sprite(texture, rc)).addTo_(this).pos_(i * w, (5 - j) * h);
+            }
+        }
 
-        // add "HelloWorld" splash screen"
-        this.sprite = Ltc.exNode(new cc.Sprite(res.HelloWorld_png)).addTo_(this).pos_(
-            size.width / 2, size.height / 2).scale_(0.5).flipX_(
-            true).flipY_(true).opacity_(200).color_(cc.color(100, 100, 100));
-        Ltc.exNode(this.sprite).skewX_(45);
-
-        // this.sprite.runAction(
-        //     cc.sequence(
-        //         cc.rotateTo(2, 0),
-        //         cc.scaleTo(2, 1, 1)
-        //     )
-        // );
-        helloLabel.runAction(
-            cc.spawn(
-                cc.moveBy(2.5, cc.p(0, size.height - 40)),
-                cc.tintTo(2.5,255,125,0)
-            )
-        );
         return true;
     }
 });
