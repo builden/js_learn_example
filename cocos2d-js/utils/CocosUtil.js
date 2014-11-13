@@ -11,6 +11,16 @@ Ltc.exNode = function(node) {
     }
 
     /**
+     * 是否显示控件
+     * @param  {[Boolean]} visible [description]
+     * @return {[type]}         [description]
+     */
+    node.show_ = function(visible) {
+        node.setVisible(visible);
+        return node;
+    }
+
+    /**
      * 设置控件位置
      * @param  {[type]} newPosOrxValue cc.p(x, y) or x
      * @param  {[type]} yValue         [description]
@@ -21,8 +31,45 @@ Ltc.exNode = function(node) {
         return node;
     }
 
-    node.scale_ = function(x, y) {
-        node.setScale(x, y);
+    /**
+     * 设置锚点(默认是cc.p(0.5, 0.5))
+     * @param  {cc.p||Number} point [description]
+     * @param  {Number} y     [y] [0.0 - 1.0]
+     * @return {[type]}       [description]
+     */
+    node.anchor_ = function(point, y) {
+        node.setAnchorPoint(point, y);
+        return node;
+    }
+
+    /**
+     * 设置ZOrder
+     * @param  {Number} z 默认是0，数字越小，越在下面
+     * @return {[type]}   [description]
+     */
+    node.z_ = function(z) {
+        node.setZOrder(z);
+        return node;
+    }
+
+    /**
+     * node的tag值
+     * @param  {[type]} tag [description]
+     * @return {[type]}     [description]
+     */
+    node.tag_ = function(tag) {
+        node.setTag(tag);
+        return node;
+    }
+
+    /**
+     * 缩放
+     * @param  {Number} scale  scale or scaleX value
+     * @param  {Number} scaleY [scaleY=]
+     * @return {[type]}        [description]
+     */
+    node.scale_ = function(scale, scaleY) {
+        node.setScale(scale, scaleY);
         return node;
     }
 
@@ -36,18 +83,13 @@ Ltc.exNode = function(node) {
         return node;
     }
 
+    /**
+     * 垂直翻转
+     * @param  {[type]} flippedY [description]
+     * @return {[type]}          [description]
+     */
     node.flipY_ = function(flippedY) {
         node.setFlippedY(flippedY);
-        return node;
-    }
-
-    /**
-     * 是否显示控件
-     * @param  {[Boolean]} visible [description]
-     * @return {[type]}         [description]
-     */
-    node.show_ = function(visible) {
-        node.setVisible(visible);
         return node;
     }
 
@@ -61,8 +103,56 @@ Ltc.exNode = function(node) {
         return node;
     }
 
-    node.clr_ = function(color) {
+    /**
+     * [color_ description]
+     * @param  {cc.color} color [description]
+     * @return {[type]}       [description]
+     * @note   只支持cc.color(r, g, b); 不支持透明，透明请使用opacity
+     */
+    node.color_ = function(color) {
+        node.setColor(color);
         return node;
     }
+
+    /**
+     * 旋转
+     * @param  {Number} newRotation 度数[0 - 359]，默认的角度
+     * @return {[type]}             [description]
+     */
+    node.rotation_ = function(newRotation) {
+        node.setRotation(newRotation);
+        return node;
+    }
+
+    /**
+     * [rotationX_ description]
+     * @param  {[type]} rotationX [description]
+     * @return {[type]}           [description]
+     */
+    node.rotationX_ = function(rotationX) {
+        node.setRotationX(rotationX);
+        return node;
+    }
+
+    node.rotationY_ = function(rotationY) {
+        node.setRotationY(rotationY);
+        return node;
+    }
+
+    /**
+     * 扭曲
+     * @param  {Number} newSkewX [description]
+     * @return {[type]}          [description]
+     */
+    node.skewX_ = function(newSkewX) {
+        node.setSkewX(newSkewX);
+        return node;
+    }
+
+    node.skewY_ = function(newSkewY) {
+        node.setSkewY(newSkewY);
+        return node;
+    }
+
     return node;
 }

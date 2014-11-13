@@ -45,14 +45,15 @@ var HelloWorldLayer = cc.Layer.extend({
         // add "HelloWorld" splash screen"
         this.sprite = Ltc.exNode(new cc.Sprite(res.HelloWorld_png)).addTo_(this).pos_(
             size.width / 2, size.height / 2).scale_(0.5).flipX_(
-            true).flipY_(true).opacity_(200);
+            true).flipY_(true).opacity_(200).color_(cc.color(100, 100, 100));
+        Ltc.exNode(this.sprite).skewX_(45);
 
-        this.sprite.runAction(
-            cc.sequence(
-                cc.rotateTo(2, 0),
-                cc.scaleTo(2, 1, 1)
-            )
-        );
+        // this.sprite.runAction(
+        //     cc.sequence(
+        //         cc.rotateTo(2, 0),
+        //         cc.scaleTo(2, 1, 1)
+        //     )
+        // );
         helloLabel.runAction(
             cc.spawn(
                 cc.moveBy(2.5, cc.p(0, size.height - 40)),
