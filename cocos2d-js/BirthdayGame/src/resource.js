@@ -2,7 +2,7 @@ var res = {
     HelloWorld_png : "res/HelloWorld.png",
     CloseNormal_png : "res/CloseNormal.png",
     CloseSelected_png : "res/CloseSelected.png",
-    GameTest_png: "res/gametest.png"
+    GameTest_jpg: "res/gametest.jpg"
 };
 
 var g_resources = [];

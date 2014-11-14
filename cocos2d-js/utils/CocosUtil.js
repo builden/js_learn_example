@@ -140,7 +140,7 @@ Ltc.exNode = function(node) {
     }
 
     /**
-     * 扭曲
+     * 倾斜、扭曲
      * @param  {Number} newSkewX [description]
      * @return {[type]}          [description]
      */
@@ -156,3 +156,41 @@ Ltc.exNode = function(node) {
 
     return node;
 }
+
+/**
+ * 蒙板层
+ * @return {[type]}         [description]
+ */
+var MaskLayer = cc.LayerColor.extend({
+    touchListener: null,
+    ctor: function(color) {
+        this._super(color);
+        this.touchListener = cc.EventListener.create({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
+            onTouchBegan: function(touch, event) {
+                return true;
+            }
+        });
+        cc.eventManager.addListener(this.touchListener, this);
+    },
+
+    onExit: function() {
+        cc.log("layer onExit");
+        cc.eventManager.removeListener(this.touchListener);
+        this._super();
+    }
+});
+
+/**
+ * 增加半透模版层，屏蔽touch事件
+ * @param {cc.node}   target
+ * @param {cc.color}  color
+ * @returns {MaskLayer}
+ */
+Ltc.addMaskLayer = function(target, color) {
+    var maskColor = color || cc.color(0, 0, 0, 40);
+    var layer = new MaskLayer(maskColor);
+    target.addChild(layer);
+    return layer;
+};
