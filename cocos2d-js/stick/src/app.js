@@ -3,6 +3,8 @@ var RUN_ANI = "run_ani";
 var HelloWorldLayer = cc.Layer.extend({
     sprite:null,
     step:0,     // 步数
+    vRc: null,
+
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -14,64 +16,23 @@ var HelloWorldLayer = cc.Layer.extend({
         // ask the window size
         var size = cc.winSize;
 
-/*        // add a "close" icon to exit the progress. it's an autorelease object
-        var closeItem = new cc.MenuItemImage(
-            res.CloseNormal_png,
-            res.CloseSelected_png,
-            function () {
-                cc.log("Menu is clicked!");
-            }, this);
-        closeItem.attr({
-            x: size.width - 20,
-            y: 20,
-            anchorX: 0.5,
-            anchorY: 0.5
-        });
+        this.vRc = cc.visibleRect;
+        console.log(cc.formatStr("left {%d, %d}, bottomRight {%d, %d}",
+            this.vRc.left.x, this.vRc.left.y, this.vRc.bottomRight.x, this.vRc.bottomRight.y));
 
-        var menu = new cc.Menu(closeItem);
-        menu.x = 0;
-        menu.y = 0;
-        this.addChild(menu, 1);
-
-        /////////////////////////////
-        // 3. add your codes below...
-        // add a label shows "Hello World"
-        // create and initialize a label
-        var helloLabel = new cc.LabelTTF("Hello World", "Arial", 38);
-        // position the label on the center of the screen
-        helloLabel.x = size.width / 2;
-        helloLabel.y = 0;
-        // add the label as a child to this layer
-        this.addChild(helloLabel, 5);
-
-        // add "HelloWorld" splash screen"
-        this.sprite = new cc.Sprite(res.HelloWorld_png);
-        this.sprite.attr({
-            x: size.width / 2,
-            y: size.height / 2,
-            scale: 0.5,
-            rotation: 180
-        });
-        this.addChild(this.sprite, 0);
-
-        this.sprite.runAction(
-            cc.sequence(
-                cc.rotateTo(2, 0),
-                cc.scaleTo(2, 1, 1)
-            )
-        );
-        helloLabel.runAction(
-            cc.spawn(
-                cc.moveBy(2.5, cc.p(0, size.height - 40)),
-                cc.tintTo(2.5,255,125,0)
-            )
-        );*/
-
+        this.initBg();
         this.initAni();
         this.runAni();
-        this.drawMontain(0, 20);
-        this.drawMontain(60, 100);
+        this.drawMountain(0, 20);
+        this.drawMountain(160, 40);
+        this.drawStick();
         return true;
+    },
+
+    initBg: function() {
+        var bg = Ltc.exNode(new cc.Sprite(res.bg_jpg)).addTo_(this).pos_(this.vRc.center.x, this.vRc.center.y).
+            anchor_(0, 0.5);
+        bg.runAction(cc.moveBy(10, -1 * bg.width, 0));
     },
 
     initAni: function() {
@@ -93,17 +54,38 @@ var HelloWorldLayer = cc.Layer.extend({
     runAni: function() {
         var sprite = Ltc.exNode(new cc.Sprite(res.run1_png)).pos_(100, 228).addTo_(this).scale_(0.5);
         var animate = new cc.Animate(cc.animationCache.getAnimation(RUN_ANI));
-        sprite.runAction(new cc.repeatForever(animate));
+        sprite.runAction(cc.repeatForever(animate));
     },
 
-    drawMontain: function(start, end) {
-        var montain = Ltc.exNode(new cc.DrawNode()).addTo_(this);
-        var clr = cc.color.WHITE;
-        montain.drawRect(cc.p(start, 0), cc.p(end, 200), clr, 0, clr);
+    drawMountain: function(pos, width) {
+//        var mountain = Ltc.exNode(new cc.DrawNode()).addTo_(this);
+//        var clr = cc.color.WHITE;
+//        mountain.setLineWidth(width);
+//        mountain.drawSegment(cc.p(pos, 40), cc.p(pos, 200), 1, clr);
+
+        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(pos,0).addTo_(this).scale_(width, 200).
+            anchor_(0, 0).color_(cc.color.RED);
     },
 
     drawStick: function() {
+        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(80,201).addTo_(this).scale_(1, 200).
+            anchor_(0, 0).color_(cc.color.GREEN);
 
+        var seq1 = cc.sequence(cc.rotateBy(1, 90), cc.delayTime(1), cc.scaleTo(1, 1, 40));
+        var spawn = cc.spawn(cc.rotateBy(0.5, 360 * 3), cc.moveBy(0.5, 0, 100));
+        var spawn2 = cc.spawn(cc.rotateBy(0.5, 360 * 3), cc.moveBy(0.5, 0, -50), cc.scaleTo(0.5, 1, 1));
+
+        var func1 = cc.callFunc(function() {
+            this.x += 20;
+            this.setAnchorPoint(0.5, 0.5);
+        }, sprite);
+
+        var func2 = cc.callFunc(function() {
+            this.setAnchorPoint(0, 0);
+            Ltc.exNode(this).show_(false);
+        }, sprite);
+
+        sprite.runAction(cc.sequence(seq1, cc.delayTime(1), func1, spawn, spawn2, func2));
     }
 });
 
