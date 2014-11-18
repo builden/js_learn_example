@@ -19,8 +19,7 @@ var MainLayer = cc.Layer.extend({
     distance: 0,         // 起点与mountain的距离
     mountainWidth: 0,   // 山体宽度
     isGameOver: false,
-//    bgAction: null,
-//    bgFrontAction: null,
+    playLayer: null,
 
 
     ctor:function () {
@@ -42,18 +41,23 @@ var MainLayer = cc.Layer.extend({
 
         this.initBg(res.bg_jpg, 100);
         this.initBg(res.bg_front_png, 60);
+
+        this.playLayer = new cc.Layer();
+        this.addChild(this.playLayer);
+
         this.initAni();
-        this.runAni();
+        this.initRunner();
         this.updateStep();
 
         var initWidth = 120;
         this.mountain1 = this.drawMountain(this.startX - initWidth, initWidth);
         this.mountainWidth = 100;
-        this.distance = Ltc.random(6, this.vRc.width - this.startX - this.mountainWidth);
+        this.distance = 100;//Ltc.random(6, this.vRc.width - this.startX - this.mountainWidth);
         this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
         this.drawStick();
 
         this.addTouchListener();
+        this.setScheduler()
         return true;
     },
 
@@ -127,36 +131,36 @@ var MainLayer = cc.Layer.extend({
             var moveAct3 = cc.moveBy(0.1, 0, 3);
             this.runAction(cc.sequence(moveAct1, moveAct1.reverse(), moveAct2, moveAct2.reverse(), moveAct3, moveAct3.reverse()));
             this.isGameOver = true;
-
-            cc.audioEngine.playEffect(res.dead_mp3, false);
+            this.stick.setVisible(false);
+            Ltc.playAudio(res.dead_mp3, false);
         }, this);
         this.stick.runAction(cc.sequence(cc.rotateBy(aniTime, 90).easing(cc.easeIn(3.0)), func));
     },
 
-    runAni: function() {
+    initRunner: function() {
         var sprite = new cc.Sprite(res.run1_png);
         var x = this.startX - 3;
         var y = this.mountainHeight - 2;
-        Ltc.exNode(sprite).pos_(x, y).addTo_(this).scale_(0.5).anchor_(1, 0).z_(1);
+        Ltc.exNode(sprite).pos_(x, y).addTo_(this.playLayer).scale_(0.5).anchor_(1, 0).z_(1);
         this.runner = sprite;
     },
 
     drawMountain: function(pos, width) {
         var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(pos, 0).
-            addTo_(this).scale_(width, this.mountainHeight).
+            addTo_(this.playLayer).scale_(width, this.mountainHeight).
             anchor_(0, 0).color_(STICK_COLOR);
 
         return sprite;
     },
 
     makeStickLonger: function() {
-        cc.audioEngine.playEffect(res.stick_grow_loop_mp3, true);
+        Ltc.playAudio(res.stick_grow_loop_mp3, true);
         if (this.isGameOver) {
             this.isGameOver = false;
             this.step = 0;
             this.updateStep();
         }
-        this.runner.setPosition(this.startX - 3, this.mountainHeight - 2);
+        this.runner.setPosition(this.startX - 3 - this.playLayer.x, this.mountainHeight - 2);
 
         // 棍子变长
         var stick = this.stick;
@@ -173,15 +177,16 @@ var MainLayer = cc.Layer.extend({
     },
 
     stopStickLonger: function() {
-        cc.audioEngine.stopAllEffects();
+        Ltc.stopAllAudio();
         // 棍子横过来
         var actTime = 0.6;
         this.longerAction.stop();
         var rotate = cc.rotateBy(actTime, 90).easing(cc.easeIn(3.0));
         var func = cc.callFunc(function() {
-            var stickLen = this.stick.height * this.stick.scaleY;
+            var stickLen = this.stick.height * this.stick.scaleY - 1;
+            console.log("stop height " + this.stick.height + "; sclayY " + this.stick.scaleY);
             console.log("stick long " + stickLen + "; distance " + this.distance + "; mountain width " + this.mountainWidth);
-            cc.audioEngine.playEffect(res.fall_mp3, false);
+            Ltc.playAudio(res.fall_mp3, false);
             if (stickLen < this.distance) {
                 this.doRun(stickLen + 16, true);
             } else if (stickLen > (this.distance + this.mountainWidth)) {
@@ -203,7 +208,7 @@ var MainLayer = cc.Layer.extend({
             if (arguments[1]) {
                 this.gameOver();
             } else {
-                cc.audioEngine.playEffect(res.score_mp3, false);
+                Ltc.playAudio(res.score_mp3, false);
                 this.backToStartPos(arguments[0]);
             }
         }.bind(this, distance, isOver), this);
@@ -217,10 +222,19 @@ var MainLayer = cc.Layer.extend({
         this.step += 1;
         this.updateStep();
 
-        // runner 往后走
         var backTime = 0.4;
         var moveAct = cc.moveBy(backTime, -1 * distance, 0);
-        this.runner.runAction(moveAct);
+        this.playLayer.runAction(moveAct);
+
+        this.mountainWidth = Ltc.random(this.minMountainWidth, this.maxMountainWidth);
+        var tmp = this.drawMountain(this.vRc.width - this.playLayer.x + distance, this.mountainWidth);
+        var tmpFunc = cc.callFunc(function() {
+            this.mountain1.removeFromParent();
+            this.mountain1 = this.mountain2;
+            this.mountain2 = arguments[0];
+        }.bind(this, tmp), this);
+        this.distance = Ltc.random(6, this.vRc.width - this.startX - this.mountainWidth);
+        tmp.runAction(cc.sequence(cc.moveBy(backTime, -1 * (this.vRc.width - this.startX - this.distance), 0), tmpFunc));
 
         // 棍子收缩
         var spawn = cc.spawn(cc.rotateBy(0.3, 360 * 3), cc.moveBy(0.3, 0, 140), cc.scaleTo(0.3, 2, 40));
@@ -239,20 +253,6 @@ var MainLayer = cc.Layer.extend({
         this.stick.x += this.distance / 2;
         this.stick.setAnchorPoint(0.5, 0.5);
         this.stick.runAction(cc.sequence(spawn, spawn2, func2));
-
-        // 山体切换
-        this.mountain1.runAction(moveAct.clone());
-        this.mountain2.runAction(moveAct.clone());
-
-        this.mountainWidth = Ltc.random(this.minMountainWidth, this.maxMountainWidth);
-        var tmp = this.drawMountain(this.vRc.width, this.mountainWidth);
-        var tmpFunc = cc.callFunc(function() {
-            this.mountain1.removeFromParent();
-            this.mountain1 = this.mountain2;
-            this.mountain2 = arguments[0];
-        }.bind(this, tmp), this);
-        this.distance = Ltc.random(6, this.vRc.width - this.startX - this.mountainWidth);
-        tmp.runAction(cc.sequence(cc.moveBy(backTime, -1 * (this.vRc.width - this.startX - this.distance), 0), tmpFunc));
     },
 
     drawStick: function() {

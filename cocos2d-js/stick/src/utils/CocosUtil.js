@@ -48,7 +48,7 @@ Ltc.exNode = function(node) {
      * @return {[type]}   [description]
      */
     node.z_ = function(z) {
-        node.setZOrder(z);
+        node.setLocalZOrder(z);
         return node;
     }
 
@@ -193,6 +193,18 @@ Ltc.addMaskLayer = function(target, color) {
     var layer = new MaskLayer(maskColor);
     target.addChild(layer);
     return layer;
+};
+
+Ltc.playAudio = function(res, loop) {
+    loop = loop || false;
+    if (res) {
+        return cc.audioEngine.playEffect(res, loop);
+    }
+    return null;
+};
+
+Ltc.stopAllAudio = function() {
+    cc.audioEngine.stopAllEffects();
 };
 
 
