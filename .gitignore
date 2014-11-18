@@ -9,3 +9,4 @@ runtime/
 tools/
 frameworks/
 .idea/
+.DS_Store
