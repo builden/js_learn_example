@@ -59,7 +59,8 @@ cc.game.onStart = function(){
     // init data
     dataMgr = new DataMgr();
     //load resources
-    cc.LoaderScene.preload(g_resources, function () {
+    MyLoaderScene.preload(g_resources, function () {
+        console.log("load succ");
         cc.director.runScene(new MainScene());
     }, this);
 };

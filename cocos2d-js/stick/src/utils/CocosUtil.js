@@ -235,6 +235,27 @@ Ltc.sampleBtn = function(parent, res, pos, cb) {
 };
 
 /**
+ * 异步加载图片
+ * @param  {String}   src       [base64Img or url]
+ * @param  {Function} cb        callback(imgSprite)
+ */
+Ltc.loadImg = function(src, cb) {
+    cc.loader.loadImg(src, {
+        isCrossOrigin: false
+    }, function(err, img) {
+        if (err) {
+            console.error(err);
+            cb(null);
+        } else {
+            var texture2d = new cc.Texture2D();
+            texture2d.initWithElement(img);
+            texture2d.handleLoadedTexture();
+            cb(new cc.Sprite(texture2d));
+        }
+    });
+}
+
+/**
  * Node中坐标相关：
  * getBoundingBox
  */

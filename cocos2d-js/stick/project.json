@@ -2,7 +2,7 @@
     "project_type": "javascript",
 
     "debugMode" : 1,
-    "showFPS" : true,
+    "showFPS" : false,
     "frameRate" : 30,
     "id" : "gameCanvas",
     "renderMode" : 0,
@@ -15,6 +15,9 @@
         "src/app.js",
         "src/utils/CocosUtil.js",
         "src/utils/AlgorithmUtil.js",
-        "src/dataMgr.js"
+        "src/dataMgr.js",
+        "src/LoaderScene.js",
+        "src/utils/WebUtil.js",
+        "src/utils/WanbaUtil.js"
     ]
 }

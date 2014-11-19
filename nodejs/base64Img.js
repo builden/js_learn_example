@@ -4,16 +4,18 @@
  */
 
 var fs = require('fs');
+var path = require('path');
 
 var testImg = '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'
 // buf.replace(/^data:image\/\w+;base64,/, "");
 
-function main() {
-  // base64ToImg(testImg, 'test.png');
-  var str = 'data:image/png;base64,';
-  str += imgTobase64('test.png');
+function main(img) {
+  var extName = path.extname(img).slice(1);
+  console.log(extName);
+  var str = 'data:image/' + extName + ';base64,';
+  str += imgTobase64(img);
   console.log(str);
-  fs.writeFileSync('img.html', str, 'utf-8');
+  fs.writeFileSync(img + '.txt', str, 'utf-8');
 }
 
 function base64ToImg(base64Data, outFile) {
@@ -22,7 +24,7 @@ function base64ToImg(base64Data, outFile) {
 }
 
 function imgTobase64(inFile) {
-  var buf = fs.readFileSync('test.png');
+  var buf = fs.readFileSync(inFile);
   return new Buffer(buf).toString('base64');
 }
 
@@ -42,4 +44,4 @@ function base64ToString(base64Data) {
   return new Buffer(base64Data, 'base64').toString();
 }
 
-main();
+main(process.argv.slice(2)[0]);

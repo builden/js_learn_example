@@ -10,6 +10,9 @@ var res = {
     replay_btn_png: "res/replay_btn.png",
     share_btn_png: "res/share_btn.png",
     score_bg_png: "res/score_bg.png",
+    title_png: "res/title.png",
+    play_png: "res/play.png",
+    help_png: "res/help.png",
 
     dead_mp3: "res/sound/dead.mp3",
     fall_mp3: "res/sound/fall.mp3",

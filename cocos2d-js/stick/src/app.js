@@ -49,7 +49,6 @@ var MainLayer = cc.Layer.extend({
 
         this.initAni();
         this.initRunner();
-        this.updateStep();
 
         var initWidth = 120;
         this.mountain1 = this.drawMountain(this.startX - initWidth, initWidth);
@@ -58,9 +57,31 @@ var MainLayer = cc.Layer.extend({
         this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
         this.drawStick();
 
-        this.addTouchListener();
-        this.setScheduler()
+        this.showStartPanel();
         return true;
+    },
+
+    showStartPanel: function() {
+        var layer = new cc.Layer();
+        this.addChild(layer);
+
+        Ltc.exNode(new cc.Sprite(res.title_png)).pos_(this.vRc.center.x, (this.vRc.top.y + this.vRc.center.y) / 2).addTo_(layer);
+
+        Ltc.sampleBtn(layer, res.help_png, cc.p(this.vRc.bottomRight.x - 50, this.vRc.bottomRight.y + 80), function() {
+            console.log("click help btn");
+//            layer.removeFromParent();
+//            this.startGame();
+        }.bind(this, layer));
+
+        Ltc.sampleBtn(layer, res.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
+            layer.removeFromParent();
+            this.startGame();
+        }.bind(this, layer));
+    },
+
+    startGame: function() {
+        this.updateStep();
+        this.addTouchListener();
     },
 
     replayGame: function() {
