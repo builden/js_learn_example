@@ -4,27 +4,27 @@ var STICK_COLOR = cc.color(124, 78, 31);
 var LIGHT_RED_COLOR = cc.color(229, 66, 85);
 
 var MainLayer = cc.Layer.extend({
-    step:0,     // 步数
+    step: 0, // 步数
     stepLabel: null,
     stepBgSprite: null,
-    vRc: null,  // VisualRect
+    vRc: null, // VisualRect
     mountainHeight: 0, // 山体高度
     startX: 120, // 起点位置
-    maxMountainWidth: 160,  // 最大山体宽度
-    minMountainWidth: 10,    // 最小山体宽度
-    runner:null, // 猴子sprite
+    maxMountainWidth: 160, // 最大山体宽度
+    minMountainWidth: 10, // 最小山体宽度
+    runner: null, // 猴子sprite
     stick: null, // 棍子sprite
     longerAction: null, // 边长的Action
     actionRunning: false,
     mountain1: null,
     mountain2: null,
-    distance: 0,         // 起点与mountain的距离
-    mountainWidth: 0,   // 山体宽度
+    distance: 0, // 起点与mountain的距离
+    mountainWidth: 0, // 山体宽度
     isGameOver: false,
     playLayer: null,
 
 
-    ctor:function () {
+    ctor: function() {
         //////////////////////////////
         // 1. super init first
         this._super();
@@ -67,11 +67,12 @@ var MainLayer = cc.Layer.extend({
 
         Ltc.exNode(new cc.Sprite(res.title_png)).pos_(this.vRc.center.x, (this.vRc.top.y + this.vRc.center.y) / 2).addTo_(layer);
 
-        Ltc.sampleBtn(layer, res.help_png, cc.p(this.vRc.bottomRight.x - 50, this.vRc.bottomRight.y + 80), function() {
-            console.log("click help btn");
-//            layer.removeFromParent();
-//            this.startGame();
-        }.bind(this, layer));
+        if (dataMgr.isShowNewbieGuide) {
+            Ltc.sampleBtn(layer, res.help_png, cc.p(this.vRc.bottomRight.x - 50, this.vRc.bottomRight.y + 80), function() {
+                console.log("click help btn");
+            }.bind(this, layer));
+        }
+
 
         Ltc.sampleBtn(layer, res.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
             layer.removeFromParent();
@@ -136,7 +137,7 @@ var MainLayer = cc.Layer.extend({
 
     initBg: function(bgRes, time) {
         var bg = Ltc.exNode(new cc.Sprite(bgRes)).addTo_(this).pos_(0, 0).
-            anchor_(0, 0);
+        anchor_(0, 0);
         var move = cc.moveBy(time, -1 * bg.width, 0);
         var func = cc.callFunc(function() {
 
@@ -193,16 +194,24 @@ var MainLayer = cc.Layer.extend({
         Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 24)).pos_(panel.width / 2, panel.height - 240).addTo_(panel).color_(cc.color.BLACK);
         Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 274).addTo_(panel).color_(LIGHT_RED_COLOR);
 
-        Ltc.sampleBtn(panel, res.share_btn_png, cc.p(panel.width / 2, 60), function() {
-            console.log("click share btn");
-        }.bind(this, layer));
+        if (dataMgr.canShowInviteOrShare()) {
+            Ltc.sampleBtn(panel, res.share_btn_png, cc.p(panel.width / 2, 60), function() {
+                console.log("click share btn");
+                shareGame();
+            }.bind(this, layer));
+        }
 
-        Ltc.sampleBtn(layer, res.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - 200), function() {
-            console.log("click rank btn");
-            arguments[0].removeFromParent();
-        }.bind(this, layer));
+        var replayBtnPosXOffset = 0;
+        if (dataMgr.isShowRank) {
+            Ltc.sampleBtn(layer, res.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - 200), function() {
+                console.log("click rank btn");
+                arguments[0].removeFromParent();
+            }.bind(this, layer));
+            replayBtnPosXOffset = 60;
+        }
 
-        Ltc.sampleBtn(layer, res.replay_btn_png, cc.p(layer.width / 2 + 60, layer.height / 2 - 200), function() {
+
+        Ltc.sampleBtn(layer, res.replay_btn_png, cc.p(layer.width / 2 + replayBtnPosXOffset, layer.height / 2 - 200), function() {
             console.log("click replay btn");
             arguments[0].removeFromParent();
             this.replayGame();
@@ -219,8 +228,8 @@ var MainLayer = cc.Layer.extend({
 
     drawMountain: function(pos, width) {
         var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(pos, 0).
-            addTo_(this.playLayer).scale_(width, this.mountainHeight).
-            anchor_(0, 0).color_(STICK_COLOR);
+        addTo_(this.playLayer).scale_(width, this.mountainHeight).
+        anchor_(0, 0).color_(STICK_COLOR);
 
         return sprite;
     },
@@ -323,7 +332,7 @@ var MainLayer = cc.Layer.extend({
 
     drawStick: function() {
         var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(this.startX - 1, this.mountainHeight).addTo_(this).
-            anchor_(0.5, 0).color_(STICK_COLOR).show_(false).scale_(STICK_WIDTH, 1).z_(2);
+        anchor_(0.5, 0).color_(STICK_COLOR).show_(false).scale_(STICK_WIDTH, 1).z_(2);
         this.stick = sprite;
     },
 
@@ -345,10 +354,9 @@ var MainLayer = cc.Layer.extend({
 });
 
 var MainScene = cc.Scene.extend({
-    onEnter:function () {
+    onEnter: function() {
         this._super();
         var layer = new MainLayer();
         this.addChild(layer);
     }
 });
-

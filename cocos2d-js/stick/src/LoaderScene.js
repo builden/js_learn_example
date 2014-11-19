@@ -137,12 +137,10 @@ var MyLoaderScene = cc.Scene.extend({
             function (result, count, loadedCount) {
                 var percent = (loadedCount / count * 100) | 0;
                 percent = Math.min(percent, 100);
-                // self._label.setString("Loading... " + percent + "%");
                 if (self.progress && self.starSprite) {
                     self.starSprite.x = self.progressBg.width / 100 * percent;
                     self.progress.setPercentage(percent);
                 }
-                console.log("percent: " + percent);
             }, function () {
                 if (self.progress && self.starSprite) {
                     self.progress.setPercentage(100);

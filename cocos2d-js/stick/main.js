@@ -58,10 +58,21 @@ cc.game.onStart = function(){
 
     // init data
     dataMgr = new DataMgr();
+    initMobile();
+
     //load resources
     MyLoaderScene.preload(g_resources, function () {
         console.log("load succ");
         cc.director.runScene(new MainScene());
     }, this);
 };
+
+function initMobile() {
+    if (cc.sys.isNative) {
+        return;
+    }
+    // hide body bg
+    showMainBg(false);
+}
+
 cc.game.run();
