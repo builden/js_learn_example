@@ -207,6 +207,32 @@ Ltc.stopAllAudio = function() {
     cc.audioEngine.stopAllEffects();
 };
 
+/**
+ * 使用Menu创建简单的按钮
+ * @param  {[type]}   parent [description]
+ * @param  {String}   res    [description]
+ * @param  {cc.p}     pos    [description]
+ * @param  {Function} cb     [description]
+ * @return {[type]}          [description]
+ */
+Ltc.sampleBtn = function(parent, res, pos, cb) {
+    var shareBtn = new cc.MenuItemSprite(
+        new cc.Sprite(res),
+        Ltc.exNode(new cc.Sprite(res)).scale_(1.1).anchor_(0.5, 0.5),
+        function() {
+            if (cb) cb();
+        }, this);
+    Ltc.exNode(shareBtn).pos_(pos);
+    shareBtn._normalImage.setPosition(shareBtn.width / 2, shareBtn.height / 2);
+    shareBtn._normalImage.setAnchorPoint(0.5, 0.5);
+    shareBtn._selectedImage.setPosition(shareBtn.width / 2, shareBtn.height / 2);
+    shareBtn._selectedImage.setAnchorPoint(0.5, 0.5);
+
+    var menu = new cc.Menu(shareBtn);
+    menu.x = 0;
+    menu.y = 0;
+    parent.addChild(menu, 1);
+};
 
 /**
  * Node中坐标相关：

@@ -1,10 +1,12 @@
 var RUN_ANI = "run_ani";
 var STICK_WIDTH = 4;
 var STICK_COLOR = cc.color(124, 78, 31);
+var LIGHT_RED_COLOR = cc.color(229, 66, 85);
 
 var MainLayer = cc.Layer.extend({
     step:0,     // 步数
     stepLabel: null,
+    stepBgSprite: null,
     vRc: null,  // VisualRect
     mountainHeight: 0, // 山体高度
     startX: 120, // 起点位置
@@ -52,13 +54,29 @@ var MainLayer = cc.Layer.extend({
         var initWidth = 120;
         this.mountain1 = this.drawMountain(this.startX - initWidth, initWidth);
         this.mountainWidth = 100;
-        this.distance = 100;//Ltc.random(6, this.vRc.width - this.startX - this.mountainWidth);
+        this.distance = 100;
         this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
         this.drawStick();
 
         this.addTouchListener();
         this.setScheduler()
         return true;
+    },
+
+    replayGame: function() {
+        var initWidth = 120;
+        this.step = 0;
+        this.updateStep();
+        this.playLayer.setPosition(0, 0);
+        this.stepBgSprite.setVisible(true);
+        this.mountain1.removeFromParent();
+        this.mountain1 = this.drawMountain(this.startX - initWidth, initWidth);
+        this.mountainWidth = 100;
+        this.distance = 100;
+        this.mountain2.removeFromParent();
+        this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
+
+        this.runner.setPosition(this.startX - 3 - this.playLayer.x, this.mountainHeight - 2);
     },
 
     addTouchListener: function() {
@@ -125,16 +143,49 @@ var MainLayer = cc.Layer.extend({
         var aniTime = 0.3;
         this.runner.runAction(cc.moveBy(aniTime, 0, -1 * (this.mountainHeight + 60)).easing(cc.easeIn(3.0)));
         var func = cc.callFunc(function() {
-            this.actionRunning = false;
+            var gameOverFunc = cc.callFunc(function() {
+                this.actionRunning = false;
+                this.showSettlementPanel();
+            }, this);
             var moveAct1 = cc.moveBy(0.1, 0, 5);
             var moveAct2 = cc.moveBy(0.1, 0, 5);
             var moveAct3 = cc.moveBy(0.1, 0, 3);
-            this.runAction(cc.sequence(moveAct1, moveAct1.reverse(), moveAct2, moveAct2.reverse(), moveAct3, moveAct3.reverse()));
+            this.runAction(cc.sequence(moveAct1, moveAct1.reverse(), moveAct2, moveAct2.reverse(), moveAct3, moveAct3.reverse(), gameOverFunc));
             this.isGameOver = true;
             this.stick.setVisible(false);
             Ltc.playAudio(res.dead_mp3, false);
         }, this);
         this.stick.runAction(cc.sequence(cc.rotateBy(aniTime, 90).easing(cc.easeIn(3.0)), func));
+    },
+
+    showSettlementPanel: function() {
+        this.stepBgSprite.setVisible(false);
+        var layer = Ltc.addMaskLayer(this);
+        var panel = new cc.Sprite(res.settlement_bg_png);
+        Ltc.exNode(panel).pos_(this.vRc.center.x, this.vRc.center.y + 80).addTo_(layer);
+        Ltc.exNode(new cc.LabelTTF("Game Over", "Arial", 46)).pos_(panel.width / 2, panel.height - 80).addTo_(panel).color_(LIGHT_RED_COLOR);
+
+        Ltc.exNode(new cc.LabelTTF("分数", "Arial", 24)).pos_(panel.width / 2, panel.height - 160).addTo_(panel).color_(cc.color.BLACK);
+        Ltc.exNode(new cc.LabelTTF(this.step + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 194).addTo_(panel).color_(LIGHT_RED_COLOR);
+        dataMgr.tryUpdateScore(this.step);
+
+        Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 24)).pos_(panel.width / 2, panel.height - 240).addTo_(panel).color_(cc.color.BLACK);
+        Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 274).addTo_(panel).color_(LIGHT_RED_COLOR);
+
+        Ltc.sampleBtn(panel, res.share_btn_png, cc.p(panel.width / 2, 60), function() {
+            console.log("click share btn");
+        }.bind(this, layer));
+
+        Ltc.sampleBtn(layer, res.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - 200), function() {
+            console.log("click rank btn");
+            arguments[0].removeFromParent();
+        }.bind(this, layer));
+
+        Ltc.sampleBtn(layer, res.replay_btn_png, cc.p(layer.width / 2 + 60, layer.height / 2 - 200), function() {
+            console.log("click replay btn");
+            arguments[0].removeFromParent();
+            this.replayGame();
+        }.bind(this, layer));
     },
 
     initRunner: function() {
@@ -155,12 +206,6 @@ var MainLayer = cc.Layer.extend({
 
     makeStickLonger: function() {
         Ltc.playAudio(res.stick_grow_loop_mp3, true);
-        if (this.isGameOver) {
-            this.isGameOver = false;
-            this.step = 0;
-            this.updateStep();
-        }
-        this.runner.setPosition(this.startX - 3 - this.playLayer.x, this.mountainHeight - 2);
 
         // 棍子变长
         var stick = this.stick;
@@ -263,9 +308,12 @@ var MainLayer = cc.Layer.extend({
 
     updateStep: function() {
         if (!this.stepLabel) {
+            this.stepBgSprite = new cc.Sprite(res.score_bg_png);
+            this.stepBgSprite.setPosition(this.vRc.center.x, this.vRc.top.y - 100);
+            this.addChild(this.stepBgSprite);
             this.stepLabel = new cc.LabelTTF(this.step + "", "Arial", 40);
-            this.stepLabel.setPosition(this.vRc.center.x, this.vRc.top.y - 100);
-            this.addChild(this.stepLabel);
+            this.stepLabel.setPosition(this.stepBgSprite.width / 2, this.stepBgSprite.height / 2);
+            this.stepBgSprite.addChild(this.stepLabel);
         } else {
             this.stepLabel.setString(this.step + "");
             var scaleAct = cc.scaleBy(0.15, 1.3).easing(cc.easeIn(3.0));

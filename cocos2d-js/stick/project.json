@@ -8,12 +8,13 @@
     "renderMode" : 0,
     "engineDir":"frameworks/cocos2d-html5",
 
-    "modules" : ["cocos2d"],
+    "modules" : ["core", "audio", "menus", "gui"],
 
     "jsList" : [
         "src/resource.js",
         "src/app.js",
         "src/utils/CocosUtil.js",
-        "src/utils/AlgorithmUtil.js"
+        "src/utils/AlgorithmUtil.js",
+        "src/dataMgr.js"
     ]
 }
