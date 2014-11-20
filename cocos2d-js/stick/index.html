@@ -65,10 +65,10 @@
     </div>
 </div>
 
-<div id="mainbg" class="rotate-guide"></div>
+<!--<div id="mainbg" class="rotate-guide"></div>-->
 <script type="text/javascript">
     function resizeEvent() {
-        isLandscape = (getViewportWidth() > getViewportHeight());
+        isLandscape = (window.innerWidth > window.innerHeight);
         var guide = document.getElementById("guide");
         if (isLandscape) {
             // 水平
@@ -91,7 +91,7 @@
     var starBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAZCAYAAADAHFVeAAAC/ElEQVR42rSWW0gUURjH/2dmc13XC4TmJSsiNU0wCErTCMEQCqIIeqnItMtDL0HUQ0VFPUQE0YMVRQ9RdCGIEIIgqPCpIhBK0HyI8lKRsijisOuuOzv9z+xom+7OzJYe+HFmzuX7n/Od73wzwuisRJrlNtlJnpND6UxU0hRqIEfIEnKQNC6k2CWH93kTqyKbZ7VtJDULIXYhRftFtwaEywCRZzRs019KfszXzs449J93Y8Qzs8XGPrPmTr2sCkiRhVz1UQc78gp8JEPkl8UIbYYTPSfduI71MbKUFFouy/+HSE0sBglYrh+2XNwuxaJ8UBNHRg0PYr4KiJxqGJ48CF8pDE5XcxmQInENAkbwK6CHgOA3KNEAFK0bCA0mXYB0o0byzDca1OGF8K8y1XWth0Ir+TBOs6wmeoDMYmDRYnMBSmYhPMXb/5gb7wI+d6XarSbF6shLslwIeYhhrrLX7DW3G+qdu0QuSpvKgbfmCtScsnjj4C2g/zo79WRC0o3NUqzPupgvSL3TYUR1A8GMtciuvQbFVwJERmnhJDD2NtWUD2QrGZ0+gHFGjsx7j+2EQmED4cIW5NY/MIWMsfdA1w47oaekVgrNuWcU3MPqcjK3TYT9UGtuwF99Kh4k/e0Q3a3cWSCV0FXa2217qTmA1nDAChzTbRNqFbI2dSCjqAlGmJH8qQUYuJlKJCi/DLRzwlUG4cB7rCYnIwYmC/Ygt+EJ1KxS8/BjQw+hCx/0rDWAvyLZ9CnOv2ObQf5yW2flep5PPpa1MdK3JaxChVp2POl2YsGBuEsDr/KifZF96uqzHUIIzVFMfjp8Xt6DkbtxpiMxpkBkx9MPDUExguZlTuKiElF5TnO1MyuC5rpBic3cQYeyIZ2sX4v/K3Vuv2cyIX+3MfSI3Cfymuy3GVdOvjjtrDnF5HdkC9lrpTfGP5qs9mSlyY0by2e9yxTeaqWy17P63ljtbda3LLGscONGOeiZjCjrH1H+QUVcnFMmOU0Ok59kFxlIHPBbgAEASsngqAgGSqEAAAAASUVORK5CYII=";
     var titleBase64 = "data:image/png;base64,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";
 
-    function showMainBg(isShow) {
+/*    function showMainBg(isShow) {
         var bg = document.getElementById("mainbg");
         if (isShow) {
             bg.style.background = "url(" + logoBase64 + ") no-repeat center";
@@ -101,18 +101,10 @@
             bg.style.display = "none";
         }
     }
-    showMainBg(true);
+    showMainBg(true);*/
 </script>
 
 <canvas id="gameCanvas" width="0" height="0"></canvas>
-<script src="frameworks/cocos2d-html5/CCBoot.js"></script>
-<script src="main.js"></script>
-
-<!-- 玩吧for share, pay, invite -->
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/phone/m/v4/widget/mobile/jsbridge.js" async></script>
-<script type="text/javascript" charset="utf-8" src="http://fusion.qq.com/fusion_loader?appid=1101148427&platform=qzone" async></script>
-<script type="text/javascript" charset="utf-8" src="http://qzonestyle.gtimg.cn/qzone/mobilepage/gamesBar/common/pop_pay_tips.js" async></script>
-
 
 <!-- 广告 -->
 <div id="ad_container"></div>
@@ -127,8 +119,8 @@
     });
     (function() {
         var doc = document,
-            h = doc.getElementsByTagName('head')[0],
-            s = doc.createElement('script');
+                h = doc.getElementsByTagName('head')[0],
+                s = doc.createElement('script');
         s.async = true;
         s.src = 'http://qzs.qq.com/qzone/biz/res/i.js';
         h && h.insertBefore(s, h.firstChild)
@@ -141,5 +133,13 @@
         }
     }
 </script>
+<script src="frameworks/cocos2d-html5/CCBoot.js"></script>
+<script src="main.js"></script>
+
+<!-- 玩吧for share, pay, invite -->
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/phone/m/v4/widget/mobile/jsbridge.js"></script>
+<script type="text/javascript" charset="utf-8" src="http://fusion.qq.com/fusion_loader?appid=1103494063&platform=qzone"></script>
+<script type="text/javascript" charset="utf-8" src="http://qzonestyle.gtimg.cn/qzone/mobilepage/gamesBar/common/pop_pay_tips.js"></script>
+
 </body>
 </html>

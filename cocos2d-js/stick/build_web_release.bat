@@ -1,1 +1,1 @@
-cocos compile -m release -p web --advanced --source-map
+cocos compile -m release -p web --source-map

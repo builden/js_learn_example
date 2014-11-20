@@ -4,7 +4,7 @@ var res = {
     run3_png: "res/run/run3.png",
     bg_jpg: "res/bg.jpg",
     bg_front_png: "res/bg_front.png",
-    blank_png: "res/blank.png",
+    blank_png: "res/blank.jpg",
     settlement_bg_png: "res/settlement_bg.png",
     rank_btn_png: "res/rank_btn.png",
     replay_btn_png: "res/replay_btn.png",

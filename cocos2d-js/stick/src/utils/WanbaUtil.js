@@ -10,6 +10,7 @@
  */
 function inviteFriend(msg, onSuccess) {
     try {
+        /** @expose */
         fusion2.dialog.invite({
             msg: msg, // 邀请消息内容
             img: "http://1251001828.cdn.myqcloud.com/1251001828/star/icon.png", // 应用icon图片需发到外网
@@ -40,6 +41,7 @@ function inviteFriend(msg, onSuccess) {
  */
 function buyWBScore(appid, zoneid, openid, openkey, isVip, num, cb) {
     try {
+        /** @expose */
         window.popPayTips({
             is_vip: isVip,
             openkey: openkey,
@@ -71,6 +73,7 @@ function buyWBScore(appid, zoneid, openid, openkey, isVip, num, cb) {
  */
 function shareGame() {
     try {
+        /** @expose */
         QZAppExternal.qzoneGameBar({
             type: 'share'
         });
@@ -87,8 +90,16 @@ function shareGame() {
  *         3  触屏
  */
 function getQZPlatform() {
-    if (typeof(QZAppExternal) !== "undefined" && QZAppExternal) {
-        return QZAppExternal.getPlatform();
+    /** @expose */
+    try {
+        if (typeof(QZAppExternal) !== "undefined" && QZAppExternal) {
+            var pf = QZAppExternal.getPlatform();
+            console.log("getQZPlatform " + pf);
+            return pf;
+        }
+    } catch (err) {
+        console.error("getQZPlatform error: " + err);
+        return -1;
     }
     return -1;
 }

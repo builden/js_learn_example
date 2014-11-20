@@ -72,7 +72,7 @@ function initMobile() {
         return;
     }
     // hide body bg
-    showMainBg(false);
+    // showMainBg(false);
 }
 
 cc.game.run();

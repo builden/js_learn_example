@@ -196,6 +196,9 @@ Ltc.addMaskLayer = function(target, color) {
 };
 
 Ltc.playAudio = function(res, loop) {
+    if (cc.sys.browserType === cc.sys.BROWSER_TYPE_UC && cc.sys.os ===  cc.sys.OS_ANDROID) {
+        return null;
+    }
     loop = loop || false;
     if (res) {
         return cc.audioEngine.playEffect(res, loop);

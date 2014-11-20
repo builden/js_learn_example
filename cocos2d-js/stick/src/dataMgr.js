@@ -4,7 +4,7 @@ var DataMgr = cc.Class.extend({
     openkey: null,
     zoonid: null,
     highScore: 0,   // 历史最高
-    isShowAd: false,    // 是否显示屏幕下的广告
+    isShowAd: true,    // 是否显示屏幕下的广告
     isShowRank: false,  // 是否显示排行榜
     isShowShareBtn: false,  // 是否显示分享按钮
     isShowNewbieGuide: false, // 是否显示新手引导
@@ -15,7 +15,7 @@ var DataMgr = cc.Class.extend({
     },
 
     init: function() {
-
+        this._showAd(this.isShowAd);
     },
 
     tryUpdateScore: function(score) {
@@ -27,6 +27,7 @@ var DataMgr = cc.Class.extend({
 
     _showAd: function(isShow) {
         if (!cc.sys.isNative) {
+            /** @expose */
             showAd(isShow);
         }
     },
@@ -36,7 +37,8 @@ var DataMgr = cc.Class.extend({
     },
 
     canShowInviteOrShare: function() {
-        if (getQZPlatform() !== -1 && getQZPlatform() !== 3) {
+        var pf = getQZPlatform();
+        if (pf !== -1 && pf !== 3) {
             return true;
         }
         return false;

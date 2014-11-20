@@ -1,7 +1,7 @@
 var RUN_ANI = "run_ani";
 var STICK_WIDTH = 4;
-var STICK_COLOR = cc.color(124, 78, 31);
 var LIGHT_RED_COLOR = cc.color(229, 66, 85);
+var BLACK_COLOR = cc.color(1, 1, 2);
 
 var MainLayer = cc.Layer.extend({
     step: 0, // 步数
@@ -22,6 +22,7 @@ var MainLayer = cc.Layer.extend({
     mountainWidth: 0, // 山体宽度
     isGameOver: false,
     playLayer: null,
+    tipLabel: null,
 
 
     ctor: function() {
@@ -76,6 +77,7 @@ var MainLayer = cc.Layer.extend({
 
         Ltc.sampleBtn(layer, res.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
             layer.removeFromParent();
+            Ltc.playAudio(res.kick_mp3);
             this.startGame();
         }.bind(this, layer));
     },
@@ -83,6 +85,8 @@ var MainLayer = cc.Layer.extend({
     startGame: function() {
         this.updateStep();
         this.addTouchListener();
+
+        this.showTipLabel(true);
     },
 
     replayGame: function() {
@@ -99,6 +103,7 @@ var MainLayer = cc.Layer.extend({
         this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
 
         this.runner.setPosition(this.startX - 3 - this.playLayer.x, this.mountainHeight - 2);
+        this.showTipLabel(true);
     },
 
     addTouchListener: function() {
@@ -187,11 +192,11 @@ var MainLayer = cc.Layer.extend({
         Ltc.exNode(panel).pos_(this.vRc.center.x, this.vRc.center.y + 80).addTo_(layer);
         Ltc.exNode(new cc.LabelTTF("Game Over", "Arial", 46)).pos_(panel.width / 2, panel.height - 80).addTo_(panel).color_(LIGHT_RED_COLOR);
 
-        Ltc.exNode(new cc.LabelTTF("分数", "Arial", 24)).pos_(panel.width / 2, panel.height - 160).addTo_(panel).color_(cc.color.BLACK);
+        Ltc.exNode(new cc.LabelTTF("分数", "Arial", 24)).pos_(panel.width / 2, panel.height - 160).addTo_(panel).color_(BLACK_COLOR);
         Ltc.exNode(new cc.LabelTTF(this.step + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 194).addTo_(panel).color_(LIGHT_RED_COLOR);
         dataMgr.tryUpdateScore(this.step);
 
-        Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 24)).pos_(panel.width / 2, panel.height - 240).addTo_(panel).color_(cc.color.BLACK);
+        Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 24)).pos_(panel.width / 2, panel.height - 240).addTo_(panel).color_(BLACK_COLOR);
         Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 274).addTo_(panel).color_(LIGHT_RED_COLOR);
 
         if (dataMgr.canShowInviteOrShare()) {
@@ -202,8 +207,12 @@ var MainLayer = cc.Layer.extend({
         }
 
         var replayBtnPosXOffset = 0;
+        var btnPosYOffset = 200;
+        if (this.vRc.height < 600) {
+            btnPosYOffset = 170;
+        }
         if (dataMgr.isShowRank) {
-            Ltc.sampleBtn(layer, res.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - 200), function() {
+            Ltc.sampleBtn(layer, res.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - btnPosYOffset), function() {
                 console.log("click rank btn");
                 arguments[0].removeFromParent();
             }.bind(this, layer));
@@ -211,9 +220,10 @@ var MainLayer = cc.Layer.extend({
         }
 
 
-        Ltc.sampleBtn(layer, res.replay_btn_png, cc.p(layer.width / 2 + replayBtnPosXOffset, layer.height / 2 - 200), function() {
+        Ltc.sampleBtn(layer, res.replay_btn_png, cc.p(layer.width / 2 + replayBtnPosXOffset, layer.height / 2 - btnPosYOffset), function() {
             console.log("click replay btn");
             arguments[0].removeFromParent();
+            Ltc.playAudio(res.kick_mp3);
             this.replayGame();
         }.bind(this, layer));
     },
@@ -227,9 +237,9 @@ var MainLayer = cc.Layer.extend({
     },
 
     drawMountain: function(pos, width) {
-        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(pos, 0).
+        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png, cc.rect(1, 1, 1, 1))).pos_(pos, 0).
         addTo_(this.playLayer).scale_(width, this.mountainHeight).
-        anchor_(0, 0).color_(STICK_COLOR);
+        anchor_(0, 0);
 
         return sprite;
     },
@@ -280,6 +290,7 @@ var MainLayer = cc.Layer.extend({
         this.runner.runAction(cc.repeatForever(animate));
         var func = cc.callFunc(function() {
             this.runner.stopAllActions();
+            this.showTipLabel(false);
             if (arguments[1]) {
                 this.gameOver();
             } else {
@@ -331,8 +342,8 @@ var MainLayer = cc.Layer.extend({
     },
 
     drawStick: function() {
-        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png)).pos_(this.startX - 1, this.mountainHeight).addTo_(this).
-        anchor_(0.5, 0).color_(STICK_COLOR).show_(false).scale_(STICK_WIDTH, 1).z_(2);
+        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png, cc.rect(1, 1, 1, 1))).pos_(this.startX - 1, this.mountainHeight).addTo_(this).
+        anchor_(0.5, 0).show_(false).scale_(STICK_WIDTH, 1).z_(2);
         this.stick = sprite;
     },
 
@@ -349,6 +360,23 @@ var MainLayer = cc.Layer.extend({
             var scaleAct = cc.scaleBy(0.15, 1.3).easing(cc.easeIn(3.0));
             // var scaleAct2 = cc.scaleBy(0.1, 1.1);
             this.stepLabel.runAction(cc.sequence(scaleAct, scaleAct.reverse()));
+        }
+    },
+
+    showTipLabel: function(isShow) {
+        if (!this.tipLabel) {
+            var bg = this.stepBgSprite;
+            this.tipLabel = Ltc.exNode(new cc.LabelTTF("将手按住屏幕")).addTo_(bg).pos_(bg.width / 2, -20).color_(BLACK_COLOR);
+
+            Ltc.exNode(new cc.LabelTTF("使棍子变长")).addTo_(this.tipLabel).pos_(this.tipLabel.width / 2, -12).color_(BLACK_COLOR);
+        }
+
+        if (isShow) {
+            this.tipLabel.setVisible(true);
+        } else {
+            if (this.tipLabel.isVisible) {
+                this.tipLabel.setVisible(false);
+            }
         }
     }
 });
