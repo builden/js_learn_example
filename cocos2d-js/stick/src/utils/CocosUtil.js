@@ -256,7 +256,67 @@ Ltc.loadImg = function(src, cb) {
             cb(new cc.Sprite(texture2d));
         }
     });
-}
+};
+
+var RepeatBgLayer = cc.Layer.extend({
+    spriteA: null,
+    spriteB: null,
+    speed: 0,
+    isPaused: true,
+    imgW: 0,
+    imgH: 0,
+    isLandscape: true,
+    ctor: function(bgRes, speed, isLandscape) {
+        this._super();
+        this.spriteA = Ltc.exNode(new cc.Sprite(bgRes)).addTo_(this).anchor_(0, 0.5).
+            pos_(0, this.height / 2);
+        this.imgW = this.spriteA.width;
+        this.imgH = this.spriteA.height;
+        this.spriteB = Ltc.exNode(new cc.Sprite(bgRes)).addTo_(this).anchor_(0, 0.5).
+            pos_(this.imgW, this.height / 2).flipX_(true);
+        this.speed = speed;
+        this.isLandscape = isLandscape;
+        this.isPaused = true;
+
+        this.scheduleUpdate();
+    },
+
+    update: function(dt) {
+        if (!this.isPaused) {
+            this.spriteA.x -= this.speed;
+            this.spriteB.x -= this.speed;
+
+            if (this.spriteA.x < -1 * this.imgW) {
+                this.spriteA.x = this.imgW;
+                this.spriteB.x = 0;
+            }
+
+            if (this.spriteB.x < -1 * this.imgW) {
+                this.spriteB.x = this.imgW;
+                this.spriteA.x = 0;
+            }
+        }
+    },
+
+    pause: function() {
+        this.isPaused = true;
+    },
+
+    play: function() {
+        this.isPaused = false;
+    },
+
+    setBottom: function() {
+        this.spriteA.y = this.imgH / 2;
+        this.spriteB.y = this.imgH / 2;
+    }
+});
+
+Ltc.addRepeatBgLayer = function(target, bgRes, speed, isLandscape) {
+    var layer = new RepeatBgLayer(bgRes, speed, isLandscape);
+    target.addChild(layer);
+    return layer;
+};
 
 /**
  * Node中坐标相关：

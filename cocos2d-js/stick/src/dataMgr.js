@@ -4,7 +4,7 @@ var DataMgr = cc.Class.extend({
     openkey: null,
     zoonid: null,
     highScore: 0,   // 历史最高
-    isShowAd: true,    // 是否显示屏幕下的广告
+    isShowAd: false,    // 是否显示屏幕下的广告
     isShowRank: false,  // 是否显示排行榜
     isShowShareBtn: false,  // 是否显示分享按钮
     isShowNewbieGuide: false, // 是否显示新手引导

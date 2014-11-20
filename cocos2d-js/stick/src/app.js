@@ -23,6 +23,8 @@ var MainLayer = cc.Layer.extend({
     isGameOver: false,
     playLayer: null,
     tipLabel: null,
+    repeatBg: null,
+    repeatFrontBg: null,
 
 
     ctor: function() {
@@ -30,20 +32,15 @@ var MainLayer = cc.Layer.extend({
         // 1. super init first
         this._super();
 
-        /////////////////////////////
-        // 2. add a menu item with "X" image, which is clicked to quit the program
-        //    you may modify it.
-        // ask the window size
-        var size = cc.winSize;
-
         this.vRc = cc.visibleRect;
         console.log(cc.formatStr("left {%d, %d}, bottomRight {%d, %d}",
             this.vRc.left.x, this.vRc.left.y, this.vRc.bottomRight.x, this.vRc.bottomRight.y));
         this.mountainHeight = parseInt(this.vRc.height * 0.3);
         console.log("mountain height " + this.mountainHeight);
 
-        this.initBg(res.bg_jpg, 100);
-        this.initBg(res.bg_front_png, 60);
+        this.repeatBg = Ltc.addRepeatBgLayer(this, res.bg_jpg, 0.5);
+        this.repeatFrontBg = Ltc.addRepeatBgLayer(this, res.bg_front_png, 1.5);
+        this.repeatFrontBg.setBottom();
 
         this.playLayer = new cc.Layer();
         this.addChild(this.playLayer);
@@ -138,21 +135,6 @@ var MainLayer = cc.Layer.extend({
     onExit: function() {
         cc.eventManager.removeListener(this.touchListener);
         this._super();
-    },
-
-    initBg: function(bgRes, time) {
-        var bg = Ltc.exNode(new cc.Sprite(bgRes)).addTo_(this).pos_(0, 0).
-        anchor_(0, 0);
-        var move = cc.moveBy(time, -1 * bg.width, 0);
-        var func = cc.callFunc(function() {
-
-        }, bg);
-        var seq = cc.sequence(move, func);
-        bg.runAction(seq);
-
-        var bg2 = new cc.Sprite(bgRes);
-        Ltc.exNode(bg2).addTo_(this).pos_(bg.width - 1, 0).anchor_(0, 0).flipX_(true);
-        bg2.runAction(seq.clone());
     },
 
     initAni: function() {
@@ -289,6 +271,8 @@ var MainLayer = cc.Layer.extend({
         var animate = new cc.Animate(cc.animationCache.getAnimation(RUN_ANI));
         this.runner.runAction(cc.repeatForever(animate));
         var func = cc.callFunc(function() {
+            this.repeatBg.pause();
+            this.repeatFrontBg.pause();
             this.runner.stopAllActions();
             this.showTipLabel(false);
             if (arguments[1]) {
@@ -300,7 +284,9 @@ var MainLayer = cc.Layer.extend({
         }.bind(this, distance, isOver), this);
         this.runner.runAction(cc.sequence(cc.moveBy(distance / 200, distance, 0), func));
 
-        // TODO: 背景移动
+        // 背景移动
+        this.repeatBg.play();
+        this.repeatFrontBg.play();
     },
 
     backToStartPos: function(distance) {
