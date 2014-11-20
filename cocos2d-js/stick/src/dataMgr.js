@@ -27,8 +27,10 @@ var DataMgr = cc.Class.extend({
 
     _showAd: function(isShow) {
         if (!cc.sys.isNative) {
-            /** @expose */
-            showAd(isShow);
+            var elm = document.getElementById("ad_container");
+            if (elm) {
+                elm.style.display = isShow ? "block" : "none";
+            }
         }
     },
 

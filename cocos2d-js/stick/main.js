@@ -72,7 +72,9 @@ function initMobile() {
         return;
     }
     // hide body bg
-    // showMainBg(false);
+    showInitBg(false);
 }
 
-cc.game.run();
+if (!isLowAndroidVersion) {
+    cc.game.run();
+}
