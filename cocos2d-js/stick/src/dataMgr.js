@@ -51,8 +51,8 @@ var DataMgr = cc.Class.extend({
                                 console.log("hide ad");
                                 this.isShowAd = false;
                                 this._showAd(this.isShowAd);
-                                this.highScore = data.highScore;
                             }
+                            this.highScore = data.highScore;
                         }
                     } catch (e) {
                         console.error("parse login rst:", e);
