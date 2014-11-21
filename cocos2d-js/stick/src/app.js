@@ -14,7 +14,7 @@ var MainLayer = cc.Layer.extend({
     minMountainWidth: 10, // 最小山体宽度
     runner: null, // 猴子sprite
     stick: null, // 棍子sprite
-    longerAction: null, // 边长的Action
+    longerAction: null, // 变长的Action
     actionRunning: false,
     mountain1: null,
     mountain2: null,
@@ -25,12 +25,14 @@ var MainLayer = cc.Layer.extend({
     tipLabel: null,
     repeatBg: null,
     repeatFrontBg: null,
+    midStick: null,
 
 
     ctor: function() {
         //////////////////////////////
         // 1. super init first
         this._super();
+        cc.spriteFrameCache.addSpriteFrames(res.stick_plist);
 
         this.vRc = cc.visibleRect;
         console.log(cc.formatStr("left {%d, %d}, bottomRight {%d, %d}",
@@ -39,7 +41,7 @@ var MainLayer = cc.Layer.extend({
         console.log("mountain height " + this.mountainHeight);
 
         this.repeatBg = Ltc.addRepeatBgLayer(this, res.bg_jpg, 0.5);
-        this.repeatFrontBg = Ltc.addRepeatBgLayer(this, res.bg_front_png, 1.5);
+        this.repeatFrontBg = Ltc.addRepeatBgLayer(this, inRes.bg_front_png, 1.5);
         this.repeatFrontBg.setBottom();
 
         this.playLayer = new cc.Layer();
@@ -63,16 +65,15 @@ var MainLayer = cc.Layer.extend({
         var layer = new cc.Layer();
         this.addChild(layer);
 
-        Ltc.exNode(new cc.Sprite(res.title_png)).pos_(this.vRc.center.x, (this.vRc.top.y + this.vRc.center.y) / 2).addTo_(layer);
+        Ltc.exNode(new cc.Sprite(inRes.title_png)).pos_(this.vRc.center.x, (this.vRc.top.y + this.vRc.center.y) / 2).addTo_(layer);
 
         if (dataMgr.isShowNewbieGuide) {
-            Ltc.sampleBtn(layer, res.help_png, cc.p(this.vRc.bottomRight.x - 50, this.vRc.bottomRight.y + 80), function() {
+            Ltc.sampleBtn(layer, inRes.help_png, cc.p(this.vRc.bottomRight.x - 50, this.vRc.bottomRight.y + 80), function() {
                 console.log("click help btn");
             }.bind(this, layer));
         }
 
-
-        Ltc.sampleBtn(layer, res.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
+        Ltc.sampleBtn(layer, inRes.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
             layer.removeFromParent();
             Ltc.playAudio(res.kick_mp3);
             this.startGame();
@@ -138,11 +139,12 @@ var MainLayer = cc.Layer.extend({
     },
 
     initAni: function() {
-        var ani = new cc.Animation();
-        ani.addSpriteFrameWithFile(res.run1_png);
-        ani.addSpriteFrameWithFile(res.run2_png);
-        ani.addSpriteFrameWithFile(res.run1_png);
-        ani.addSpriteFrameWithFile(res.run3_png);
+        var frames = [];
+        frames.push(cc.spriteFrameCache.getSpriteFrame(aniRes.run1_png));
+        frames.push(cc.spriteFrameCache.getSpriteFrame(aniRes.run2_png));
+        frames.push(cc.spriteFrameCache.getSpriteFrame(aniRes.run1_png));
+        frames.push(cc.spriteFrameCache.getSpriteFrame(aniRes.run3_png));
+        var ani = new cc.Animation(frames);
         ani.setDelayPerUnit(0.1);
         ani.setRestoreOriginalFrame(true);
         cc.animationCache.addAnimation(ani, RUN_ANI);
@@ -170,7 +172,7 @@ var MainLayer = cc.Layer.extend({
     showSettlementPanel: function() {
         this.stepBgSprite.setVisible(false);
         var layer = Ltc.addMaskLayer(this);
-        var panel = new cc.Sprite(res.settlement_bg_png);
+        var panel = new cc.Sprite(inRes.settlement_bg_png);
         Ltc.exNode(panel).pos_(this.vRc.center.x, this.vRc.center.y + 80).addTo_(layer);
         Ltc.exNode(new cc.LabelTTF("Game Over", "Arial", 46)).pos_(panel.width / 2, panel.height - 80).addTo_(panel).color_(LIGHT_RED_COLOR);
 
@@ -182,7 +184,7 @@ var MainLayer = cc.Layer.extend({
         Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 274).addTo_(panel).color_(LIGHT_RED_COLOR);
 
         if (dataMgr.canShowInviteOrShare()) {
-            Ltc.sampleBtn(panel, res.share_btn_png, cc.p(panel.width / 2, 60), function() {
+            Ltc.sampleBtn(panel, inRes.share_btn_png, cc.p(panel.width / 2, 60), function() {
                 console.log("click share btn");
                 shareGame();
             }.bind(this, layer));
@@ -194,7 +196,7 @@ var MainLayer = cc.Layer.extend({
             btnPosYOffset = 170;
         }
         if (dataMgr.isShowRank) {
-            Ltc.sampleBtn(layer, res.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - btnPosYOffset), function() {
+            Ltc.sampleBtn(layer, inRes.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - btnPosYOffset), function() {
                 console.log("click rank btn");
                 arguments[0].removeFromParent();
             }.bind(this, layer));
@@ -202,7 +204,7 @@ var MainLayer = cc.Layer.extend({
         }
 
 
-        Ltc.sampleBtn(layer, res.replay_btn_png, cc.p(layer.width / 2 + replayBtnPosXOffset, layer.height / 2 - btnPosYOffset), function() {
+        Ltc.sampleBtn(layer, inRes.replay_btn_png, cc.p(layer.width / 2 + replayBtnPosXOffset, layer.height / 2 - btnPosYOffset), function() {
             console.log("click replay btn");
             arguments[0].removeFromParent();
             Ltc.playAudio(res.kick_mp3);
@@ -211,7 +213,7 @@ var MainLayer = cc.Layer.extend({
     },
 
     initRunner: function() {
-        var sprite = new cc.Sprite(res.run1_png);
+        var sprite = new cc.Sprite(inRes.run1_png);
         var x = this.startX - 3;
         var y = this.mountainHeight - 2;
         Ltc.exNode(sprite).pos_(x, y).addTo_(this.playLayer).scale_(0.5).anchor_(1, 0).z_(1);
@@ -219,7 +221,13 @@ var MainLayer = cc.Layer.extend({
     },
 
     drawMountain: function(pos, width) {
-        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png, cc.rect(1, 1, 1, 1))).pos_(pos, 0).
+        var sprite = null;
+        if (stickTexture) {
+            sprite = new cc.Sprite(stickTexture, cc.rect(2, 7, 1, 1));
+        } else {
+            sprite = new cc.Sprite(inRes.blank_png);
+        }
+        Ltc.exNode(sprite).pos_(pos, 0).
         addTo_(this.playLayer).scale_(width, this.mountainHeight).
         anchor_(0, 0);
 
@@ -239,6 +247,12 @@ var MainLayer = cc.Layer.extend({
         if (!this.longerAction) {
             var destLong = this.vRc.height - this.mountainHeight;
             this.longerAction = cc.scaleBy(2, 1, destLong);
+            var origenUpdate = this.longerAction.update;
+            var self = this;
+            this.longerAction.update = function(dt) {
+                cc.ScaleTo.prototype.update.call(this, dt);
+                self.midStick.scaleY = 0.75;
+            };
         }
         stick.runAction(this.longerAction);
     },
@@ -253,7 +267,7 @@ var MainLayer = cc.Layer.extend({
             var stickLen = this.stick.height * this.stick.scaleY - 1;
             console.log("stop height " + this.stick.height + "; sclayY " + this.stick.scaleY);
             console.log("stick long " + stickLen + "; distance " + this.distance + "; mountain width " + this.mountainWidth);
-            Ltc.playAudio(res.fall_mp3, false);
+            Ltc.playAudio(inRes.fall_mp3, false);
             if (stickLen < this.distance) {
                 this.doRun(stickLen + 16, true);
             } else if (stickLen > (this.distance + this.mountainWidth)) {
@@ -328,14 +342,22 @@ var MainLayer = cc.Layer.extend({
     },
 
     drawStick: function() {
-        var sprite = Ltc.exNode(new cc.Sprite(res.blank_png, cc.rect(1, 1, 1, 1))).pos_(this.startX - 1, this.mountainHeight).addTo_(this).
+        var sprite = null;
+        if (stickTexture) {
+            sprite = new cc.Sprite(stickTexture, cc.rect(2, 2, 1, 1));
+        } else {
+            sprite = new cc.Sprite(inRes.blank_png);
+        }
+        Ltc.exNode(sprite).pos_(this.startX - 1, this.mountainHeight).addTo_(this).
         anchor_(0.5, 0).show_(false).scale_(STICK_WIDTH, 1).z_(2);
         this.stick = sprite;
+
+        this.midStick = Ltc.exNode(new cc.Sprite(stickTexture, cc.rect(2, 7, 1, 1))).addTo_(sprite).pos_(sprite.width / 2, sprite.height /2).anchor_(0.5, 0.5);
     },
 
     updateStep: function() {
         if (!this.stepLabel) {
-            this.stepBgSprite = new cc.Sprite(res.score_bg_png);
+            this.stepBgSprite = new cc.Sprite(inRes.score_bg_png);
             this.stepBgSprite.setPosition(this.vRc.center.x, this.vRc.top.y - 100);
             this.addChild(this.stepBgSprite);
             this.stepLabel = new cc.LabelTTF(this.step + "", "Arial", 40);

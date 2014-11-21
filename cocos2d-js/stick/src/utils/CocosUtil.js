@@ -240,7 +240,8 @@ Ltc.sampleBtn = function(parent, res, pos, cb) {
 /**
  * 异步加载图片
  * @param  {String}   src       [base64Img or url]
- * @param  {Function} cb        callback(imgSprite)
+ * @param  {Function} cb        callback(texture)
+ * @note   可以通过new Sprite(texture)的方式创建精灵
  */
 Ltc.loadImg = function(src, cb) {
     cc.loader.loadImg(src, {
@@ -253,7 +254,7 @@ Ltc.loadImg = function(src, cb) {
             var texture2d = new cc.Texture2D();
             texture2d.initWithElement(img);
             texture2d.handleLoadedTexture();
-            cb(new cc.Sprite(texture2d));
+            cb(texture2d);
         }
     });
 };

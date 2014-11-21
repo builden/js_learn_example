@@ -54,12 +54,14 @@ var MyLoaderScene = cc.Scene.extend({
         self.addChild(bgLayer, 0);
 
         if (!cc.sys.isNative) {
-            Ltc.loadImg(logoBase64, function(sprite) {
+            Ltc.loadImg(logoBase64, function(texture) {
+                var sprite = new cc.Sprite(texture);
                 sprite.setPosition(cc.visibleRect.center.x, cc.visibleRect.center.y + 200);
                 this.addChild(sprite);
             }.bind(this));
 
-            Ltc.loadImg(titleBase64, function(sprite) {
+            Ltc.loadImg(titleBase64, function(texture) {
+                var sprite = new cc.Sprite(texture);
                 sprite.setPosition(cc.visibleRect.center.x, cc.visibleRect.center.y + 40);
                 sprite.scale = 0.75;
                 this.addChild(sprite);
@@ -69,20 +71,23 @@ var MyLoaderScene = cc.Scene.extend({
                 color_(cc.color(80, 80, 80)).addTo_(this);
 
             // progress
-            Ltc.loadImg(pbgBase64, function(sprite) {
+            Ltc.loadImg(pbgBase64, function(texture) {
+                var sprite = new cc.Sprite(texture);
                 this.progressBg = sprite;
                 sprite.setPosition(cc.visibleRect.center.x, cc.visibleRect.center.y - 110);
                 sprite.scale = 0.75;
                 this.addChild(sprite);
 
-                Ltc.loadImg(starBase64, function(sprite) {
+                Ltc.loadImg(starBase64, function(texture) {
+                    var sprite = new cc.Sprite(texture);
                     sprite.setPosition(0, this.progressBg.height / 2);
                     this.progressBg.addChild(sprite);
                     sprite.runAction(cc.repeatForever(cc.rotateBy(1.5, 360)));
                     this.starSprite = sprite;
                 }.bind(this));
 
-                Ltc.loadImg(pppBase64, function(sprite) {
+                Ltc.loadImg(pppBase64, function(texture) {
+                    var sprite = new cc.Sprite(texture);
                     this.initProgress(sprite);
                 }.bind(this));
 
