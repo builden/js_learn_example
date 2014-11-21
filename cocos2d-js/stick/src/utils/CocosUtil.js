@@ -258,6 +258,28 @@ Ltc.loadImg = function(src, cb) {
     });
 };
 
+/**
+ * 异步Get请求
+ * @param url
+ * @param cb {function(status, doc)}
+ * @note 中途对返回多次xhr.status
+ */
+Ltc.loadTxt = function(url, cb) {
+    var that = this;
+    var xhr = cc.loader.getXMLHttpRequest();
+    xhr.open("GET", url, true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
+            var httpStatus = xhr.statusText;
+            cb(null, xhr.responseText);
+        } else {
+            cb(xhr.status);
+        }
+    };
+    xhr.send();
+};
+
 var RepeatBgLayer = cc.Layer.extend({
     spriteA: null,
     spriteB: null,
