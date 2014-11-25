@@ -1,7 +1,7 @@
 var RUN_ANI = "run_ani";
-var STICK_WIDTH = 4;
 var LIGHT_RED_COLOR = cc.color(229, 66, 85);
 var BLACK_COLOR = cc.color(1, 1, 2);
+var STICK_INIT_SCALEY = 0.00125;
 
 var MainLayer = cc.Layer.extend({
     step: 0, // 步数
@@ -11,7 +11,7 @@ var MainLayer = cc.Layer.extend({
     mountainHeight: 0, // 山体高度
     startX: 120, // 起点位置
     maxMountainWidth: 160, // 最大山体宽度
-    minMountainWidth: 10, // 最小山体宽度
+    minMountainWidth: 12, // 最小山体宽度
     runner: null, // 猴子sprite
     stick: null, // 棍子sprite
     longerAction: null, // 变长的Action
@@ -222,8 +222,8 @@ var MainLayer = cc.Layer.extend({
 
     drawMountain: function(pos, width) {
         var sprite = null;
-        if (stickTexture) {
-            sprite = new cc.Sprite(stickTexture, cc.rect(2, 7, 1, 1));
+        if (mountainTexture) {
+            sprite = new cc.Sprite(mountainTexture, cc.rect(2, 7, 1, 1));
         } else {
             sprite = new cc.Sprite(inRes.blank_png);
         }
@@ -242,17 +242,11 @@ var MainLayer = cc.Layer.extend({
         stick.setPosition(this.startX - 1, this.mountainHeight);
         stick.setRotation(0);
         stick.setVisible(true);
-        stick.scaleX = 4;
-        stick.scaleY = 1;
+        stick.scaleX = 1;
+        stick.scaleY = STICK_INIT_SCALEY;
         if (!this.longerAction) {
             var destLong = this.vRc.height - this.mountainHeight;
             this.longerAction = cc.scaleBy(2, 1, destLong);
-            var origenUpdate = this.longerAction.update;
-            var self = this;
-            this.longerAction.update = function(dt) {
-                cc.ScaleTo.prototype.update.call(this, dt);
-                self.midStick.scaleY = 0.75;
-            };
         }
         stick.runAction(this.longerAction);
     },
@@ -323,14 +317,10 @@ var MainLayer = cc.Layer.extend({
         tmp.runAction(cc.sequence(cc.moveBy(backTime, -1 * (this.vRc.width - this.startX - this.distance), 0), tmpFunc));
 
         // 棍子收缩
-        var spawn = cc.spawn(cc.rotateBy(0.3, 360 * 3), cc.moveBy(0.3, 0, 140), cc.scaleTo(0.3, 2, 40));
-        var spawn2 = cc.spawn(cc.rotateBy(0.1, 360 * 1), cc.moveTo(0.1, this.startX - 10, this.mountainHeight + 10), cc.scaleTo(0.1, 1, 1));
+        var spawn = cc.spawn(cc.rotateBy(0.3, 360 * 3), cc.moveBy(0.3, 0, 140), cc.scaleTo(0.3, 0.5, 0.1));
+        var spawn2 = cc.spawn(cc.rotateBy(0.1, 360 * 1), cc.moveTo(0.1, this.startX - 10, this.mountainHeight + 10), cc.scaleTo(0.1, 0.25, STICK_INIT_SCALEY));
 
-        var func1 = cc.callFunc(function() {
-
-        }, this.stick);
-
-        var func2 = cc.callFunc(function() {
+        var func = cc.callFunc(function() {
             this.stick.setAnchorPoint(0, 0);
             Ltc.exNode(this.stick).show_(false);
             this.actionRunning = false;
@@ -338,21 +328,19 @@ var MainLayer = cc.Layer.extend({
 
         this.stick.x += this.distance / 2;
         this.stick.setAnchorPoint(0.5, 0.5);
-        this.stick.runAction(cc.sequence(spawn, spawn2, func2));
+        this.stick.runAction(cc.sequence(spawn, spawn2, func));
     },
 
     drawStick: function() {
         var sprite = null;
         if (stickTexture) {
-            sprite = new cc.Sprite(stickTexture, cc.rect(2, 2, 1, 1));
+            sprite = new cc.Sprite(stickTexture);
         } else {
             sprite = new cc.Sprite(inRes.blank_png);
         }
         Ltc.exNode(sprite).pos_(this.startX - 1, this.mountainHeight).addTo_(this).
-        anchor_(0.5, 0).show_(false).scale_(STICK_WIDTH, 1).z_(2);
+        anchor_(0.5, 0).show_(false).scale_(1, STICK_INIT_SCALEY).z_(2);
         this.stick = sprite;
-
-        this.midStick = Ltc.exNode(new cc.Sprite(stickTexture, cc.rect(2, 7, 1, 1))).addTo_(sprite).pos_(sprite.width / 2, sprite.height /2).anchor_(0.5, 0.5);
     },
 
     updateStep: function() {

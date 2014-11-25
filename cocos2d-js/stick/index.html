@@ -96,7 +96,7 @@
 </div>
 <script type="text/javascript">
     function resizeEvent() {
-        isLandscape = (window.innerWidth > window.innerHeight);
+        isLandscape = (window.orientation !== 0);
         var guide = document.getElementById("guide");
         if (isLandscape) {
             // 水平
