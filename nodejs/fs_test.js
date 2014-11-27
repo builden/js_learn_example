@@ -1,13 +1,20 @@
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 
 function main() {
     // removeFileTest();
-    travel('./', function(pathname) {
-      console.log(pathname);
-    });
+    // travel('./', function(pathname) {
+    //   console.log(pathname);
+    // });
+    // fs.copySync('./image_src/140.jpg', './image_src/140.jpg.bak');
 }
 
+/**
+ * 文件夹遍历
+ * @param  {[type]}   dir      [description]
+ * @param  {Function} callback [description]
+ * @return {[type]}            [description]
+ */
 function travel(dir, callback) {
     fs.readdirSync(dir).forEach(function (file) {
         var pathname = path.join(dir, file);

@@ -7,7 +7,11 @@ function main() {
  * @return {[type]} [description]
  */
 function replaceTest() {
-    console.log('test');
+    var str = "abc abc";
+    console.log(str.replace(/a/g, "d"));
+    console.log(str.replace(/A/ig, "d"));
+    console.log(str.replace(/A/ig, "d"));
+    console.log(str.replace(new RegExp("A", "ig"), "d"));
 }
 
 main();
