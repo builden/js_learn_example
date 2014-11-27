@@ -94,7 +94,7 @@ Ltc.exNode = function(node) {
     }
 
     /**
-     * 设置透明度
+     * 设置透明度(0是透明，255是不透明)
      * @param  {[type]} opacity [0 - 255]
      * @return {[type]}         [description]
      */

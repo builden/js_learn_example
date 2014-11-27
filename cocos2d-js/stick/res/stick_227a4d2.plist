@@ -192,13 +192,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>stick.png</string>
+            <string>stick_227a4d2.png</string>
             <key>size</key>
             <string>{1024,700}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:dac7c2a5ccdc6128e09ae483c4d1c9c4:8970596d958622400f36530edee35947:921d9da9489872de1eeff65d006b879e$</string>
             <key>textureFileName</key>
-            <string>stick.png</string>
+            <string>stick_227a4d2.png</string>
         </dict>
     </dict>
 </plist>

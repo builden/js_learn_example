@@ -222,14 +222,10 @@ var MainLayer = cc.Layer.extend({
 
     drawMountain: function(pos, width) {
         var sprite = null;
-        if (mountainTexture) {
-            sprite = new cc.Sprite(mountainTexture, cc.rect(2, 7, 1, 1));
-        } else {
-            sprite = new cc.Sprite(inRes.blank_png);
-        }
+        sprite = new cc.Sprite(inRes.blank_png);
         Ltc.exNode(sprite).pos_(pos, 0).
-        addTo_(this.playLayer).scale_(width, this.mountainHeight).
-        anchor_(0, 0);
+            addTo_(this.playLayer).scale_(width, this.mountainHeight).
+            anchor_(0, 0);
 
         return sprite;
     },

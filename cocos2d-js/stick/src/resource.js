@@ -1,7 +1,7 @@
 var res = {
     bg_jpg: "res/bg.jpg",
-    stick_plist: "res/stick.plist",
-    stick_png: "res/stick.png",
+    stick_plist: "res/stick_227a4d2.plist",
+    stick_png: "res/stick_227a4d2.png",
 
     dead_mp3: "res/sound/dead.mp3",
     fall_mp3: "res/sound/fall.mp3",
