@@ -10,6 +10,7 @@ var DataMgr = cc.Class.extend({
     isShowRank: false, // 是否显示排行榜
     isShowShareBtn: false, // 是否显示分享按钮
     isShowNewbieGuide: false, // 是否显示新手引导
+    isTest: false,
 
     ctor: function() {
         // this.highScore = parseInt(cc.sys.localStorage.getItem(HIGH_SCORE)) || 0;
@@ -23,6 +24,7 @@ var DataMgr = cc.Class.extend({
 
         // for test
         if (!Ltc.isEmpty(getQueryStringByName("test"))) {
+            this.isTest = true;
             console.log("is local test");
             SVR_URL_PRE = "http://localhost:9001/api/stick/info?";
         }

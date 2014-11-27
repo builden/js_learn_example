@@ -67,6 +67,12 @@ cc.game.onStart = function(){
     initMobile();
     loadStickTexture();
 
+    if (!dataMgr.isTest) {
+        var resPath = "http://star-cdn.zeusky.com/stick";
+        cc.loader.resPath = resPath;
+        cc.loader.audioPath = resPath;
+    }
+
     //load resources
     MyLoaderScene.preload(g_resources, function () {
         console.log("load succ");
