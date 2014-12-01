@@ -183,7 +183,8 @@ var MainLayer = cc.Layer.extend({
         Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 24)).pos_(panel.width / 2, panel.height - 240).addTo_(panel).color_(BLACK_COLOR);
         Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 274).addTo_(panel).color_(LIGHT_RED_COLOR);
 
-        if (dataMgr.canShowInviteOrShare()) {
+        var pf = getQZPlatform();
+        if (dataMgr.canShowInviteOrShare() && pf !== -1 && pf !== 3) {
             Ltc.sampleBtn(panel, inRes.share_btn_png, cc.p(panel.width / 2, 60), function() {
                 console.log("click share btn");
                 shareGame();

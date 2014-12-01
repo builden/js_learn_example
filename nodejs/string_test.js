@@ -1,5 +1,6 @@
 function main() {
-    replaceTest();
+    // replaceTest();
+    trimTest();
 }
 
 /**
@@ -12,6 +13,15 @@ function replaceTest() {
     console.log(str.replace(/A/ig, "d"));
     console.log(str.replace(/A/ig, "d"));
     console.log(str.replace(new RegExp("A", "ig"), "d"));
+}
+
+function trimTest() {
+    // var str = " ab cc d \n";
+    var str = " \n";
+    console.log("str:" + str);
+    console.log("str len:" + str.length);
+    console.log("str trimed:" + str.trim());
+    console.log("str trimed len:" + str.trim().length);
 }
 
 main();
