@@ -18,6 +18,7 @@
         "src/dataMgr.js",
         "src/LoaderScene.js",
         "src/utils/WebUtil.js",
-        "src/utils/WanbaUtil.js"
+        "src/utils/WanbaUtil.js",
+        "src/RankListLayer.js"
     ]
 }

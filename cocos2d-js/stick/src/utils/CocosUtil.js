@@ -235,6 +235,7 @@ Ltc.sampleBtn = function(parent, res, pos, cb) {
     menu.x = 0;
     menu.y = 0;
     parent.addChild(menu, 1);
+    return menu;
 };
 
 /**
@@ -336,26 +337,36 @@ var RepeatBgLayer = cc.Layer.extend({
     }
 });
 
+/**
+ * 循环滚动背景图片
+ * @param {[type]}  target      [description]
+ * @param {[type]}  bgRes       [description]
+ * @param {[type]}  speed       [description]
+ * @param {Boolean} isLandscape [description]
+ */
 Ltc.addRepeatBgLayer = function(target, bgRes, speed, isLandscape) {
     var layer = new RepeatBgLayer(bgRes, speed, isLandscape);
     target.addChild(layer);
     return layer;
 };
 
-// 精灵变灰函数
+/**
+ * 扩展Sprite方法，动态灰度图片
+ * @param  {[type]} filename [description]
+ * @return {[type]}          [description]
+ */
 cc.Sprite.createGraySprite=function(filename){
-
 //  得到纹理
     var texture = cc.textureCache.getTextureForKey(filename);
     if (!texture) {
         texture = cc.textureCache.addImage(filename);
-    } 
+    }
 
 //  判断运行的平台是不是浏览器
     var isHtml5 = (typeof document !== 'undefined');
 
     if (isHtml5) {
-        var canvas = document.createElement('canvas'); 
+        var canvas = document.createElement('canvas');
         var image = texture.getHtmlElementObj();
 
 //      将图片的高宽赋值给画布
@@ -405,23 +416,23 @@ cc.Sprite.createGraySprite=function(filename){
 //  使用shader方式实现图片变灰（适用于app和浏览器不支持canvas的情况）
     if(!cc.GLProgram.createWithByteArrays){
         cc.GLProgram.createWithByteArrays = function(vert, frag){
-            var shader = new cc.GLProgram();  
-            shader.initWithVertexShaderByteArray(vert, frag); 
-            shader.link();  
+            var shader = new cc.GLProgram();
+            shader.initWithVertexShaderByteArray(vert, frag);
+            shader.link();
             shader.updateUniforms();
             setTimeout(function(){
-                shader.link();  
-                shader.updateUniforms();                
+                shader.link();
+                shader.updateUniforms();
             }, 0);
             return shader;
         }
     }
 
-    var SHADER_POSITION_GRAY_FRAG = 
-        "varying vec4 v_fragmentColor;\n"+  
-        "varying vec2 v_texCoord;\n"+    
+    var SHADER_POSITION_GRAY_FRAG =
+        "varying vec4 v_fragmentColor;\n"+
+        "varying vec2 v_texCoord;\n"+
         (isHtml5? "uniform sampler2D CC_Texture0;\n":"")+
-        "void main()\n"+         
+        "void main()\n"+
         "{\n"+
         "    vec4 v_orColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);\n"+
         "    float gray = dot(v_orColor.rgb, vec3(0.299, 0.587, 0.114));\n"+
@@ -429,16 +440,16 @@ cc.Sprite.createGraySprite=function(filename){
         "}\n";
 
 
-    var SHADER_POSITION_GRAY_VERT = 
+    var SHADER_POSITION_GRAY_VERT =
         "attribute vec4 a_position;\n"+
         "attribute vec2 a_texCoord;\n"+
         "attribute vec4 a_color;\n"+
         "\n"+
         "varying vec4 v_fragmentColor;\n"+
         "varying vec2 v_texCoord;\n"+
-        "\n"+                               
+        "\n"+
         "void main()\n"+
-        "{\n"+                           
+        "{\n"+
         "gl_Position = "+ (isHtml5?"(CC_PMatrix * CC_MVMatrix)":"CC_PMatrix") + " * a_position;\n"+
         "v_fragmentColor = a_color;\n"+
         "v_texCoord = a_texCoord;\n"+
@@ -446,9 +457,9 @@ cc.Sprite.createGraySprite=function(filename){
 
     var sprite=new cc.Sprite(texture);
     var shader = cc.GLProgram.createWithByteArrays(SHADER_POSITION_GRAY_VERT, SHADER_POSITION_GRAY_FRAG);
-    shader.addAttribute(cc.ATTRIBUTE_NAME_POSITION, cc.VERTEX_ATTRIB_POSITION);  
-    shader.addAttribute(cc.ATTRIBUTE_NAME_COLOR, cc.VERTEX_ATTRIB_COLOR);  
-    shader.addAttribute(cc.ATTRIBUTE_NAME_TEX_COORD, cc.VERTEX_ATTRIB_TEX_COORDS);                
+    shader.addAttribute(cc.ATTRIBUTE_NAME_POSITION, cc.VERTEX_ATTRIB_POSITION);
+    shader.addAttribute(cc.ATTRIBUTE_NAME_COLOR, cc.VERTEX_ATTRIB_COLOR);
+    shader.addAttribute(cc.ATTRIBUTE_NAME_TEX_COORD, cc.VERTEX_ATTRIB_TEX_COORDS);
     sprite.setShaderProgram(shader);
 
     return sprite;

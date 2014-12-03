@@ -33,6 +33,7 @@ var MainLayer = cc.Layer.extend({
         // 1. super init first
         this._super();
         cc.spriteFrameCache.addSpriteFrames(res.stick_plist);
+        cc.spriteFrameCache.addSpriteFrames(res.stick_rank_plist);
 
         this.vRc = cc.visibleRect;
         console.log(cc.formatStr("left {%d, %d}, bottomRight {%d, %d}",
@@ -57,10 +58,15 @@ var MainLayer = cc.Layer.extend({
         this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
         this.drawStick();
 
-        this.showStartPanel();
+        // this.showStartPanel();
+        this.showRankLayer();
         return true;
     },
 
+    /**
+     * 显示开始面板
+     * @return {[type]} [description]
+     */
     showStartPanel: function() {
         var layer = new cc.Layer();
         this.addChild(layer);
@@ -78,6 +84,11 @@ var MainLayer = cc.Layer.extend({
             Ltc.playAudio(res.kick_mp3);
             this.startGame();
         }.bind(this, layer));
+    },
+
+    showRankLayer: function() {
+        var layer = new RankListLayer();
+        this.addChild(layer);
     },
 
     startGame: function() {

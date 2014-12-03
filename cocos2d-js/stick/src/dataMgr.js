@@ -1,6 +1,35 @@
 var HIGH_SCORE = "high_score";
 var SVR_URL_PRE = "http://203.195.202.83:9001/api/stick/info?";
 
+var NAME_TITLE = [
+    {score: 81, res:inRes.rank_01_png},
+    {score: 80, res:inRes.rank_02_png},
+    {score: 60, res:inRes.rank_03_png},
+    {score: 40, res:inRes.rank_04_png},
+    {score: 20, res:inRes.rank_05_png},
+    {score: 10, res:inRes.rank_06_png},
+    {score: 5, res:inRes.rank_07_png},
+    {score: 0, res:inRes.rank_08_png}
+];
+
+function getNameTitleResByScore(score) {
+    if (score >= 80) {
+        return NAME_TITLE[1].res;
+    } else if (score >= 60) {
+        return NAME_TITLE[2].res;
+    } else if (score >= 40) {
+        return NAME_TITLE[3].res;
+    } else if (score >= 20) {
+        return NAME_TITLE[4].res;
+    } else if (score >= 10) {
+        return NAME_TITLE[5].res;
+    } else if (score >= 5) {
+        return NAME_TITLE[6].res;
+    } else {
+        return NAME_TITLE[7].res;
+    }
+}
+
 var DataMgr = cc.Class.extend({
     openid: null,
     openkey: null,
@@ -11,6 +40,8 @@ var DataMgr = cc.Class.extend({
     isShowShareBtn: false, // 是否显示分享按钮
     isShowNewbieGuide: false, // 是否显示新手引导
     isTest: false,
+    nick: null,
+    faceurl: null,
 
     ctor: function() {
         // this.highScore = parseInt(cc.sys.localStorage.getItem(HIGH_SCORE)) || 0;

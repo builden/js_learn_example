@@ -3,6 +3,9 @@ var res = {
     stick_plist: "res/stick_227a4d2.plist",
     stick_png: "res/stick_227a4d2.png",
 
+    stick_rank_plist: "res/stick_rank_e0cebab.plist",
+    stick_rank_png: "res/stick_rank_e0cebab.png",
+
     dead_mp3: "res/sound/dead.mp3",
     fall_mp3: "res/sound/fall.mp3",
     kick_mp3: "res/sound/kick.mp3",
@@ -21,7 +24,24 @@ var inRes = {
     score_bg_png: "#score_bg.png",
     title_png: "#title.png",
     play_png: "#play.png",
-    help_png: "#help.png"
+    help_png: "#help.png",
+
+    rank_01_png: "#rank/01.png",
+    rank_02_png: "#rank/02.png",
+    rank_03_png: "#rank/03.png",
+    rank_04_png: "#rank/04.png",
+    rank_05_png: "#rank/05.png",
+    rank_06_png: "#rank/06.png",
+    rank_07_png: "#rank/07.png",
+    rank_08_png: "#rank/08.png",
+    rank_bg_png: "#rank/bg.png",
+    rank_first_png: "#rank/first.png",
+    rank_second_png: "#rank/second.png",
+    rank_third_png: "#rank/third.png",
+    rank_face_bg_png: "#rank/face_bg.png",
+    rank_other_bg_png: "#rank/other_bg.png",
+    rank_self_bg_png: "#rank/self_bg.png",
+    rank_self_logo_png: "#rank/self_logo.png"
 };
 
 var aniRes = {
