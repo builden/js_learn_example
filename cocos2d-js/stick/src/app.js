@@ -11,7 +11,7 @@ var MainLayer = cc.Layer.extend({
     mountainHeight: 0, // 山体高度
     startX: 120, // 起点位置
     maxMountainWidth: 160, // 最大山体宽度
-    minMountainWidth: 12, // 最小山体宽度
+    minMountainWidth: 16, // 最小山体宽度
     runner: null, // 猴子sprite
     stick: null, // 棍子sprite
     longerAction: null, // 变长的Action
@@ -58,8 +58,7 @@ var MainLayer = cc.Layer.extend({
         this.mountain2 = this.drawMountain(this.startX + this.distance, this.mountainWidth);
         this.drawStick();
 
-        // this.showStartPanel();
-        this.showRankLayer();
+        this.showStartPanel();
         return true;
     },
 
@@ -86,9 +85,13 @@ var MainLayer = cc.Layer.extend({
         }.bind(this, layer));
     },
 
-    showRankLayer: function() {
-        var layer = new RankListLayer();
-        this.addChild(layer);
+    showRankLayer: function(parent, isNew) {
+        var layer = new RankListLayer(isNew || false, function() {
+            arguments[0].removeFromParent();
+            Ltc.playAudio(res.kick_mp3);
+            this.replayGame();
+        }.bind(this, parent));
+        parent.addChild(layer);
     },
 
     startGame: function() {
@@ -180,19 +183,33 @@ var MainLayer = cc.Layer.extend({
         this.stick.runAction(cc.sequence(cc.rotateBy(aniTime, 90).easing(cc.easeIn(3.0)), func));
     },
 
+    // 显示结算面板
     showSettlementPanel: function() {
+        dataMgr.gameTimes++;
         this.stepBgSprite.setVisible(false);
         var layer = Ltc.addMaskLayer(this);
+
+        var isNew = dataMgr.highScore < this.step;
+        dataMgr.tryUpdateScore(this.step);
+        if ((isNew || dataMgr.gameTimes % 5 === 0) && dataMgr.isShowRank) {
+            this.showRankLayer(layer, isNew);
+            return;
+        }
+
         var panel = new cc.Sprite(inRes.settlement_bg_png);
         Ltc.exNode(panel).pos_(this.vRc.center.x, this.vRc.center.y + 80).addTo_(layer);
-        Ltc.exNode(new cc.LabelTTF("Game Over", "Arial", 46)).pos_(panel.width / 2, panel.height - 80).addTo_(panel).color_(LIGHT_RED_COLOR);
+        var y = panel.height - 60;
+        var x = panel.width / 2;
+        Ltc.exNode(new cc.LabelTTF("Game Over", "Arial", 46)).pos_(x, y).addTo_(panel).color_(LIGHT_RED_COLOR);
 
-        Ltc.exNode(new cc.LabelTTF("分数", "Arial", 24)).pos_(panel.width / 2, panel.height - 160).addTo_(panel).color_(BLACK_COLOR);
-        Ltc.exNode(new cc.LabelTTF(this.step + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 194).addTo_(panel).color_(LIGHT_RED_COLOR);
-        dataMgr.tryUpdateScore(this.step);
+        Ltc.exNode(new cc.LabelTTF("分数", "Arial", 26)).pos_(x, y - 60).addTo_(panel).color_(BLACK_COLOR);
+        Ltc.exNode(new cc.LabelTTF(this.step + "", "Arial", 42)).pos_(x, y - 94).addTo_(panel).color_(LIGHT_RED_COLOR);
 
-        Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 24)).pos_(panel.width / 2, panel.height - 240).addTo_(panel).color_(BLACK_COLOR);
-        Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 38)).pos_(panel.width / 2, panel.height - 274).addTo_(panel).color_(LIGHT_RED_COLOR);
+        Ltc.exNode(new cc.LabelTTF("最佳", "Arial", 26)).pos_(x, y - 170).addTo_(panel).color_(BLACK_COLOR);
+        Ltc.exNode(new cc.LabelTTF(dataMgr.highScore + "", "Arial", 42)).pos_(x, y - 204).addTo_(panel).color_(LIGHT_RED_COLOR);
+
+        Ltc.exNode(new cc.Sprite(getNameTitleResByScore(this.step, dataMgr.isNo1()))).pos_(x, y - 128).addTo_(panel);
+        Ltc.exNode(new cc.Sprite(getNameTitleResByScore(dataMgr.highScore, dataMgr.isNo1()))).pos_(x, y - 238).addTo_(panel);
 
         var pf = getQZPlatform();
         if (dataMgr.canShowInviteOrShare() && pf !== -1 && pf !== 3) {
@@ -210,7 +227,9 @@ var MainLayer = cc.Layer.extend({
         if (dataMgr.isShowRank) {
             Ltc.sampleBtn(layer, inRes.rank_btn_png, cc.p(layer.width / 2 - 60, layer.height / 2 - btnPosYOffset), function() {
                 console.log("click rank btn");
-                arguments[0].removeFromParent();
+                // arguments[0].removeFromParent();
+                layer.removeAllChildren();
+                this.showRankLayer(layer);
             }.bind(this, layer));
             replayBtnPosXOffset = 60;
         }
@@ -236,8 +255,8 @@ var MainLayer = cc.Layer.extend({
         var sprite = null;
         sprite = new cc.Sprite(inRes.blank_png);
         Ltc.exNode(sprite).pos_(pos, 0).
-            addTo_(this.playLayer).scale_(width, this.mountainHeight).
-            anchor_(0, 0);
+        addTo_(this.playLayer).scale_(width, this.mountainHeight).
+        anchor_(0, 0);
 
         return sprite;
     },

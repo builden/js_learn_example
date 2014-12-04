@@ -3,8 +3,8 @@ var res = {
     stick_plist: "res/stick_227a4d2.plist",
     stick_png: "res/stick_227a4d2.png",
 
-    stick_rank_plist: "res/stick_rank_e0cebab.plist",
-    stick_rank_png: "res/stick_rank_e0cebab.png",
+    stick_rank_plist: "res/stick_rank_2d93c43.plist",
+    stick_rank_png: "res/stick_rank_2d93c43.png",
 
     dead_mp3: "res/sound/dead.mp3",
     fall_mp3: "res/sound/fall.mp3",
@@ -41,7 +41,8 @@ var inRes = {
     rank_face_bg_png: "#rank/face_bg.png",
     rank_other_bg_png: "#rank/other_bg.png",
     rank_self_bg_png: "#rank/self_bg.png",
-    rank_self_logo_png: "#rank/self_logo.png"
+    rank_self_logo_png: "#rank/self_logo.png",
+    rank_new_png: "#rank/new.png"
 };
 
 var aniRes = {
