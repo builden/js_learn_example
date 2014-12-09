@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/builden/js_learn_example",
   "dependencies": {
+    "cheerio": "^0.18.0",
     "cors": "^2.5.2",
     "express": "^4.10.4",
     "gm": "^1.17.0",
