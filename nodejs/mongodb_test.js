@@ -1,5 +1,34 @@
 var mongoose = require('mongoose');
+var async = require('async');
+var _ = require('lodash');
+var moment = require('moment');
 
+var dbHost = 'mongdodb://localhost/forTest';
+var testSchema = {
+    id: {type: Number, unique: true},
+    createTime: {type: Date, default: Date.now}
+}
+
+function main() {
+    var testModel = mongoose.model('ForTest', testSchema);
+
+    // insert
+    var info = {
+        id: _.random(10)
+    };
+
+    testModel.Create(info, function(err, doc) {
+        if (err) {
+            console.log('insert error ' + err);
+        } else {
+            console.log('insert rst ' + doc);
+        }
+    })
+}
+
+main();
+
+/*
 mongoose.connect('mongodb://203.195.202.83/gameserver-dev', {db: {safe:true}});
 
 var GameSchema = new mongoose.Schema({
@@ -35,4 +64,4 @@ promise.then(
     function(err) {
         console.log(err);
     }
-)
+)*/
