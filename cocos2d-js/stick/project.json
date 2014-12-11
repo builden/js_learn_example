@@ -19,6 +19,7 @@
         "src/LoaderScene.js",
         "src/utils/WebUtil.js",
         "src/utils/WanbaUtil.js",
-        "src/RankListLayer.js"
+        "src/RankListLayer.js",
+        "src/ShowStarAd.js"
     ]
 }

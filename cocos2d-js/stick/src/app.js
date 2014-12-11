@@ -78,10 +78,14 @@ var MainLayer = cc.Layer.extend({
             }.bind(this, layer));
         }
 
+        var self = this;
         Ltc.sampleBtn(layer, inRes.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
             layer.removeFromParent();
             Ltc.playAudio(res.kick_mp3);
-            this.startGame();
+            // this.startGame();
+            tryShowStarAd(this, function() {
+                self.startGame();
+            });
         }.bind(this, layer));
     },
 

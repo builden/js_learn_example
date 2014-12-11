@@ -62,10 +62,10 @@ var DataMgr = cc.Class.extend({
     nick: "",
     faceurl: null,
     worldRank: null,
-    gameTimes: 0,   // 对局数
+    gameTimes: 0, // 对局数
+    isOffline: false,
 
     ctor: function() {
-        // this.highScore = parseInt(cc.sys.localStorage.getItem(HIGH_SCORE)) || 0;
         this.init();
     },
 
@@ -83,6 +83,11 @@ var DataMgr = cc.Class.extend({
 
         this._showAd(true);
         this._login();
+        this._setResUrl();
+
+        if (this.isOffline) {
+            this.highScore = parseInt(cc.sys.localStorage.getItem(HIGH_SCORE)) || 0;
+        }
     },
 
     _login: function() {
@@ -120,14 +125,18 @@ var DataMgr = cc.Class.extend({
                 }
             }.bind(this));
         } else {
-            console.error("have not login, openid is null");
+            console.log("have not login, openid is null");
+            this.isOffline = true;
         }
     },
 
     tryUpdateScore: function(score) {
         if (score > this.highScore) {
             this.highScore = score;
-            // cc.sys.localStorage.setItem(HIGH_SCORE, score);
+
+            if (this.isOffline) {
+                cc.sys.localStorage.setItem(HIGH_SCORE, score);
+            }
 
             // 是否高于世界排行最后一名
             if (this.worldRank) {
@@ -221,6 +230,14 @@ var DataMgr = cc.Class.extend({
             return true;
         }
         return false;
+    },
+
+    _setResUrl: function() {
+        if (!this.isOffline && !this.isTest) {
+            var resPath = "http://star-cdn.zeusky.com/stick";
+            cc.loader.resPath = resPath;
+            cc.loader.audioPath = resPath;
+        }
     }
 });
 
