@@ -211,6 +211,7 @@ Ltc.stopAllAudio = function() {
 
 var SpriteBtn = cc.Sprite.extend({
     cb: null,
+    enableZoom: true,
     ctor: function(fileName, rect, rotated) {
         this._super(fileName, rect, rotated);
     },
@@ -222,11 +223,14 @@ var SpriteBtn = cc.Sprite.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: function(touch, event) {
-                if (!this.isTouchInside(touch))
+                if (!this.isTouchInside(touch)) {
                     return false;
+                }
+                if (this.enableZoom) this.scale = 1.1;
                 return true;
             }.bind(this),
             onTouchEnded: function(touch, event) {
+                if (this.enableZoom) this.scale = 1.0;
                 if (this.isTouchInside(touch)) {
                     if (this.cb) this.cb();
                 }
@@ -254,44 +258,20 @@ var SpriteBtn = cc.Sprite.extend({
         var touchLocation = touch.getLocation(); // Get the touch position
         touchLocation = this.getParent().convertToNodeSpace(touchLocation);
         return cc.rectContainsPoint(this.getBoundingBox(), touchLocation);
+    },
+
+    enableTouchZoom: function(canZoom) {
+        this.enableZoom = canZoom;
     }
 });
 
-Ltc.samBtn = function(parent, res, pos, cb) {
+Ltc.sampleBtn = function(parent, res, pos, cb) {
     var btn = new SpriteBtn(res);
     btn.setPosition(pos);
     btn.setClickCallback(cb);
     parent.addChild(btn);
     return btn;
 }
-
-/**
- * 使用Menu创建简单的按钮
- * @param  {[type]}   parent [description]
- * @param  {String}   res    [description]
- * @param  {cc.p}     pos    [description]
- * @param  {Function} cb     [description]
- * @return {[type]}          [description]
- */
-Ltc.sampleBtn = function(parent, res, pos, cb) {
-    var shareBtn = new cc.MenuItemSprite(
-        new cc.Sprite(res),
-        Ltc.exNode(new cc.Sprite(res)).scale_(1.1).anchor_(0.5, 0.5),
-        function() {
-            if (cb) cb();
-        }, this);
-    Ltc.exNode(shareBtn).pos_(pos);
-    shareBtn._normalImage.setPosition(shareBtn.width / 2, shareBtn.height / 2);
-    shareBtn._normalImage.setAnchorPoint(0.5, 0.5);
-    shareBtn._selectedImage.setPosition(shareBtn.width / 2, shareBtn.height / 2);
-    shareBtn._selectedImage.setAnchorPoint(0.5, 0.5);
-
-    var menu = new cc.Menu(shareBtn);
-    menu.x = 0;
-    menu.y = 0;
-    parent.addChild(menu, 1);
-    return menu;
-};
 
 /**
  * 异步加载图片

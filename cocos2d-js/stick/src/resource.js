@@ -6,9 +6,6 @@ var res = {
     stick_rank_plist: "res/stick_rank_2d93c43.plist",
     stick_rank_png: "res/stick_rank_2d93c43.png",
 
-    starAd_jpg: "res/ad.jpg",
-    close_png: "res/close.png",
-
     dead_mp3: "res/sound/dead.mp3",
     fall_mp3: "res/sound/fall.mp3",
     kick_mp3: "res/sound/kick.mp3",

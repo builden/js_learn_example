@@ -63,7 +63,7 @@ var DataMgr = cc.Class.extend({
     faceurl: null,
     worldRank: null,
     gameTimes: 0, // 对局数
-    isOffline: false,
+    isOffline: false,   // 是否是离线
 
     ctor: function() {
         this.init();

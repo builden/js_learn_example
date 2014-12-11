@@ -59,6 +59,8 @@ var MainLayer = cc.Layer.extend({
         this.drawStick();
 
         this.showStartPanel();
+        if (dataMgr.isOffline)
+            initStarAd();
         return true;
     },
 
