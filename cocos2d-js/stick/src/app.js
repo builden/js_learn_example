@@ -84,10 +84,7 @@ var MainLayer = cc.Layer.extend({
         Ltc.sampleBtn(layer, inRes.play_png, cc.p(this.vRc.center.x, this.vRc.center.y), function() {
             layer.removeFromParent();
             Ltc.playAudio(res.kick_mp3);
-            // this.startGame();
-            tryShowStarAd(this, function() {
-                self.startGame();
-            });
+            this.startGame();
         }.bind(this, layer));
     },
 
@@ -176,7 +173,16 @@ var MainLayer = cc.Layer.extend({
         var func = cc.callFunc(function() {
             var gameOverFunc = cc.callFunc(function() {
                 this.actionRunning = false;
-                this.showSettlementPanel();
+
+                dataMgr.gameTimes++;
+                if (dataMgr.isOffline && dataMgr.gameTimes % 5 === 0) {
+                    tryShowStarAd(this, function() {
+                        this.showSettlementPanel();
+                    }.bind(this));
+                } else {
+                    this.showSettlementPanel();
+                }
+
             }, this);
             var moveAct1 = cc.moveBy(0.1, 0, 5);
             var moveAct2 = cc.moveBy(0.1, 0, 5);
@@ -191,7 +197,7 @@ var MainLayer = cc.Layer.extend({
 
     // 显示结算面板
     showSettlementPanel: function() {
-        dataMgr.gameTimes++;
+
         this.stepBgSprite.setVisible(false);
         var layer = Ltc.addMaskLayer(this);
 

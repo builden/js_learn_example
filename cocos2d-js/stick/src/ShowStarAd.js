@@ -2,8 +2,8 @@
  * 显示消星星独立版本广告
  * @Author: Bill
  * @Date:   2014-12-11 17:26:31
- * @Last Modified by:   dengtao
- * @Last Modified time: 2014-12-12 00:07:46
+ * @Last Modified by:   Bill
+ * @Last Modified time: 2014-12-12 10:08:14
  */
 
 'use strict';
@@ -47,7 +47,7 @@ function tryShowStarAd(target, cb) {
         window.open("http://a.app.qq.com/o/simple.jsp?pkgname=com.zeusky.star");
     });
 
-    var close = Ltc.sampleBtn(layer, closeTexture, cc.p(x + ad.width / 2, y + ad.height / 2), function() {
+    var close = Ltc.sampleBtn(layer, closeTexture, cc.p(x + ad.width / 2 - 6, y + ad.height / 2 - 6), function() {
         console.log('click close btn');
         layer.removeFromParent();
         cb();
