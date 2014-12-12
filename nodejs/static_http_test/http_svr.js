@@ -89,7 +89,7 @@ var server = http.createServer(function(request, response) {
                             }
                         } else {
                             var raw = fs.createReadStream(realPath);
-                            compressHandle(raw, 200, "Ok");
+                            compressHandle(raw, 200, "OK");
                         }
                     }
                 }

@@ -302,7 +302,6 @@ Ltc.loadImg = function(src, cb) {
  * @note 中途对返回多次xhr.status
  */
 Ltc.loadTxt = function(url, cb) {
-    var that = this;
     var xhr = cc.loader.getXMLHttpRequest();
     xhr.open("GET", url, true);
 
@@ -316,6 +315,30 @@ Ltc.loadTxt = function(url, cb) {
     };
     xhr.send();
 };
+
+/**
+ * 通过Post的方式提交数据
+ * @param  {[type]}   url  [description]
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   [description]
+ * @return {[type]}        [description]
+ */
+Ltc.urlPost = function(url, data, cb) {
+    var xhr = cc.loader.getXMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded"); //告诉服务器发送的是文本
+    // xhr.setRequestHeader("Content-Type", "text/xml"); //告诉服务器发送的是一个xml文件
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status <= 207)) {
+            var httpStatus = xhr.statusText;
+            cb(null, xhr.responseText);
+        } else {
+            cb(xhr.status);
+        }
+    };
+    xhr.send(data);
+}
 
 // 循环背景层
 var RepeatBgLayer = cc.Layer.extend({

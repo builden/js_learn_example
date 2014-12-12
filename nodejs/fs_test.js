@@ -1,5 +1,6 @@
 var fs = require('fs-extra');
 var path = require('path');
+var moment = require('moment');
 
 function main() {
     // removeFileTest();
@@ -7,6 +8,7 @@ function main() {
     //   console.log(pathname);
     // });
     // fs.copySync('./image_src/140.jpg', './image_src/140.jpg.bak');
+    statTest();
 }
 
 /**
@@ -69,6 +71,23 @@ function dirFilesTest() {
  */
 function removeFileTest() {
     fs.unlinkSync('./image_dst/zz');
+}
+
+function statTest() {
+    // var file = './mail.js';
+    // var file = 'xxx.df';
+    var file = 'image_dst';
+    fs.stat(file, function(err, stats) {
+        if (err) {
+            console.log('file not exist: ' + err);
+        } else {
+            if (stats.isDirectory()) {
+                console.log('isDirectory');
+            } else {
+                console.log('lastmodifytime is ' + moment(stats.mtime).format('YYYY-MM-DD HH:mm:ss'));
+            }
+        }
+    });
 }
 
 main();
