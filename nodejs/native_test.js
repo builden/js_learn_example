@@ -1,24 +1,69 @@
-var UNIT_KIND = {
-    NULL: null,
-    NORMAL0: "normal0",
-    NORMAL1: "normal1",
-    NORMAL2: "normal2",
-    NORMAL3: "normal3",
-    NORMAL4: "normal4",
-    COLOR: "color",
-    CCORE: "ccore",
-    STONED: "stoned",
-    STONER: "stoner",
-    THIEF: "thief",
-    PET1: "pet1",
-    PET2: "pet2",
-    PET3: "pet3",
-    KEY: "key"
-};
+/**
+ * @Author: Bill
+ * @Date:   2014-11-11 11:20:34
+ * @Last Modified by:   Bill
+ * @Last Modified time: 2014-12-13 17:43:33
+ */
 
-console.log(UNIT_KIND);
-var UNIT_TYPE = {
-};
-UNIT_TYPE[UNIT_KIND.NORMAL0] = {res: "xxx"};
+'use strict';
 
-console.log(UNIT_TYPE);
+function main() {
+    urlEncodeTest();
+}
+
+// URI编码转化
+function urlEncodeTest() {
+    console.log(encodeURI("http://www.w3school.com.cn/My first/汉字"));
+    //=> http://www.w3school.com.cn/My%20first/%E6%B1%89%E5%AD%97
+    console.log(encodeURI(',/?:@&=+$#'));
+    //=> ,/?:@&=+$#
+
+    console.log(decodeURI('http://www.w3school.com.cn/My%20first/%E6%B1%89%E5%AD%97'));
+    //=> http://www.w3school.com.cn/My first/汉字
+    console.log(decodeURI(',/?:@&=+$#'));
+    //=> ,/?:@&=+$#
+
+    console.log(encodeURIComponent("http://www.w3school.com.cn/My first/汉字"));
+    //=> http%3A%2F%2Fwww.w3school.com.cn%2FMy%20first%2F%E6%B1%89%E5%AD%97
+    console.log(encodeURIComponent(',/?:@&=+$#'));
+    //=> %2C%2F%3F%3A%40%26%3D%2B%24%23
+
+    console.log(decodeURIComponent("http%3A%2F%2Fwww.w3school.com.cn%2FMy%20first%2F%E6%B1%89%E5%AD%97"));
+    //=> http://www.w3school.com.cn/My first/汉字
+    console.log(decodeURIComponent('%2C%2F%3F%3A%40%26%3D%2B%24%23'));
+    //=> ,/?:@&=+$#
+}
+
+/**
+ * 模拟
+ * @return {[type]} [description]
+ */
+function objNestTest() {
+    var UNIT_KIND = {
+        NULL: null,
+        NORMAL0: "normal0",
+        NORMAL1: "normal1",
+        NORMAL2: "normal2",
+        NORMAL3: "normal3",
+        NORMAL4: "normal4",
+        COLOR: "color",
+        CCORE: "ccore",
+        STONED: "stoned",
+        STONER: "stoner",
+        THIEF: "thief",
+        PET1: "pet1",
+        PET2: "pet2",
+        PET3: "pet3",
+        KEY: "key"
+    };
+
+    console.log(UNIT_KIND);
+    var UNIT_TYPE = {};
+    UNIT_TYPE[UNIT_KIND.NORMAL0] = {
+        res: "xxx"
+    };
+
+    console.log(UNIT_TYPE);
+}
+
+main();
