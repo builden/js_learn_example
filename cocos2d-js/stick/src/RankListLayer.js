@@ -42,8 +42,14 @@ var RankListLayer = cc.Layer.extend({
         Ltc.exNode(new cc.Sprite(inRes.rank_self_logo_png)).pos_(30, cellBg.height / 2).addTo_(cellBg);
         Ltc.exNode(new cc.Sprite(inRes.rank_face_bg_png)).pos_(100, cellBg.height / 2).addTo_(cellBg).z_(1);
 
+        // Ltc.loadImg(dataMgr.faceurl, function(texture) {
+        //     Ltc.exNode(new cc.Sprite(texture)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
+        // });
+
+        var face = Ltc.exNode(new cc.Sprite(inRes.rank_default_face_jpg)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
         Ltc.loadImg(dataMgr.faceurl, function(texture) {
-            Ltc.exNode(new cc.Sprite(texture)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
+            face.setTexture(texture);
+            face.setTextureRect(cc.rect(0, 0, texture.width, texture.height));
         });
 
         var name = Ltc.exNode(new cc.LabelTTF(dataMgr.nick, "Arial", 20)).pos_(150, 60).addTo_(cellBg).anchor_(0, 0.5).color_(cc.color(50, 50, 50));
@@ -123,8 +129,11 @@ var RankListLayer = cc.Layer.extend({
             Ltc.exNode(new cc.LabelTTF(idx + 1, "Arial", 34)).pos_(30, cellBg.height / 2).addTo_(cellBg).color_(cc.color(229, 67, 85));
         }
         Ltc.exNode(new cc.Sprite(inRes.rank_face_bg_png)).pos_(100, cellBg.height / 2).addTo_(cellBg).z_(1);
+
+        var face = Ltc.exNode(new cc.Sprite(inRes.rank_default_face_jpg)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
         Ltc.loadImg(useInfo.faceurl, function(texture) {
-            Ltc.exNode(new cc.Sprite(texture)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
+            face.setTexture(texture);
+            face.setTextureRect(cc.rect(0, 0, texture.width, texture.height));
         });
 
         var name = Ltc.exNode(new cc.LabelTTF(useInfo.nick, "Arial", 20)).pos_(150, 60).addTo_(cellBg).anchor_(0, 0.5).color_(cc.color(40, 40, 40));
