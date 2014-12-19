@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-05 15:16:20
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-05 18:25:28
+ * @Last Modified time: 2014-12-19 18:59:31
  * @note https://github.com/caolan/async/blob/master/README.md
  */
 
@@ -17,7 +17,143 @@ function main() {
     // filterTest();
     // reduceTest();
     // detectTest();
-    sortByTest();
+    // sortByTest();
+    // parallerTest(); // 并行执行，result顺序是task申明的顺序
+    // seriesTest(); // 串行执行
+    // waterfallTest(); // 按顺序执行，每一个函数产生的值都将传给下一个
+    autoTest();
+}
+
+/**
+ * [parallerTest description]
+ * @return {[type]} [description]
+ * enter func1
+ * enter func2
+ * callback func2
+ * callback func1
+ */
+function parallerTest() {
+    async.parallel([
+            function(callback) {
+                console.log('enter func1');
+                setTimeout(function() {
+                    console.log('callback func1');
+                    callback(null, 'one');
+                }, 200);
+            },
+            function(callback) {
+                console.log('enter func2');
+                setTimeout(function() {
+                    console.log('callback func2');
+                    callback(null, 'two');
+                }, 100);
+            }
+        ],
+        // optional callback
+        function(err, results) {
+            console.log(err);
+            console.log(results);
+            // the results array will equal ['one','two'] even though
+            // the second function had a shorter timeout.
+        });
+}
+
+/**
+ * [seriesTest description]
+ * @return {[type]} [description]
+ * enter func1
+ * callback func1
+ * enter func2
+ * callback func2
+ */
+function seriesTest() {
+    async.series({
+            one: function(callback) {
+                console.log('enter func1');
+                setTimeout(function() {
+                    console.log('callback func1');
+                    callback(null, 1);
+                }, 200);
+            },
+            two: function(callback) {
+                console.log('enter func2');
+                setTimeout(function() {
+                    console.log('callback func2');
+                    callback(null, 2);
+                }, 100);
+            }
+        },
+        function(err, results) {
+            console.log(err);
+            console.log(results);
+            // results is now equal to: {one: 1, two: 2}
+        });
+}
+
+/**
+ * 瀑布流，下一个函数执行依赖上一个函数的结果
+ * @return {[type]} [description]
+ */
+function waterfallTest() {
+    async.waterfall([
+        function(callback) {
+            callback(null, 'one', 'two');
+        },
+        function(arg1, arg2, callback) {
+            // arg1 now equals 'one' and arg2 now equals 'two'
+            callback(null, 'three');
+        },
+        function(arg1, callback) {
+            // arg1 now equals 'three'
+            callback(null, 'done');
+        }
+    ], function(err, result) {
+        console.log(err);
+        console.log(result);
+        // result now equals 'done'
+    });
+}
+
+/**
+ * 综合了paraller和series
+ * @return {[type]} [description]
+ *
+ * get_data和make_folder并行
+ * write_file依赖前两个函数执行完，并可以得到前两个函数的结果
+ * email_link依赖write_file执行完
+ */
+function autoTest() {
+    async.auto({
+        get_data: function(callback) {
+            console.log('in get_data');
+            // async code to get some data
+            callback(null, 'data', 'converted to array');
+        },
+        make_folder: function(callback) {
+            console.log('in make_folder');
+            // async code to create a directory to store a file in
+            // this is run at the same time as getting the data
+            callback(null, 'folder');
+        },
+        write_file: ['get_data', 'make_folder', function(callback, results) {
+            console.log('in write_file', JSON.stringify(results));
+            // once there is some data and the directory exists,
+            // write the data to a file in the directory
+            callback(null, 'filename');
+        }],
+        email_link: ['write_file', function(callback, results) {
+            console.log('in email_link', JSON.stringify(results));
+            // once the file is written let's email a link to it...
+            // results.write_file contains the filename returned by write_file.
+            callback(null, {
+                'file': results.write_file,
+                'email': 'user@example.com'
+            });
+        }]
+    }, function(err, results) {
+        console.log('err = ', err);
+        console.log('results = ', results);
+    });
 }
 
 var arr = [{
