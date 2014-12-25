@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-17 16:14:48
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-18 17:45:23
+ * @Last Modified time: 2014-12-25 10:03:04
  */
 
 'use strict';
@@ -17,7 +17,9 @@ function main() {
     // rangeTest();
     // removeTest();
     // containsTest();
-    forEachTest();
+    // forEachTest();
+    // assignTest();
+    groupByTest();
 }
 
 function mapTest() {
@@ -126,6 +128,18 @@ function forEachTest() {
     _.forEach(arr, function(v) {
         console.log(JSON.stringify(v));
     });
+}
+
+function assignTest() {
+    console.log(_.assign({ 'name': 'fred' }, { 'employer': 'slate' }));
+    //=> { 'name': 'fred', 'employer': 'slate' }
+}
+
+function groupByTest() {
+    var arr = [{x:1, y:1}, {x:2, y:2}, {x:1, y:2}, {x:2, y:3}, {x:3, y:2}];
+    console.log(_.groupBy(arr, function(item) {
+        return 'item' + item.y;
+    }));
 }
 
 main();

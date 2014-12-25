@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-05 15:16:20
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-19 18:59:31
+ * @Last Modified time: 2014-12-24 15:42:46
  * @note https://github.com/caolan/async/blob/master/README.md
  */
 
@@ -21,7 +21,8 @@ function main() {
     // parallerTest(); // 并行执行，result顺序是task申明的顺序
     // seriesTest(); // 串行执行
     // waterfallTest(); // 按顺序执行，每一个函数产生的值都将传给下一个
-    autoTest();
+    // autoTest();
+    mapLimitTest();
 }
 
 /**
@@ -153,6 +154,26 @@ function autoTest() {
     }, function(err, results) {
         console.log('err = ', err);
         console.log('results = ', results);
+    });
+}
+
+function func(item, cb) {
+    console.log('enter func ' + item);
+    setTimeout(function() {
+        console.log('cb func ' + item);
+        if (item === 2) cb(true, item);
+        else
+        cb(null, item);
+    }, 10 * item);
+}
+function mapLimitTest() {
+    async.mapLimit([5, 2, 3, 1], 1, func, function(err, results) {
+        if (err) {
+            console.log('err: ' + err);
+            console.log('results: ' + results);
+        } else {
+            console.log('results: ' + results);
+        }
     });
 }
 

@@ -2,13 +2,14 @@
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-13 17:43:33
+ * @Last Modified time: 2014-12-23 18:49:58
  */
 
 'use strict';
+var _ = require('lodash');
 
 function main() {
-    urlEncodeTest();
+    // urlEncodeTest();
 }
 
 // URI编码转化
