@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-23 18:49:58
+ * @Last Modified time: 2014-12-26 11:41:36
  */
 
 'use strict';
@@ -10,6 +10,12 @@ var _ = require('lodash');
 
 function main() {
     // urlEncodeTest();
+    globalTest();
+}
+
+function globalTest() {
+    console.log('__dirname: ' + __dirname);
+    console.log('__filename: ' + __filename);
 }
 
 // URI编码转化

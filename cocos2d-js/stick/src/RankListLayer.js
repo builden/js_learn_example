@@ -47,7 +47,7 @@ var RankListLayer = cc.Layer.extend({
         // });
 
         var face = Ltc.exNode(new cc.Sprite(inRes.rank_default_face_jpg)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
-        Ltc.loadImg(dataMgr.faceurl, function(texture) {
+        Ltc.loadImg(dataMgr.faceurl, true, function(texture) {
             face.setTexture(texture);
             face.setTextureRect(cc.rect(0, 0, texture.width, texture.height));
         });
@@ -131,7 +131,7 @@ var RankListLayer = cc.Layer.extend({
         Ltc.exNode(new cc.Sprite(inRes.rank_face_bg_png)).pos_(100, cellBg.height / 2).addTo_(cellBg).z_(1);
 
         var face = Ltc.exNode(new cc.Sprite(inRes.rank_default_face_jpg)).pos_(100, cellBg.height / 2).addTo_(cellBg).scale_(1.3);
-        Ltc.loadImg(useInfo.faceurl, function(texture) {
+        Ltc.loadImg(useInfo.faceurl, true, function(texture) {
             face.setTexture(texture);
             face.setTextureRect(cc.rect(0, 0, texture.width, texture.height));
         });

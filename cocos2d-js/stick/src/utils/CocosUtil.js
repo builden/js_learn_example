@@ -276,12 +276,19 @@ Ltc.sampleBtn = function(parent, res, pos, cb) {
 /**
  * 异步加载图片
  * @param  {String}   src       [base64Img or url]
+ * @param {Boolean} crossOrigin 默认为false
  * @param  {Function} cb        callback(texture)
  * @note   可以通过new Sprite(texture)的方式创建精灵
  */
-Ltc.loadImg = function(src, cb) {
+Ltc.loadImg = function(src, crossOrigin, cb) {
+    var callback = cb;
+    var co = crossOrigin;
+    if (cc.isUndefined(cb)) {
+        callback = crossOrigin;
+        co = false;
+    }
     cc.loader.loadImg(src, {
-        isCrossOrigin: false
+        isCrossOrigin: co
     }, function(err, img) {
         if (err) {
             console.error(err);
@@ -290,7 +297,7 @@ Ltc.loadImg = function(src, cb) {
             var texture2d = new cc.Texture2D();
             texture2d.initWithElement(img);
             texture2d.handleLoadedTexture();
-            cb(texture2d);
+            callback(texture2d);
         }
     });
 };
