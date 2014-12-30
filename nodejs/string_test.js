@@ -1,8 +1,8 @@
 /*
  * @Author: dengtao
  * @Date:   2014-11-29 22:56:12
- * @Last Modified by:   dengtao
- * @Last Modified time: 2014-12-11 00:08:11
+ * @Last Modified by:   Bill
+ * @Last Modified time: 2014-12-30 17:44:12
  */
 
 'use strict';
@@ -12,6 +12,14 @@ var _s = require('underscore.string');
 function main() {
     // replaceTest();
     // trimTest();
+    
+
+    // format
+    console.log(_s.sprintf("%.1f", 1.17));
+    //=> 1.2
+    console.log(_s.sprintf('%d %s', 123, 'test'));
+    console.log(_s.sprintf('%2$s %3$s a %1$s', 'cracker', 'Polly', 'wants'));
+    //=> Polly wants a cracker
 
     // 修改字符串第一个单词首字母大写
     // 相反的又decapitalize
