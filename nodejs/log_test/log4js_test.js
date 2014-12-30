@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-30 15:52:04
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 16:00:29
+ * @Last Modified time: 2014-12-30 17:52:10
  */
 
 'use strict';
@@ -18,7 +18,7 @@ log4js.configure({
 
 var logger = log4js.getLogger('cheese');
 
-logger.setLevel('ERROR');
+logger.setLevel('TRACE');
 
 logger.trace('Entering cheese testing');
 logger.debug('Got cheese.');
