@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-26 11:42:21
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-26 14:39:51
+ * @Last Modified time: 2014-12-30 19:41:51
  *
  * https://github.com/troygoode/node-cors
  */
@@ -15,7 +15,8 @@ var express = require('express'),
     opener = require('opener'),
     url = require('url'),
     fs = require('fs'),
-    app = express();
+    app = express(),
+    logger = require('../log_test/logs.js');
 
 var PORT = 9001;
 
@@ -42,24 +43,17 @@ var corsOptionsDelegate = function(req, callback) {
     callback(null, corsOptions); // callback expects two parameters: error and options
 };
 // app.use(cors());
+// 静态文件服务器，第一个参数可以指定url访问的位置，默认是'/'
 app.use('/static', cors(corsOptionsDelegate), express.static(staticDir));
 
-
-/*
-app.get('/*.(html|css|js|jpg|png){1}', cors(), function(req, res, next){
-    //var static_file_formats = ['.html','.css','.js','.jpg','.png'];
-    //console.log(path.extname(req.url));
-    var realpath = staticDir + url.parse(req.url).pathname;
-    console.log(realpath);
-    if(fs.existsSync(realpath)){
-        console.log('file exist');
-        res.end(fs.readFileSync(realpath));
-    }else{
-        res.end('Cannot find request url: '+req.url);
-    }
-});*/
-
 app.all('/', function(req, res) {
+    // log test
+    logger.error('test error');
+    logger.log('test log');
+    logger.debug('test debug');
+    logger.warn('test warn');
+
+    // 内部会发送消息头，并调用res.end()方法
     res.send('hello world');
 });
 

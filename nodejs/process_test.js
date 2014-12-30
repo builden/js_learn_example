@@ -2,11 +2,15 @@
  * @Author: Bill
  * @Date:   2014-12-30 11:15:17
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 11:34:09
+ * @Last Modified time: 2014-12-30 21:00:22
  */
 
 'use strict';
 console.log('================== process begin =====================');
+
+process.on('uncaughtException', function(e) {
+    console.log('Caught exception: ' + e);
+});
 
 function main(argv) {
     // console.log(argv);
@@ -37,6 +41,8 @@ function main(argv) {
     // heapTotal，heapUsed表示V8占用的内存
     console.log(process.memoryUsage());
     //=> { rss: 10915840, heapTotal: 4083456, heapUsed: 2208304 }
+    
+    throw 'error';
 }
 
 // 命令行参数
