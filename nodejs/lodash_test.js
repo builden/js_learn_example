@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-17 16:14:48
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-25 10:03:04
+ * @Last Modified time: 2014-12-29 17:47:40
  */
 
 'use strict';
@@ -12,14 +12,14 @@ var _ = require('lodash');
 function main() {
     // mapTest();
     // eachTest();
-    // cloneTest();
+    cloneTest();
     // reduceTest();
     // rangeTest();
     // removeTest();
     // containsTest();
     // forEachTest();
     // assignTest();
-    groupByTest();
+    // groupByTest();
 }
 
 function mapTest() {
@@ -77,11 +77,64 @@ function cloneTest() {
     //=> srco: {"a":1,"b":2,"c":{"a":2,"b":3}}
     console.log('desto: ' + JSON.stringify(desto));
     //=> desto: {"a":2,"b":2,"c":{"a":2,"b":3}}
+
+    var units = [
+        [{
+            item: 0,
+            exMagic: 1,
+            obj: {
+                a: 1,
+                b: 1
+            }
+        }, {
+            item: 1,
+            exMagic: 2,
+            obj: {
+                a: 2,
+                b: 2
+            }
+        }],
+        [{
+            item: 0,
+            exMagic: 1,
+            obj: {
+                a: 1,
+                b: 1
+            }
+        }, {
+            item: 1,
+            exMagic: 2,
+            obj: {
+                a: 2,
+                b: 2
+            }
+        }]
+    ];
+
+    var tmpUnits = _.clone(units);
+    console.log(JSON.stringify(tmpUnits));
+    tmpUnits[0][0].obj.a = 3;
+    console.log(JSON.stringify(units));
 }
 
 // 缩减
 function reduceTest() {
-    var arr = [{item:1, w:10}, {item:2, w:10}, {item:3, w:10}, {item:4, w:10}, {item:5, w:10}];
+    var arr = [{
+        item: 1,
+        w: 10
+    }, {
+        item: 2,
+        w: 10
+    }, {
+        item: 3,
+        w: 10
+    }, {
+        item: 4,
+        w: 10
+    }, {
+        item: 5,
+        w: 10
+    }];
     // var arr = [1, 2, 3];
     var sum = _.reduce(arr, function(left, right) {
         left.w += right.w;
@@ -111,10 +164,40 @@ function removeTest() {
     //=> [ 2, 4 ]
     console.log(arr);
     //=> [ 1, 3, 5 ]
+
+    var arr2 = [{
+        x: 1,
+        y: 2
+    }, {
+        x: 1,
+        y: 1
+    }, {
+        x: 1,
+        y: 3
+    }];
+    console.log(_.remove(arr2, function(v) {
+        return (v.y === 2);
+    }));
+    console.log(arr2);
 }
 
 function containsTest() {
-    var arr = [{item:1, w:10}, {item:2, w:10}, {item:3, w:10}, {item:4, w:10}, {item:5, w:10}];
+    var arr = [{
+        item: 1,
+        w: 10
+    }, {
+        item: 2,
+        w: 10
+    }, {
+        item: 3,
+        w: 10
+    }, {
+        item: 4,
+        w: 10
+    }, {
+        item: 5,
+        w: 10
+    }];
     var ex = [2, 3];
     _.remove(arr, function(v) {
         return _.contains(ex, v.item);
@@ -124,19 +207,53 @@ function containsTest() {
 }
 
 function forEachTest() {
-    var arr = [{item:1, w:10}, {item:2, w:10}, {item:3, w:10}, {item:4, w:10}, {item:5, w:10}];
+    var arr = [{
+        item: 1,
+        w: 10
+    }, {
+        item: 2,
+        w: 10
+    }, {
+        item: 3,
+        w: 10
+    }, {
+        item: 4,
+        w: 10
+    }, {
+        item: 5,
+        w: 10
+    }];
     _.forEach(arr, function(v) {
         console.log(JSON.stringify(v));
     });
 }
 
 function assignTest() {
-    console.log(_.assign({ 'name': 'fred' }, { 'employer': 'slate' }));
+    console.log(_.assign({
+        'name': 'fred'
+    }, {
+        'employer': 'slate'
+    }));
     //=> { 'name': 'fred', 'employer': 'slate' }
 }
 
 function groupByTest() {
-    var arr = [{x:1, y:1}, {x:2, y:2}, {x:1, y:2}, {x:2, y:3}, {x:3, y:2}];
+    var arr = [{
+        x: 1,
+        y: 1
+    }, {
+        x: 2,
+        y: 2
+    }, {
+        x: 1,
+        y: 2
+    }, {
+        x: 2,
+        y: 3
+    }, {
+        x: 3,
+        y: 2
+    }];
     console.log(_.groupBy(arr, function(item) {
         return 'item' + item.y;
     }));
