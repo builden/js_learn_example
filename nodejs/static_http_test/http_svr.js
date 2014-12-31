@@ -13,6 +13,10 @@ var config = require('./config.js');
 console.log('=============== process begin ====================');
 var port = process.env.PORT || 80;
 
+// 这里等效于
+// var server = http.createServer();
+// server.on('request', function handleReq(req) {
+// });
 var server = http.createServer(function(request, response) {
     response.setHeader("Server", "Node/V5");
     response.setHeader('Accept-Ranges', 'bytes');

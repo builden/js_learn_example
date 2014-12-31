@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-19 16:36:23
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 21:27:08
+ * @Last Modified time: 2014-12-30 21:28:46
  */
 
 'use strict';
@@ -30,7 +30,7 @@ if (cluster.isMaster) {
     cluster.on('exit', function(worker, code, signal) {
         console.log('worker %d died (%s). restarting...',
             worker.process.pid, signal || code);
-        cluster.fork();
+        createWorker();
     });
 
     setInterval(function() {

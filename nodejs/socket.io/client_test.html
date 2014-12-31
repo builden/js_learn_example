@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <script src="_socket.io.min.js"></script>
+        <script>
+          var socket = io.connect('http://localhost:8080');
+          socket.tag = 'test Client';
+          socket.on('connect', function() {
+            console.log(socket.tag + ' connected');
+          });
+
+          socket.on('disconnect', function() {
+            console.log(socket.tag + ' disconnected');
+          });
+
+          socket.on('connect_error', function(e) {
+            console.log(socket.tag + ' connect error ' + e);
+          });
+
+          socket.on('connect_timeout', function() {
+            console.log(socket.tag + ' connect_timeout');
+          });
+
+          socket.on('reconnect', function(n) {
+            console.log(socket.tag + ' reconnected succ ' + n);
+          });
+
+          socket.on('reconnect_failed', function() {
+            console.log(socket.tag + ' reconnect_failed');
+          });
+
+          // 自定义事件监听及发送
+          socket.on('news', function (data) {
+            console.log(data);
+            socket.emit('my other event', { my: 'data' });
+          });
+        </script>
+    </body>
+</html>
