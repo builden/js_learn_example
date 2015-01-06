@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-01-05 11:02:08
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-05 17:27:37
+ * @Last Modified time: 2015-01-06 09:42:13
  *
  * redis支持的数据类型
  * string           set / get, incr / decr, mset / mget(同时设置或获取多个键值)
@@ -46,6 +46,7 @@
  *                  zremrangebyrank key start stop 删除在排名范围内的元素
  *                  zremrangebyscore key min max 删除分数范围内的元素
  *                  zrank key member 获取元素的排名
+ *                  zrevrank key member 反向获取元素的排名
  */
 
 'use strict';

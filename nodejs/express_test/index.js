@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-09 18:12:28
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-31 15:15:44
+ * @Last Modified time: 2015-01-06 19:02:29
  * @note
  *  所用到的中间件
  *  跨域支持 https://github.com/troygoode/node-cors/
@@ -10,6 +10,12 @@
  */
 
 'use strict';
+
+// 默认是开发环境，还有
+// production -- 生成环境
+// test -- 测试环境
+// app.get('env') 和process.env.NODE_ENV的环境一致，默认是开发环境
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 console.log('=============== process begin ====================');
 

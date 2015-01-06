@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-30 16:39:23
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 19:07:16
+ * @Last Modified time: 2015-01-06 18:11:07
  *
  * how to use:
  * var logger = require('./logs.js');
@@ -17,6 +17,7 @@
 
 'use strict';
 
+var fmt = require('util').format;
 var moment = require('moment');
 var chalk = require('chalk');
 
@@ -44,30 +45,34 @@ function getNow() {
 
 function debug(msg) {
     if (LOG_LEVEL <= exports.DEBUG)
-        console.log(chalk.cyan(getNow() + '[DEBUG] ') + msg);
+        console.log(chalk.cyan(getNow() + '[DEBUG] ') + formatStr(arguments));
 }
 exports.debug = debug;
 
 function log(msg) {
     if (LOG_LEVEL <= exports.LOG)
-        console.log(getNow() + '[LOG] ' + msg);
+        console.log(getNow() + '[LOG] ' + formatStr(arguments));
 }
 exports.log = log;
 
 function info(msg) {
     if (LOG_LEVEL <= exports.INFO)
-        console.info(chalk.green(getNow() + '[INFO] ') + msg);
+        console.info(chalk.green(getNow() + '[INFO] ') + formatStr(arguments));
 }
 exports.info = info;
 
 function warn(msg) {
     if (LOG_LEVEL <= exports.WARN)
-        console.warn(chalk.yellow(getNow() + '[WARN] ') + msg);
+        console.warn(chalk.yellow(getNow() + '[WARN] ') + formatStr(arguments));
 }
 exports.warn = warn;
 
 function error(msg) {
     if (LOG_LEVEL <= exports.ERROR)
-        console.error(chalk.red(getNow() + '[ERROR] ') + msg);
+        console.error(chalk.red(getNow() + '[ERROR] ') + formatStr(arguments));
 }
 exports.error = error;
+
+function formatStr(args) {
+    return fmt.apply(null, args);
+}

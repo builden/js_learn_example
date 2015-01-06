@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-30 16:09:18
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 19:24:16
+ * @Last Modified time: 2015-01-06 18:11:52
  *
  * log等级
  *     debug
@@ -16,12 +16,12 @@ var fs = require('fs');
 
 // 自己封装的log库
 var logger = require('./logs.js');
-logger.setLevel(logger.INFO);
-logger.debug('debug');
-logger.log('log');
-logger.info('info');
-logger.warn('warn');
-logger.error('error');
+logger.setLevel(logger.DEBUG);
+logger.debug('debug %d %s %j', 1, 'haha', {x:1, y:'a'});
+logger.log('log %d', 2);
+logger.info('info %d', 3);
+logger.warn('warn %d', 4);
+logger.error('error %d', 5);
 
 // 第三方的一个简单log库
 var Log = require('log');

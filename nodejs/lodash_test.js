@@ -2,7 +2,9 @@
  * @Author: Bill
  * @Date:   2014-12-17 16:14:48
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-29 17:47:40
+ * @Last Modified time: 2015-01-06 17:51:32
+ *
+ * https://lodash.com/docs
  */
 
 'use strict';
@@ -20,6 +22,11 @@ function main() {
     // forEachTest();
     // assignTest();
     // groupByTest();
+
+    var require2;
+    if (_.isUndefined(require2)) {
+        console.log('require2 is undefined');
+    }
 }
 
 function mapTest() {

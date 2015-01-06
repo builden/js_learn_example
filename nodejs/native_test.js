@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-26 11:41:36
+ * @Last Modified time: 2015-01-06 17:45:53
  */
 
 'use strict';
@@ -16,6 +16,10 @@ function main() {
 function globalTest() {
     console.log('__dirname: ' + __dirname);
     console.log('__filename: ' + __filename);
+    console.log('typeof exports is ' + typeof exports);
+    //=> object
+    console.log('typeof require is ' + typeof require);
+    //=> function
 }
 
 // URI编码转化

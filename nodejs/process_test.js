@@ -2,14 +2,14 @@
  * @Author: Bill
  * @Date:   2014-12-30 11:15:17
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 21:00:22
+ * @Last Modified time: 2015-01-06 11:18:12
  */
 
 'use strict';
 console.log('================== process begin =====================');
 
 process.on('uncaughtException', function(e) {
-    console.log('Caught exception: ' + e);
+    console.error('Caught exception: ' + e.stack);
 });
 
 function main(argv) {

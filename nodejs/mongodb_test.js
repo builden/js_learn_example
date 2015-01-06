@@ -2,9 +2,18 @@
  * @Author: Bill
  * @Date:   2014-10-14 14:14:56
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-04 18:54:46
+ * @Last Modified time: 2015-01-06 17:01:03
  *
  * http://mongoosejs.com/
+ * 支持的数据类型：http://mongoosejs.com/docs/schematypes.html
+ * String
+ * Number
+ * Data
+ * Buffer
+ * Boolean
+ * Mixed
+ * Objectid
+ * Array
  */
 
 
