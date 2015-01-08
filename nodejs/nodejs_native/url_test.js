@@ -2,21 +2,21 @@
  * @Author: Bill
  * @Date:   2014-12-31 11:24:11
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-31 11:31:48
+ * @Last Modified time: 2015-01-07 18:24:06
  */
 
 'use strict';
 
 var url = require('url');
 
-var myUrl = "http://www.nodejs.org/some/url/?with=query&param=that&are=awesome#alsoahash";
+var myUrl = "http://www.nodejs.org:8080/some/url/?with=query&param=that&are=awesome#alsoahash";
 
 console.log(url.parse(myUrl));
 //=> { protocol: 'http:',
 //=>   slashes: true,
 //=>   auth: null,
-//=>   host: 'www.nodejs.org',
-//=>   port: null,
+//=>   host: 'www.nodejs.org:8080',
+//=>   port: '8080',
 //=>   hostname: 'www.nodejs.org',
 //=>   hash: '#alsoahash',
 //=>   search: '?with=query&param=that&are=awesome',

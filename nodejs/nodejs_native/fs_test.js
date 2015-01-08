@@ -1,3 +1,12 @@
+/**
+ * @Author: Bill
+ * @Date:   2014-11-05 19:36:09
+ * @Last Modified by:   Bill
+ * @Last Modified time: 2015-01-07 17:11:42
+ *
+ * https://github.com/jprichardson/node-fs-extra
+ */
+
 var fs = require('fs-extra');
 var path = require('path');
 var moment = require('moment');

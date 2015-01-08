@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 17:45:53
+ * @Last Modified time: 2015-01-07 14:45:38
  */
 
 'use strict';
@@ -11,6 +11,12 @@ var _ = require('lodash');
 function main() {
     // urlEncodeTest();
     globalTest();
+
+    try {
+        JSON.parse('daba');
+    } catch (e) {
+        console.error(e.stack);
+    }
 }
 
 function globalTest() {
