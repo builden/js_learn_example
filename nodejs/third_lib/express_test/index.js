@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-09 18:12:28
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 19:02:29
+ * @Last Modified time: 2015-01-09 14:24:23
  * @note
  *  所用到的中间件
  *  跨域支持 https://github.com/troygoode/node-cors/
@@ -25,7 +25,7 @@ var express = require('express'),
 var bodyParser = require('body-parser');
 
 var fs = require('fs-extra');
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 9000;
 
 // 'content-type': 'application/x-www-form-urlencoded'
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -91,7 +91,7 @@ app.get('/tweets', function(req, res) {
     res. send(tweets);
 });
 
-app.listen(80, function() {
+app.listen(port, function() {
     console.log('CORS-enabled web server listening on port ' + port);
 });
 

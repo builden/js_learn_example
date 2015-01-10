@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-07 14:45:38
+ * @Last Modified time: 2015-01-10 17:47:30
  */
 
 'use strict';
@@ -10,8 +10,39 @@ var _ = require('lodash');
 
 function main() {
     // urlEncodeTest();
-    globalTest();
+    // globalTest();
+    // outputStackTest();
+    // objNestTest();
+    arrTest();
+    // objTest();
+}
 
+function objTest() {
+    var id = 1;
+    var obj = {};
+    obj[id] = {x:1, y: 1};
+    console.log(obj);
+    delete obj[id];
+    console.log(obj);
+}
+
+function arrTest() {
+/*    var arr = [];
+    arr[1] = {x: 1, y: 0};
+    console.log(arr);
+    arr[2] = 1;
+    console.log(arr);
+    delete arr[1];
+    console.log(arr);*/
+
+    var arr1 = [1, 2, 3, 4];
+    var len = arr1.length;
+    if (len % 2 === 1) --len; 
+    arr1.splice(0, len);
+    console.log(arr1);
+}
+
+function outputStackTest() {
     try {
         JSON.parse('daba');
     } catch (e) {

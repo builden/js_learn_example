@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-05 15:16:20
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 13:58:29
+ * @Last Modified time: 2015-01-09 15:52:35
  * @note https://github.com/caolan/async/blob/master/README.md
  */
 
@@ -18,7 +18,7 @@ function main() {
     // reduceTest();
     // detectTest();
     // sortByTest();
-    // paralleTest(); // 并行执行，result顺序是task申明的顺序
+    // parallelTest(); // 并行执行，result顺序是task申明的顺序
     // seriesTest(); // 串行执行
     // waterfallTest(); // 按顺序执行，每一个函数产生的值都将传给下一个
     // autoTest();
@@ -33,7 +33,7 @@ function main() {
  * callback func2
  * callback func1
  */
-function paralleTest() {
+function parallelTest() {
     async.parallel([
             function(callback) {
                 console.log('enter func1');

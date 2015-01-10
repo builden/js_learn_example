@@ -3,14 +3,15 @@
  * @Author: Bill
  * @Date:   2014-11-20 13:50:44
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-04 14:26:51
+ * @Last Modified time: 2015-01-08 17:06:49
  */
 
 var assert = require('assert');
 
 function main() {
     // matchAndroidVerTest();
-    numberTest();
+    // numberTest();
+    getShortFaceurlTest();
 }
 
 function numberTest() {
@@ -32,6 +33,16 @@ function matchAndroidVerTest() {
     } else {
         console.log("not match");
     }
+}
+
+function getShortFaceurl(longUrl) {
+    var m = longUrl.match(/qzopenapp\/(.*)\/50/i);
+    return m ? m[1] : '';
+}
+
+function getShortFaceurlTest() {
+    var str = 'http://thirdapp2.qlogo.cn/qzopenapp/63536c60195e77078d8251a5cfef7663075c1c7ef5f5ecf73a982e61258bcd5e/50';
+    console.log(getShortFaceurl(str));
 }
 
 main();

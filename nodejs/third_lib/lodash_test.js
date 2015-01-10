@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-17 16:14:48
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 17:51:32
+ * @Last Modified time: 2015-01-10 17:31:29
  *
  * https://lodash.com/docs
  */
@@ -14,7 +14,7 @@ var _ = require('lodash');
 function main() {
     // mapTest();
     // eachTest();
-    cloneTest();
+    // cloneTest();
     // reduceTest();
     // rangeTest();
     // removeTest();
@@ -22,6 +22,7 @@ function main() {
     // forEachTest();
     // assignTest();
     // groupByTest();
+    mergeTest();
 
     var require2;
     if (_.isUndefined(require2)) {
@@ -29,12 +30,31 @@ function main() {
     }
 }
 
+function mergeTest() {
+    var obj1 = {
+        x: 1
+    };
+    var obj2 = {
+        y:2,
+        z: {a:1, b: 2}
+    };
+    var obj3 = _.merge(obj1, obj2);
+    console.log(obj1);
+    //=> { x: 1, y: 2, z: { a: 1, b: 2 } }
+    console.log(obj2);
+    //=> { y: 2, z: { a: 1, b: 2 } }
+    console.log(obj3);
+    //=> { x: 1, y: 2, z: { a: 1, b: 2 } }
+}
+
 function mapTest() {
+    var i = 0;
     var arr = _.map(new Array(5), function() {
-        return 0;
+        if (++i % 2 === 0)
+            return 0;
     });
     console.log(arr);
-    //=> [ 0, 0, 0, 0, 0 ]
+    //=> [ undefined, 0, undefined, 0, undefined ]
 
     var obj = {
         one: 1,
