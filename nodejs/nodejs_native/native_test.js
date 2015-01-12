@@ -1,8 +1,8 @@
 /**
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
- * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-10 17:47:30
+ * @Last Modified by:   builden
+ * @Last Modified time: 2015-01-12 00:13:40
  */
 
 'use strict';
@@ -35,9 +35,9 @@ function arrTest() {
     delete arr[1];
     console.log(arr);*/
 
-    var arr1 = [1, 2, 3, 4];
+    var arr1 = [1, 2, 3];
     var len = arr1.length;
-    if (len % 2 === 1) --len; 
+    if (len % 2 === 1) --len;
     arr1.splice(0, len);
     console.log(arr1);
 }
