@@ -5,7 +5,7 @@ var exec = child.exec;  // 直接执行系统命令
 var iconv= require('iconv-lite');
 
 //*
-var cmd = exec('dir', {encoding: 'binary'}, function(err, stdout, stderr) {
+var cmd = exec('netstat -an', function(err, stdout, stderr) {
     var str = iconv.decode(stdout, 'GBK');
     console.log('child log:\n' + str);
 });

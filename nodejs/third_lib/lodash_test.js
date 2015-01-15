@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-17 16:14:48
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-10 17:31:29
+ * @Last Modified time: 2015-01-14 14:33:14
  *
  * https://lodash.com/docs
  */
@@ -17,7 +17,7 @@ function main() {
     // cloneTest();
     // reduceTest();
     // rangeTest();
-    // removeTest();
+    removeTest();
     // containsTest();
     // forEachTest();
     // assignTest();
@@ -206,6 +206,12 @@ function removeTest() {
         return (v.y === 2);
     }));
     console.log(arr2);
+
+    var arr3 = [1, 2, 3];
+    _.remove(arr3, function(item) {
+        return item == 2;
+    });
+    console.log('==== %j', arr3);
 }
 
 function containsTest() {

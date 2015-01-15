@@ -2,7 +2,9 @@
  * @Author: Bill
  * @Date:   2014-12-30 20:50:25
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-07 17:57:55
+ * @Last Modified time: 2015-01-15 20:11:16
+ *
+ * https://github.com/ashtuchkin/iconv-lite/wiki/Use-Buffers-when-decoding
  */
 
 'use strict';
@@ -35,14 +37,12 @@ function getCharset(res) {
 function getHttpTxt(url, cb) {
     http.get(url, function(res) {
         var charset = getCharset(res);
-        var size = 0;
         var chunks = [];
         res.on('data', function(chunk) {
-            size += chunk.length;
             chunks.push(chunk);
         });
         res.on('end', function() {
-            var buf = Buffer.concat(chunks, size);
+            var buf = Buffer.concat(chunks);
             cb(null, iconv.decode(buf, charset));
         });
     }).on('error', function(e) {
