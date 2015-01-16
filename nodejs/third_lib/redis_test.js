@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-01-05 11:02:08
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 09:42:13
+ * @Last Modified time: 2015-01-16 15:49:41
  *
  * redis支持的数据类型
  * string           set / get, incr / decr, mset / mget(同时设置或获取多个键值)
@@ -40,7 +40,7 @@
  *                  zrange key start stop [withscores] 获取某个区间的元素，从左到右
  *                  zrevrange key start stop [withscores] 从右到左
  *                  zrangebyscore key min max [withscores] [limit offset count] 获取某个分数区间的元素
- *                  zincreby key increment member 增加某个元素的分数
+ *                  zincrby key increment member 增加某个元素的分数
  *                  zcard key 获取集合中的元素个数
  *                  zcount key min max 获得指定分数范围内的元素个数
  *                  zremrangebyrank key start stop 删除在排名范围内的元素
