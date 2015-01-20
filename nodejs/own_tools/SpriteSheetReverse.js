@@ -6,8 +6,9 @@
 var gm = require('gm');
 var fs = require('fs');
 var path = require('path');
-var jsdom = require('jsdom');
+// var jsdom = require('jsdom');
 var images = require('images');
+var cheerio = require('cheerio');
 
 var SRC_PATH = __dirname + "/image_src/";
 var DEST_PATH = __dirname + "/image_dst/";
@@ -30,42 +31,73 @@ function main() {
 function splitPlistFile(fileName) {
     var plistFile = SRC_PATH + fileName + ".plist";
     // 解析xml
-    var jquery = fs.readFileSync("./bower_components/jquery/dist/jquery.js", "utf-8");
-    jsdom.env({
-        file: plistFile,
-        src: [jquery],
-        done: function(errors, window) {
-            var $ = window.$;
+    // var jquery = fs.readFileSync("./bower_components/jquery/dist/jquery.js", "utf-8");
+    var fileContext = fs.readFileSync(plistFile);
+    var $ = cheerio.load(fileContext);
 
-            var framesTag = $('plist').children('dict').first().children('dict').first();
-            var frames = [];
-            framesTag.children('key').each(function() {
-                frames.push({
-                    file: $(this).text()
-                });
-            });
-
-            var count = 0;
-            framesTag.children('dict').each(function() {
-                var childs = $(this).find('key').each(function() {
-                    var key = $(this).text();
-                    if (key === 'rotated') {
-                        frames[count][$(this).text()] = $(this).next()[0].tagName;
-                    } else if (key === 'frame' || key === 'sourceColorRect') {
-                        frames[count][$(this).text()] = parseSize($(this).next().text());
-                    } else if (key === 'offset' || key === 'sourceSize') {
-                        frames[count][$(this).text()] = parsePoint($(this).next().text());
-                    } else {
-                        frames[count][$(this).text()] = $(this).next().text();
-                    }
-                });
-                count++;
-            });
-
-            // console.log(frames);
-            splitImg(fileName, frames);
-        }
+    var framesTag = $('plist').children('dict').first().children('dict').first();
+    var frames = [];
+    framesTag.children('key').each(function() {
+        frames.push({
+            file: $(this).text()
+        });
     });
+
+    var count = 0;
+    framesTag.children('dict').each(function() {
+        var childs = $(this).find('key').each(function() {
+            var key = $(this).text();
+            if (key === 'rotated') {
+                frames[count][$(this).text()] = $(this).next()[0].tagName;
+            } else if (key === 'frame' || key === 'sourceColorRect') {
+                frames[count][$(this).text()] = parseSize($(this).next().text());
+            } else if (key === 'offset' || key === 'sourceSize') {
+                frames[count][$(this).text()] = parsePoint($(this).next().text());
+            } else {
+                frames[count][$(this).text()] = $(this).next().text();
+            }
+        });
+        count++;
+    });
+
+    console.log(frames);
+    splitImg(fileName, frames);
+
+    /*    jsdom.env({
+            file: plistFile,
+            src: [jquery],
+            done: function(errors, window) {
+                var $ = window.$;
+
+                var framesTag = $('plist').children('dict').first().children('dict').first();
+                var frames = [];
+                framesTag.children('key').each(function() {
+                    frames.push({
+                        file: $(this).text()
+                    });
+                });
+
+                var count = 0;
+                framesTag.children('dict').each(function() {
+                    var childs = $(this).find('key').each(function() {
+                        var key = $(this).text();
+                        if (key === 'rotated') {
+                            frames[count][$(this).text()] = $(this).next()[0].tagName;
+                        } else if (key === 'frame' || key === 'sourceColorRect') {
+                            frames[count][$(this).text()] = parseSize($(this).next().text());
+                        } else if (key === 'offset' || key === 'sourceSize') {
+                            frames[count][$(this).text()] = parsePoint($(this).next().text());
+                        } else {
+                            frames[count][$(this).text()] = $(this).next().text();
+                        }
+                    });
+                    count++;
+                });
+
+                // console.log(frames);
+                splitImg(fileName, frames);
+            }
+        });*/
 }
 
 
@@ -124,7 +156,7 @@ function splitImg(fileName, frames) {
         console.log('create ' + frame.file);
 
         var img = gm(srcImgFile);
-        if (frame.rotated === 'TRUE') {
+        if (frame.rotated.toUpperCase() === 'TRUE') {
             // width 和 height倒置
             img.crop(frame.frame.h, frame.frame.w, frame.frame.x, frame.frame.y);
             img.rotate('#FFFF', -90);

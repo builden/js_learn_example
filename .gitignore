@@ -1,8 +1,8 @@
 *.sublime*
 node_modules/*
 bower_components/*
-nodejs/image_dst/*
-nodejs/image_src/*
+image_dst/
+image_src/
 .settings/
 publish/
 runtime/
