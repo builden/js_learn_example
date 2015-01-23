@@ -1,8 +1,8 @@
 /**
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
- * @Last Modified by:   builden
- * @Last Modified time: 2015-01-12 00:13:40
+ * @Last Modified by:   Bill
+ * @Last Modified time: 2015-01-22 19:00:52
  */
 
 'use strict';
@@ -13,27 +13,61 @@ function main() {
     // globalTest();
     // outputStackTest();
     // objNestTest();
-    arrTest();
+    // arrTest();
     // objTest();
+    nullTest();
+}
+
+function nullTest() {
+    var obj = {};
+
+    console.log(typeof obj.test);
+    // undefined
+
+    var num1 = obj.test || 0;
+    console.log('num1 ' + num1);
+    //=> 0;
+
+    if (obj.test) {
+        var num2 = obj.test || 1;
+        console.log('num2 ' + num2);
+    }
+
+    obj.test = 0;
+    var num3 = obj.test || 1;
+    console.log('num3 ' + num3);
+    //=> 1
+
+    if (!_.isUndefined(obj.test)) {
+        var num4 = obj.test;
+        console.log('num4 ' + num4);
+    }
+
+    var num4 = obj.tt;
+    console.log(typeof num4);
+    //=> undefined
 }
 
 function objTest() {
     var id = 1;
     var obj = {};
-    obj[id] = {x:1, y: 1};
+    obj[id] = {
+        x: 1,
+        y: 1
+    };
     console.log(obj);
     delete obj[id];
     console.log(obj);
 }
 
 function arrTest() {
-/*    var arr = [];
-    arr[1] = {x: 1, y: 0};
-    console.log(arr);
-    arr[2] = 1;
-    console.log(arr);
-    delete arr[1];
-    console.log(arr);*/
+    /*    var arr = [];
+        arr[1] = {x: 1, y: 0};
+        console.log(arr);
+        arr[2] = 1;
+        console.log(arr);
+        delete arr[1];
+        console.log(arr);*/
 
     var arr1 = [1, 2, 3];
     var len = arr1.length;

@@ -3,7 +3,7 @@
  * @Author: Bill
  * @Date:   2014-11-20 13:50:44
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-08 17:06:49
+ * @Last Modified time: 2015-01-23 20:10:29
  */
 
 var assert = require('assert');
@@ -11,7 +11,27 @@ var assert = require('assert');
 function main() {
     // matchAndroidVerTest();
     // numberTest();
-    getShortFaceurlTest();
+    // getShortFaceurlTest();
+    multilineTest();
+}
+
+function multilineTest() {
+    // var re = /(\w+\n)\s(\w+)/;
+    // var str = "John\n Smith";
+    // var newstr = str.replace(re, "$2\n$1");
+    // var m = str.match(re);
+    // if (m) {
+    //     console.log(m);
+    // } else {
+    //     console.log('can not match');
+    // }
+
+    var re = /(\/\/=> file\n)(.*)(\n\/\/<= file)/i;
+    var str = '//=> file\nline1 \nline2\n//<= file';
+    var newstr = str.replace(re, '$1wahaha$3');
+    console.log(str);
+    console.log('--------------');
+    console.log(newstr);
 }
 
 function numberTest() {

@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-30 11:15:17
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 11:18:12
+ * @Last Modified time: 2015-01-22 14:45:55
  */
 
 'use strict';
@@ -42,7 +42,14 @@ function main(argv) {
     console.log(process.memoryUsage());
     //=> { rss: 10915840, heapTotal: 4083456, heapUsed: 2208304 }
     
-    throw 'error';
+    // 当前工作目录
+    console.log(process.cwd());
+
+    // 修改工作目录
+    process.chdir('C:/')
+    console.log(process.cwd());
+
+    throw new Error('error');
 }
 
 // 命令行参数
