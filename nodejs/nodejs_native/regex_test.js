@@ -3,7 +3,7 @@
  * @Author: Bill
  * @Date:   2014-11-20 13:50:44
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-23 20:10:29
+ * @Last Modified time: 2015-01-27 20:38:07
  */
 
 var assert = require('assert');
@@ -12,25 +12,51 @@ function main() {
     // matchAndroidVerTest();
     // numberTest();
     // getShortFaceurlTest();
-    multilineTest();
+    // multilineTest();
+    replaceAllTest();
+}
+
+function replaceAllTest() {
+    var str = 'cc.min.xx, cc.min.xx, cc.xx';
+    // var newStr = str.replace(new RegExp('cc.min.xx', 'g'), 'cc_aa.xx');
+    var newStr = str.replace(/cc.min.xx/g, 'cc_aa.xx');
+    console.log(newStr);
+    //=> cc_aa.xx, cc_aa.xx, cc.xx
 }
 
 function multilineTest() {
-    // var re = /(\w+\n)\s(\w+)/;
-    // var str = "John\n Smith";
-    // var newstr = str.replace(re, "$2\n$1");
-    // var m = str.match(re);
-    // if (m) {
-    //     console.log(m);
-    // } else {
-    //     console.log('can not match');
-    // }
+/*    var re = /(\w+)\s(\w+)/m;
+    var str = "John\nline1\nline2 Smith";
+    var newstr = str.replace(re, "$2\n$1");
+    var m = str.match(re);
+    if (m) {
+        console.log(m);
+    } else {
+        console.log('can not match');
+    }*/
 
-    var re = /(\/\/=> file\n)(.*)(\n\/\/<= file)/i;
+/*    var re = /(\/\/=> file)(.*)(\/\/<= file)/im;
     var str = '//=> file\nline1 \nline2\n//<= file';
-    var newstr = str.replace(re, '$1wahaha$3');
-    console.log(str);
-    console.log('--------------');
+    var newstr = str.replace(re, '$1wahaha$3');*/
+
+    // 注意:
+    //   .可以匹配除\n以外的任意字符，但如果想匹配包含\n的字符
+    //   则可以使用[\s\S]
+    var re = /(\/\/=>.*\n)([\s\S]*)(\n\/\/<=.*)/m;
+    var str = "//=> push sprite sheet\n\
+for (var i = 0; i < 5; i++) {\n\
+    g_resources.push('res/crayon_main' + i + '.plist');\n\
+    g_resources.push('res/crayon_main' + i + '.png');\n\
+}\n\
+g_resources.push('res/crayon_bg.plist');\n\
+g_resources.push('res/crayon_bg.jpg');\n\
+//<= push sprite sheet";
+
+    var m = str.match(re);
+    //console.log(m);
+    var newstr = str.replace(re, '$1lin1\nline2$3');
+    // console.log(str);
+    // console.log('--------------');
     console.log(newstr);
 }
 

@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-05 19:36:09
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-07 17:11:42
+ * @Last Modified time: 2015-01-26 17:13:18
  *
  * https://github.com/jprichardson/node-fs-extra
  */
@@ -10,6 +10,7 @@
 var fs = require('fs-extra');
 var path = require('path');
 var moment = require('moment');
+var walk = require('walk');
 
 function main() {
     // removeFileTest();
@@ -17,7 +18,38 @@ function main() {
     //   console.log(pathname);
     // });
     // fs.copySync('./image_src/140.jpg', './image_src/140.jpg.bak');
-    statTest();
+    // statTest();
+    walkTest();
+}
+
+function walkTest() {
+    walker = walk.walk('.', {
+        followLinks: false,
+        filters: ['.*js']
+    });
+
+/*    walker.on('directories', function(root, stats, next) {
+        stats.forEach(function(stat) {
+            console.log('[ds]', path.join(root, stat.name));
+        });
+        next();
+    });*/
+
+    // 遍历目录
+    walker.on('directory', function(root, stat, next) {
+        console.log('[d]', path.join(root, stat.name));
+        next();
+    });
+
+    // 遍历文件，包括子文件夹下的文件
+    walker.on('file', function(root, stat, next) {
+        console.log('[f]' + root + '\\' + stat.name + ' ' + stat.size);
+        next();
+    });
+
+    walker.on('end', function() {
+        console.log('walk end');
+    });
 }
 
 /**
@@ -27,7 +59,7 @@ function main() {
  * @return {[type]}            [description]
  */
 function travel(dir, callback) {
-    fs.readdirSync(dir).forEach(function (file) {
+    fs.readdirSync(dir).forEach(function(file) {
         var pathname = path.join(dir, file);
 
         if (fs.statSync(pathname).isDirectory()) {
