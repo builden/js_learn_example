@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-10-13 16:38:16
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-10 10:02:47
+ * @Last Modified time: 2015-01-29 11:17:48
  *
  * YYYY     2014            4 digit year
  * YY       14              2 digit year
@@ -24,6 +24,8 @@
  * SS       0..99           Hundreds of a second
  * SSS      0..999          Thousandths of a second
  * Z ZZ     +12:00          Offset from UTC as +-HH:mm, +-HHmm, or Z
+ *
+ * http://momentjs.com/
  */
 
 'use strict';
@@ -38,6 +40,9 @@ function main() {
 function formatTest() {
     var now = moment();
     console.log(now.format('YYYY-MM-DD HH:mm:ss.SSS'));
+
+
+    console.log(now.valueOf());
 }
 
 function diffTest() {

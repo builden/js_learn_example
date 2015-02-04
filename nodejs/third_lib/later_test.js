@@ -2,7 +2,9 @@
  * @Author: Bill
  * @Date:   2015-01-16 18:11:01
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-16 19:05:44
+ * @Last Modified time: 2015-02-04 14:33:40
+ *
+ * http://bunkat.github.io/later/index.html
  */
 
 /*
@@ -26,6 +28,33 @@ var moment = require('moment');
 
 function main() {
     // everyWeekTest();
+    doOnceTest();
+}
+
+function doOnceTest() {
+    var sched = {
+        schedules: [{
+            Y: [2015],
+            M: [2],
+            D: [4],
+            h: [14],
+            m: [32]
+        }]
+    };
+
+    // 规则按照本地时间计算，默认使用的是UTC时间
+    later.date.localTime();
+
+    var occurrences = later.schedule(sched).next(10);
+
+    for (var i = 0; i < 10; i++) {
+        console.log(occurrences[i]);
+    }
+
+    var t = later.setTimeout(function() {
+        console.log('do setTimeout');
+        t.clear();
+    }, sched);
 }
 
 function parseTest() {

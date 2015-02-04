@@ -1,6 +1,6 @@
 *.sublime*
-node_modules/*
-bower_components/*
+node_modules/
+bower_components/
 image_dst/
 image_src/
 .settings/

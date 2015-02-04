@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-05 19:36:09
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-26 17:13:18
+ * @Last Modified time: 2015-01-28 17:54:11
  *
  * https://github.com/jprichardson/node-fs-extra
  */

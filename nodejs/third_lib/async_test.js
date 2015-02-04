@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-05 15:16:20
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-09 15:52:35
+ * @Last Modified time: 2015-01-30 10:31:23
  * @note https://github.com/caolan/async/blob/master/README.md
  */
 
@@ -69,26 +69,38 @@ function parallelTest() {
  */
 function seriesTest() {
     async.series({
-            one: function(callback) {
-                console.log('enter func1');
-                setTimeout(function() {
-                    console.log('callback func1');
-                    callback(null, 1);
-                }, 200);
-            },
-            two: function(callback) {
-                console.log('enter func2');
-                setTimeout(function() {
-                    console.log('callback func2');
-                    callback(null, 2);
-                }, 100);
-            }
+        one: function(callback) {
+            console.log('enter func1');
+            setTimeout(function() {
+                console.log('callback func1');
+                callback(null, 1);
+            }, 200);
         },
-        function(err, results) {
-            console.log(err);
-            console.log(results);
-            // results is now equal to: {one: 1, two: 2}
-        });
+        two: function(callback) {
+            console.log('enter func2');
+            setTimeout(function() {
+                console.log('callback func2');
+                callback(null, 2);
+            }, 100);
+        }
+    }, function(err, results) {
+        console.log(err);
+        console.log(results);
+        // results is now equal to: {one: 1, two: 2}
+    });
+
+    async.series([function(callback) {
+        callback(null);
+    }, function(callback) {
+        callback('find', '2');
+    }, function(callback) {
+        callback('find', '3');
+    }], function(err, results) {
+        if (err) {
+            console.log(results[results.length - 1]);
+            //=> [ undefined, '2' ]
+        }
+    });
 }
 
 /**
@@ -163,9 +175,10 @@ function func(item, cb) {
         console.log('cb func ' + item);
         if (item === 2) cb(true, item);
         else
-        cb(null, item);
+            cb(null, item);
     }, 10 * item);
 }
+
 function mapLimitTest() {
     async.mapLimit([5, 2, 3, 1], 1, func, function(err, results) {
         if (err) {
