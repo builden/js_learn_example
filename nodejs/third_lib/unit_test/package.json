@@ -9,6 +9,9 @@
   "author": "Bill",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.8.10"
+    "gulp": "^3.8.10",
+    "karma": "^0.12.31",
+    "karma-mocha": "^0.1.10",
+    "mocha": "^2.1.0"
   }
 }
