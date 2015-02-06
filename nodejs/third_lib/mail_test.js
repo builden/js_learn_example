@@ -1,3 +1,13 @@
+/**
+ * 邮箱测试
+ * @Author: Bill
+ * @Date:   2014-11-03 10:36:22
+ * @Last Modified by:   Bill
+ * @Last Modified time: 2015-02-06 11:46:54
+ *
+ * http://www.nodemailer.com/
+ */
+
 'use strict'
 
 var nodemailer = require('nodemailer');
