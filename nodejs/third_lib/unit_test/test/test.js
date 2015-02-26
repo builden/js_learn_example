@@ -2,21 +2,36 @@
  * @Author: Bill
  * @Date:   2015-02-04 16:09:44
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-02-04 18:31:29
+ * @Last Modified time: 2015-02-09 11:42:57
  */
 
 'use strict';
 
 var assert = require('assert');
+var should = require('chai').should();
 
 describe('Array', function() {
+    // skip关键字，可以暂时屏蔽这个用例的执行，而不需要注释
     describe('#indexOf()', function() {
-        it('should return -1 when the value is not present', function() {
+        it.skip('should return -1 when the value is not present', function() {
             // 返回某个指定的元素在数组中首次出现的位置
             assert.equal(-1, [1, 2, 3].indexOf(5));
             assert.equal(-1, [1, 2, 3].indexOf(0));
+
+            [1, 2, 3].indexOf(5).should.equal(-1);
+        });
+
+        it('should return index when the value is in present', function() {
+            [1, 2, 3].indexOf(2).should.equal(1);
         });
     });
+
+    // only关键字，只会运行这一个用例，可以用在describe上，也可以用在it上
+/*    describe.only('#only', function() {
+        it('test only', function() {
+            true.should.equal(true);
+        });
+    });*/
 });
 
 /*

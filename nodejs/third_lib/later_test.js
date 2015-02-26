@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-01-16 18:11:01
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-02-04 14:33:40
+ * @Last Modified time: 2015-02-14 15:19:12
  *
  * http://bunkat.github.io/later/index.html
  */
@@ -32,13 +32,17 @@ function main() {
 }
 
 function doOnceTest() {
+    // if (moment().valueOf() >= moment('2015-02-16 11:44:00', 'YYYY-MM-DD hh:mm:ss').valueOf()) {
+    //     console.log('sched time is out');
+    //     return;
+    // }
     var sched = {
         schedules: [{
-            Y: [2015],
+            // Y: [2015],
             M: [2],
-            D: [4],
-            h: [14],
-            m: [32]
+            D: [16],
+            h: [0],
+            m: [5]
         }]
     };
 
@@ -46,15 +50,19 @@ function doOnceTest() {
     later.date.localTime();
 
     var occurrences = later.schedule(sched).next(10);
+    console.log(typeof occurrences);
+    console.log(occurrences);
 
     for (var i = 0; i < 10; i++) {
+        var t = moment(occurrences[i]);
+        console.log(t.format('YYYY-MM-DD hh:mm:ss'));
         console.log(occurrences[i]);
     }
 
-    var t = later.setTimeout(function() {
-        console.log('do setTimeout');
-        t.clear();
-    }, sched);
+    // var t = later.setTimeout(function() {
+    //     console.log('do setTimeout');
+    //     t.clear();
+    // }, sched);
 }
 
 function parseTest() {
@@ -107,7 +115,8 @@ function everyWeekTest() {
     var sched = {
         schedules: [{
             dw: [6],
-            h: [4]
+            h: [0],
+            m: [5]
         }]
     };
     later.date.localTime(); // 使用本地时间

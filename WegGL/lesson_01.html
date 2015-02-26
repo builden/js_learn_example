@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body onload='wegGLStart();'>
+    <canvas id='lesson01-canvas' style='board:none;' width='500' height='500'></canvas>
+    <script type="text/javascript">
+        var triangleVertexPositionBuffer;  
+        var squareVertexPositionBuffer;
+        function wegGLStart() {
+            var canvas = document.getElementById('lesson01-canvas');
+            initGL(canvas);
+            initShaders();
+            initBuffers();
+
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.enable(gl.DEPTH_TEST);  // 启用深度检测，后面的物体会被前面的物体遮挡
+
+            drawScene();
+        }
+
+        function initBuffers() {
+            triangleVertexPositionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+            var vertices = [  
+                 0.0,  1.0,  0.0,  
+                -1.0, -1.0,  0.0,  
+                 1.0, -1.0,  0.0  
+            ]; 
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            triangleVertexPositionBuffer.itemSize = 3;  
+            triangleVertexPositionBuffer.numItems = 3;  
+
+            squareVertexPositionBuffer = gl.createBuffer();  
+            gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
+            vertices = [  
+                 1.0,  1.0,  0.0,  
+                -1.0,  1.0,  0.0,  
+                 1.0, -1.0,  0.0,  
+                -1.0, -1.0,  0.0  
+            ];
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            squareVertexPositionBuffer.itemSize = 3;
+            squareVertexPositionBuffer.numItems = 4;
+        }
+
+        function drawScene() {
+            gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        }
+    </script>
+    </body>
+</html>

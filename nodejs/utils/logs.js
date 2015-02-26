@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-30 16:39:23
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-06 18:11:07
+ * @Last Modified time: 2015-02-11 11:15:30
  *
  * how to use:
  * var logger = require('./logs.js');
@@ -20,6 +20,7 @@
 var fmt = require('util').format;
 var moment = require('moment');
 var chalk = require('chalk');
+var fs = require('fs');
 
 exports.DEBUG = 0;
 exports.LOG = 1;
@@ -36,16 +37,27 @@ var LOG_LEVEL = exports.DEBUG;
 function setLevel(level) {
     LOG_LEVEL = level;
 }
-
 exports.setLevel = setLevel;
+
+var outFile = null;
+function setOutputFile(path) {
+    outFile = path;
+}
+exports.setOutputFile = setOutputFile;
 
 function getNow() {
     return '[' + moment().format('YY-MM-DD HH:mm:ss.SSS') + '] ';
 }
 
 function debug(msg) {
-    if (LOG_LEVEL <= exports.DEBUG)
+    if (LOG_LEVEL <= exports.DEBUG) {
         console.log(chalk.cyan(getNow() + '[DEBUG] ') + formatStr(arguments));
+        if (outFile) {
+            fs.appendFile(outFile, getNow() + '[DEBUG] ' + formatStr(arguments), function(err) {
+                if (err) throw err;
+            });
+        }
+    }
 }
 exports.debug = debug;
 
