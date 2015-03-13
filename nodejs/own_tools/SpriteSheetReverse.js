@@ -146,6 +146,7 @@ function parsePoint(str) {
  *   sourceSize: { x: 81, y: 83 } }, ...] // x = width , y = height
  */
 function splitImg(fileName, frames) {
+    console.log('splitImg ' + fileName);
     var srcImgFile = SRC_PATH + fileName + ".png";
     var destDir = DEST_PATH + fileName + "/";
     tryMkDir(TMP_DIR);
@@ -153,6 +154,7 @@ function splitImg(fileName, frames) {
 
     for (i in frames) {
         var frame = frames[i];
+        console.log(frame);
         console.log('create ' + frame.file);
 
         var img = gm(srcImgFile);

@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-11 11:20:34
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-22 19:00:52
+ * @Last Modified time: 2015-02-28 17:51:01
  */
 
 'use strict';
@@ -15,7 +15,10 @@ function main() {
     // objNestTest();
     // arrTest();
     // objTest();
-    nullTest();
+    // nullTest();
+    var t1 = new Date().getTime();
+    var randNum = Math.round(Math.random() * (99 - 10) + 10);
+    var loadFlag = t1 + '' + randNum;
 }
 
 function nullTest() {
