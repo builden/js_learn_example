@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-13 11:29:16
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-03-13 18:25:26
+ * @Last Modified time: 2015-03-13 19:13:16
  *
  * note:
  *   cheerio如果处理的是xml文件（非标准的html），则需要在load的时候指定{xmlMode: true}选项，否则会出现如下问题
@@ -39,7 +39,6 @@ var cheerio = require('cheerio');
  * }
  */
 var parser = module.exports = function(plistPath) {
-    console.log(plistPath);
     var $ = cheerio.load(fs.readFileSync(plistPath), {
         xmlMode: true
     });
@@ -47,7 +46,7 @@ var parser = module.exports = function(plistPath) {
         frames: []
     };
     if ($('TextureAtlas').length !== 0) { // candy crush格式
-        console.log('find TextureAtlas');
+        // console.log('find TextureAtlas');
         rst.imagePath = $('TextureAtlas').attr('imagePath');
         $('TextureAtlas').children('sprite').each(function() {
             rst.frames.push({
@@ -68,7 +67,7 @@ var parser = module.exports = function(plistPath) {
             });
         });
     } else if ($('plist').children('dict').first().children('key').last().text() === 'metadata') { // TexturePacker 3.4
-        console.log('find metadata');
+        // console.log('find metadata');
         $('plist').children('dict').first().children('key').last().next().children('key').each(function() {
             if ($(this).text() === 'realTextureFileName') {
                 rst.imagePath = $(this).next().text();
@@ -80,6 +79,7 @@ var parser = module.exports = function(plistPath) {
                 n: $(this).text()
             };
 
+            var oSize = null;
             $(this).next().children('key').each(function() {
                 var v = $(this).text();
                 if (v === 'frame') {
@@ -88,12 +88,16 @@ var parser = module.exports = function(plistPath) {
                     frame.oRect = parseRect($(this).next().text());
                 } else if (v === 'rotated') {
                     frame.r = $(this).next()[0].tagName === 'true' ? true : false;
+                } else if (v === 'sourceSize') {
+                    oSize = parseSize($(this).next().text());
                 }
             });
+            frame.oRect.w = oSize.w;
+            frame.oRect.h = oSize.h;
             rst.frames.push(frame);
         });
     } else if ($('plist').children('dict').first().children('key').first().text() === 'texture') { // TexturePacker (小鸟爆破)
-        console.log('find texture');
+        // console.log('find texture');
         rst.imagePath = path.basename(plistPath, path.extname(plistPath)) + '.png';
 
 
@@ -124,7 +128,7 @@ var parser = module.exports = function(plistPath) {
                     frame.oRect.h = num;
                 }
             });
-            frame.oRect.x = parseInt(((frame.oRect.w - frame.rect.w) / 2) - frame.oRect.x);
+            frame.oRect.x = parseInt(((frame.oRect.w - frame.rect.w) / 2) + frame.oRect.x);
             frame.oRect.y = parseInt(((frame.oRect.h - frame.rect.h) / 2) - frame.oRect.y);
             rst.frames.push(frame);
         });
@@ -150,6 +154,15 @@ function parseRect(str) {
         y: parseInt(arr[1]),
         w: parseInt(arr[2]),
         h: parseInt(arr[3])
+    }
+}
+
+function parseSize(str) {
+    str = str.replace(/{/g, "").replace(/}/g, "");
+    var arr = str.split(',');
+    return {
+        w: parseInt(arr[0]),
+        h: parseInt(arr[1]),
     }
 }
 

@@ -2,14 +2,14 @@
 * @Author: Bill
 * @Date:   2015-03-13 18:02:37
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-03-13 18:25:16
+* @Last Modified time: 2015-03-13 19:24:29
 */
 
 'use strict';
 
 var gm = require('gm');
 
-var copyOpacity = exports.copyOpacity = function(alphaFile, rgbFile, outFile, cb) {
+var copyOpacity = module.exports = function(alphaFile, rgbFile, outFile, cb) {
     var img = gm(rgbFile).compose('copyopacity').composite(alphaFile);
     img.write(outFile, function(err) {
         if (err) {

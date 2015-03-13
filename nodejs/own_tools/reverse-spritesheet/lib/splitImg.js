@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-13 11:30:08
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-03-13 18:25:38
+ * @Last Modified time: 2015-03-13 18:58:34
  */
 
 'use strict';
@@ -13,6 +13,11 @@ var path = require('path');
 var fs = require('fs-extra');
 
 var splitImg = module.exports = function(imgPath, frames, outputPath) {
+    if (!fs.existsSync(imgPath)) {
+        console.log('cannot find img ' + imgPath);
+        return;
+    };
+
     fs.mkdirsSync('tmp');
     fs.mkdirsSync(outputPath);
     // 生成临时文件
