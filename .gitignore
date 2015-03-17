@@ -11,3 +11,4 @@ frameworks/
 .idea/
 .DS_Store
 *.log
+tmp/

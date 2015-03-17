@@ -2,7 +2,7 @@
 * @Author: Bill
 * @Date:   2015-03-12 19:20:43
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-03-13 19:28:01
+* @Last Modified time: 2015-03-14 17:10:21
 */
 
 'use strict';
@@ -16,7 +16,8 @@ var copyOpacity = require('./lib/copyOpacity.js');
 
 function main() {
     // var srcPath = 'C:\\WorkProj\\LtcProject\\crayon\\sprite_sheet_tmp\\src';
-    var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'
+    // var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'
+    var srcPath = 'D:\\birzzle\\assets\\Images\\main_menu';
     var outPath = 'D:\\spritesheetOut';
 
     var walker = walk.walk(srcPath, {
