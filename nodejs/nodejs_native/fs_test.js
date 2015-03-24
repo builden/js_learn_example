@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-11-05 19:36:09
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-28 17:54:11
+ * @Last Modified time: 2015-03-19 18:08:57
  *
  * https://github.com/jprichardson/node-fs-extra
  */
@@ -19,7 +19,8 @@ function main() {
     // });
     // fs.copySync('./image_src/140.jpg', './image_src/140.jpg.bak');
     // statTest();
-    walkTest();
+    // walkTest();
+    readDirTest();
 }
 
 function walkTest() {
@@ -128,6 +129,12 @@ function statTest() {
                 console.log('lastmodifytime is ' + moment(stats.mtime).format('YYYY-MM-DD HH:mm:ss'));
             }
         }
+    });
+}
+
+function readDirTest() {
+    fs.readdir('.', function(err, files) {
+        console.log(files);
     });
 }
 
