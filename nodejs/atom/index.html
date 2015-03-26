@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="-webkit-app-region: drag">
+    <h1>Hello World!</h1>
+    We are using node.js <script>document.write(process.version)</script>
+    and atom-shell <script>document.write(process.versions['atom-shell'])</script>.
+    Javascript source code path <script>document.write(process.resourcesPath)</script>
+    <webview id="foo" src="https://www.baidu.com/" style="width:640px; height:480px"></webview>
+    <div class="indicator"></div>
+
+    <script>
+      onload = function() {
+        var webview = document.getElementById("foo");
+        var indicator = document.querySelector(".indicator");
+
+        var loadstart = function() {
+          indicator.innerText = "loading...";
+        }
+        var loadstop = function() {
+          indicator.innerText = "";
+        }
+        webview.addEventListener("did-start-loading", loadstart);
+        webview.addEventListener("did-stop-loading", loadstop);
+      }
+    </script>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+            #holder {
+              border: 4px dashed #ccc;
+              margin: 0 auto;
+              height: 300px;
+              color: #ccc;
+              font-size: 40px;
+              line-height: 300px;
+              text-align: center;
+              -webkit-user-select: none;
+            }
+            #holder.hover {
+              border: 4px dashed #999;
+              color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+    <script>
+      var ipc = require('ipc');
+      var updateOnlineStatus = function() {
+        ipc.send('online-status-changed', navigator.onLine ? 'online' : 'offline');
+      };
+
+      var updateResizeStauts = function() {
+        ipc.send('size-status-changed', window.innerWidth + ' ' + window.innerHeight);
+      };
+
+      window.addEventListener('online',  updateOnlineStatus);
+      window.addEventListener('offline',  updateOnlineStatus);
+
+      window.addEventListener('resize', updateResizeStauts);
+
+      updateOnlineStatus();
+      updateResizeStauts();
+    </script>
+
+    <div id="holder">
+      Drag your file here
+    </div>
+
+    <script>
+      var holder = document.getElementById('holder');
+      holder.ondragover = function () {
+        return false;
+      };
+      holder.ondragleave = holder.ondragend = function () {
+        return false;
+      };
+      holder.ondrop = function (e) {
+        e.preventDefault();
+        var file = e.dataTransfer.files[0];
+        console.log('File you dragged here is', file.path);
+        return false;
+      };
+    </script>
+    </body>
+</html>
