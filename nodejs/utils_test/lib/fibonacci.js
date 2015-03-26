@@ -2,7 +2,7 @@
 * @Author: Bill
 * @Date:   2015-03-24 16:04:14
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-03-24 17:04:39
+* @Last Modified time: 2015-03-26 13:55:25
 */
 
 'use strict';
@@ -27,4 +27,8 @@ module.exports = fibonacci;
 
 var innerAdd = function(a, b) {
     return a + b;
+};
+
+var innerObj = {
+  bar: 'foo'
 };

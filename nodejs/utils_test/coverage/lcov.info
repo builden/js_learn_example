@@ -1,5 +1,5 @@
 TN:
-SF:C:\WorkProj\nodeTest\lib\fibonacci.js
+SF:C:\WorkProj\js_learn_example\nodejs\utils_test\lib\fibonacci.js
 FN:10,(anonymous_1)
 FN:28,(anonymous_2)
 FNF:2
@@ -17,8 +17,9 @@ DA:23,102
 DA:26,2
 DA:28,2
 DA:29,2
-LF:11
-LH:11
+DA:32,2
+LF:12
+LH:12
 BRDA:11,1,0,2
 BRDA:11,1,1,212
 BRDA:15,2,0,1

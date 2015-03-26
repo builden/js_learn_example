@@ -2,7 +2,7 @@
 * @Author: Bill
 * @Date:   2015-03-24 16:23:51
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-03-24 17:18:21
+* @Last Modified time: 2015-03-26 13:58:26
 */
 
 'use strict';
@@ -59,8 +59,9 @@ describe('fibonacci', function () {
 
 describe('inner Add Test', function () {
     var innerAdd = null;
+    var lib = null;
     before(function() {
-        var lib = rewire('../lib/fibonacci.js');
+        lib = rewire('../lib/fibonacci.js');
         innerAdd = lib.__get__('innerAdd');
     });
     it('expect innerAdd(1, 2) to equal 3', function() {
@@ -69,5 +70,10 @@ describe('inner Add Test', function () {
 
     it('expect innerAdd(3, 2) to equal 5', function() {
         expect(innerAdd(3, 2)).to.equal(5);
+    });
+
+    it('expect innerObj', function() {
+        var obj = lib.__get__('innerObj');
+        expect(obj.bar).to.equal('foo');
     });
 });
