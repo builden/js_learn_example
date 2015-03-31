@@ -3,6 +3,7 @@ node_modules/
 bower_components/
 image_dst/
 image_src/
+coverage/
 .settings/
 publish/
 runtime/
@@ -12,4 +13,4 @@ frameworks/
 .DS_Store
 *.log
 tmp/
-coverage/
+

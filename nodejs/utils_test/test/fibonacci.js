@@ -2,7 +2,7 @@
 * @Author: Bill
 * @Date:   2015-03-24 16:23:51
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-03-26 13:58:26
+* @Last Modified time: 2015-03-28 17:30:10
 */
 
 'use strict';
@@ -64,16 +64,21 @@ describe('inner Add Test', function () {
         lib = rewire('../lib/fibonacci.js');
         innerAdd = lib.__get__('innerAdd');
     });
-    it('expect innerAdd(1, 2) to equal 3', function() {
-        expect(innerAdd(1, 2)).to.equal(3);
-    });
+    // it('expect innerAdd(1, 2) to equal 3', function() {
+    //     expect(innerAdd(1, 2)).to.equal(3);
+    // });
 
-    it('expect innerAdd(3, 2) to equal 5', function() {
-        expect(innerAdd(3, 2)).to.equal(5);
-    });
+    // it('expect innerAdd(3, 2) to equal 5', function() {
+    //     expect(innerAdd(3, 2)).to.equal(5);
+    // });
 
-    it('expect innerObj', function() {
-        var obj = lib.__get__('innerObj');
-        expect(obj.bar).to.equal('foo');
-    });
+    // it('expect innerObj', function() {
+    //     var obj = lib.__get__('innerObj');
+    //     expect(obj.bar).to.equal('foo');
+    // });
+
+    // it('expect ', function() {
+    //     var obj = lib.__get__('innerObj');
+    //     expect(obj.func(1, 2)).to.equal(4);
+    // });
 });

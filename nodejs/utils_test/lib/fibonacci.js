@@ -2,7 +2,7 @@
 * @Author: Bill
 * @Date:   2015-03-24 16:04:14
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-03-26 13:55:25
+* @Last Modified time: 2015-03-28 17:26:57
 */
 
 'use strict';
@@ -30,5 +30,8 @@ var innerAdd = function(a, b) {
 };
 
 var innerObj = {
-  bar: 'foo'
+  bar: 'foo',
+  func: function(a, b) {
+    return a + b;
+  }
 };
