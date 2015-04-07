@@ -1,8 +1,8 @@
-/* 
+/*
 * @Author: Bill
 * @Date:   2015-03-26 16:44:03
-* @Last Modified by:   Bill
-* @Last Modified time: 2015-03-26 18:22:41
+* @Last Modified by:   dengtao
+* @Last Modified time: 2015-04-07 23:34:58
 */
 
 'use strict';
@@ -31,7 +31,7 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({width: 800, height: 600, type: 'splash'});
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/online-status.html');
+  mainWindow.loadUrl('file://' + __dirname + '/semantic-test.html');
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
