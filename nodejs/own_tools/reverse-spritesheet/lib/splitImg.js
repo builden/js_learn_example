@@ -1,8 +1,8 @@
-/* 
+/**
  * @Author: Bill
  * @Date:   2015-03-13 11:30:08
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-03-13 18:58:34
+ * @Last Modified time: 2015-04-16 19:45:16
  */
 
 'use strict';
@@ -13,42 +13,46 @@ var path = require('path');
 var fs = require('fs-extra');
 
 var splitImg = module.exports = function(imgPath, frames, outputPath) {
-    if (!fs.existsSync(imgPath)) {
-        console.log('cannot find img ' + imgPath);
-        return;
-    };
+  if (!fs.existsSync(imgPath)) {
+    console.log('cannot find img ' + imgPath);
+    return;
+  };
 
-    fs.mkdirsSync('tmp');
-    fs.mkdirsSync(outputPath);
-    // 生成临时文件
-    for (var i = 0, len = frames.length; i < len; i++) {
-        var frame = frames[i];
-        var img = gm(imgPath);
-        if (frame.r) {
-            img.crop(frame.rect.h, frame.rect.w, frame.rect.x, frame.rect.y);
-            img.rotate('#FFFF', -90);
-        } else {
-            img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);
-        }
-        (function(frame) {
-            var tmpFile = 'tmp/' + frame.n;
-            fs.mkdirsSync(path.dirname(tmpFile));
-            img.write(tmpFile, function(err) {
-                if (err) {
-                    console.log('gm write file error ' + err);
-                } else {
-                    resizeImg(tmpFile, path.join(outputPath, frame.n), frame.oRect);
-                }
-            });
-        }(frame));
+  fs.mkdirsSync('tmp');
+  fs.mkdirsSync(outputPath);
+  // 生成临时文件
+  for (var i = 0, len = frames.length; i < len; i++) {
+    var frame = frames[i];
+    var img = gm(imgPath);
+    if (frame.r) {
+      if (frame.rXml) {
+        img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);
+      } else {
+        img.crop(frame.rect.h, frame.rect.w, frame.rect.y, frame.rect.y);
+      }
+      img.rotate('#FFFF', -90);
+    } else {
+      img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);
     }
+    (function(frame) {
+      var tmpFile = 'tmp/' + frame.n;
+      fs.mkdirsSync(path.dirname(tmpFile));
+      img.write(tmpFile, function(err) {
+        if (err) {
+          console.log('gm write file error ' + err);
+        } else {
+          resizeImg(tmpFile, path.join(outputPath, frame.n), frame.oRect);
+        }
+      });
+    }(frame));
+  }
 };
 
 function resizeImg(tmpFile, outputFile, oRect) {
-    var img = images(oRect.w, oRect.h);
-    img.draw(images(tmpFile), oRect.x, oRect.y);
-    fs.mkdirsSync(path.dirname(outputFile));
-    img.save(outputFile);
+  var img = images(oRect.w, oRect.h);
+  img.draw(images(tmpFile), oRect.x, oRect.y);
+  fs.mkdirsSync(path.dirname(outputFile));
+  img.save(outputFile);
 }
 
 /*
