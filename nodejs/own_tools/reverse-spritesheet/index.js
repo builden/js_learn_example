@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-12 19:20:43
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-04-16 20:41:48
+ * @Last Modified time: 2015-04-17 15:14:19
  */
 
 'use strict';
@@ -20,7 +20,8 @@ var imagemin = require('gulp-imagemin');
 
 // var srcPath = "G:\\GameResAnalyse\\candycrushsodasaga_1_40_2\\Payload\\stritz.app\\res_output";
 
-var srcPath = "G:\\GameResAnalyse\\enfeel_birzzle_2_1_3\\Payload\\BoxDrain.app"
+// var srcPath = "G:\\GameResAnalyse\\enfeel_birzzle_2_1_3\\Payload\\BoxDrain.app"
+var srcPath = "G:\\GameResAnalyse\\cat_from_star\\Payload\\Abduction.app"
 
 // var srcPath = 'C:\\WorkProj\\LtcProject\\crayon\\sprite_sheet_tmp\\src';
 // var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'
@@ -53,8 +54,8 @@ function main() {
     });
 
     // png图片压缩
-    var plistFiles = glob.sync([srcPath + '/**/Item_Effect_Blackhole_100.plist']);
-    plistFiles.forEach(function(plistFile) {
+    var plistFiles = glob.sync([srcPath + '/**/*.plist']);
+    async.mapLimit(plistFiles, 1, function(plistFile, callback) {
       var dirname = path.dirname(plistFile);
       var extname = path.extname(plistFile);
       var basename = path.basename(plistFile, extname);
@@ -63,13 +64,26 @@ function main() {
       if (fs.existsSync(pngFile)) {
         parser(plistFile, function(err, rst) {
           if (!err) {
-            splitImg(pngFile, rst.frames, outPath);
             console.log('find spritesheet and split: ' + pngFile);
+            // console.log(rst.frames);
+            splitImg(pngFile, rst.frames, outPath, callback);
             count++;
+          } else {
+            console.log('parse ' + plistFile + ' error');
+            callback(null);
           }
         });
+      } else {
+        console.log(pngFile + ' not exist');
+        callback(null);
       }
+    }, function(err, results) {
+      console.log(err);
+      console.log('plist finished');
     });
+    // plistFiles.forEach(function(plistFile) {
+
+    // });
   }
 
   return;
@@ -137,8 +151,7 @@ function minPng(cb) {
       progressive: true,
       optimizationLevel: 3
     }))
-    .pipe(gulp.dest(srcPath))
-    .on('finish', cb);
+    .pipe(gulp.dest(srcPath));
 }
 
 main();

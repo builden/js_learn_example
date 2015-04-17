@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-13 11:30:08
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-04-16 19:45:16
+ * @Last Modified time: 2015-04-17 15:13:21
  */
 
 'use strict';
@@ -11,8 +11,9 @@ var gm = require('gm');
 var images = require('images');
 var path = require('path');
 var fs = require('fs-extra');
+var async = require('async');
 
-var splitImg = module.exports = function(imgPath, frames, outputPath) {
+var splitImg = module.exports = function(imgPath, frames, outputPath, cb) {
   if (!fs.existsSync(imgPath)) {
     console.log('cannot find img ' + imgPath);
     return;
@@ -20,15 +21,14 @@ var splitImg = module.exports = function(imgPath, frames, outputPath) {
 
   fs.mkdirsSync('tmp');
   fs.mkdirsSync(outputPath);
-  // 生成临时文件
-  for (var i = 0, len = frames.length; i < len; i++) {
-    var frame = frames[i];
+
+  async.mapLimit(frames, 1, function(frame, callback) {
     var img = gm(imgPath);
     if (frame.r) {
       if (frame.rXml) {
         img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);
       } else {
-        img.crop(frame.rect.h, frame.rect.w, frame.rect.y, frame.rect.y);
+        img.crop(frame.rect.h, frame.rect.w, frame.rect.x, frame.rect.y);
       }
       img.rotate('#FFFF', -90);
     } else {
@@ -43,9 +43,16 @@ var splitImg = module.exports = function(imgPath, frames, outputPath) {
         } else {
           resizeImg(tmpFile, path.join(outputPath, frame.n), frame.oRect);
         }
+        callback(null, err);
       });
     }(frame));
-  }
+  }, function(err, results) {
+    cb && cb(err);
+  });
+  // // 生成临时文件
+  // for (var i = 0, len = frames.length; i < len; i++) {
+  //   var frame = frames[i];
+  // }
 };
 
 function resizeImg(tmpFile, outputFile, oRect) {

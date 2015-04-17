@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-13 11:29:16
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-04-16 16:46:03
+ * @Last Modified time: 2015-04-17 14:26:06
  *
  * note:
  *   cheerio如果处理的是xml文件（非标准的html），则需要在load的时候指定{xmlMode: true}选项，否则会出现如下问题
@@ -68,7 +68,9 @@ var parser = module.exports = function(plistPath, cb) {
         if (err) {
           console.error('bplist parser ' + plistPath + ' failed');
         } else {
-          parseType4(obj, rst);
+          console.log('parse ' + plistPath);
+          var frames = obj[0].frames;
+          parseType4(frames, rst);
         }
         cb && cb(err, rst);
       });
@@ -176,8 +178,7 @@ function parseType3($, rst) {
   });
 }
 
-function parseType4(obj, rst) {
-  var frames = obj[0].frames;
+function parseType4(frames, rst) {
   for (var n in frames) {
     if (frames.hasOwnProperty(n)) {
       var frame = {
@@ -186,16 +187,24 @@ function parseType4(obj, rst) {
         oRect: {}
       };
 
-      frame.rect.x = frames[n].x;
-      frame.rect.y = frames[n].y;
-      frame.rect.w = frames[n].width;
-      frame.rect.h = frames[n].height;
-      frame.oRect.x = frames[n].offsetX;
-      frame.oRect.y = frames[n].offsetY;
-      frame.oRect.w = frames[n].originalWidth;
-      frame.oRect.h = frames[n].originalHeight;
-      frame.oRect.x = parseInt(((frame.oRect.w - frame.rect.w) / 2) + frame.oRect.x);
-      frame.oRect.y = parseInt(((frame.oRect.h - frame.rect.h) / 2) - frame.oRect.y);
+      if (frames[n].frame) {
+        frame.rect = parseRect(frames[n].frame);
+        frame.oRect = parseRect(frames[n].sourceColorRect);
+        frame.r = frames[n].rotated;
+        frame.oSize = parseSize(frames[n].offset);
+      } else {
+        frame.rect.x = frames[n].x;
+        frame.rect.y = frames[n].y;
+        frame.rect.w = frames[n].width;
+        frame.rect.h = frames[n].height;
+        frame.oRect.x = frames[n].offsetX;
+        frame.oRect.y = frames[n].offsetY;
+        frame.oRect.w = frames[n].originalWidth;
+        frame.oRect.h = frames[n].originalHeight;
+        frame.oRect.x = parseInt(((frame.oRect.w - frame.rect.w) / 2) + frame.oRect.x);
+        frame.oRect.y = parseInt(((frame.oRect.h - frame.rect.h) / 2) - frame.oRect.y);
+      }
+
       rst.frames.push(frame);
     }
   }
