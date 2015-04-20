@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-13 11:30:08
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-04-17 15:13:21
+ * @Last Modified time: 2015-04-20 14:36:20
  */
 
 'use strict';
@@ -25,11 +25,7 @@ var splitImg = module.exports = function(imgPath, frames, outputPath, cb) {
   async.mapLimit(frames, 1, function(frame, callback) {
     var img = gm(imgPath);
     if (frame.r) {
-      if (frame.rXml) {
-        img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);
-      } else {
-        img.crop(frame.rect.h, frame.rect.w, frame.rect.x, frame.rect.y);
-      }
+      img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);
       img.rotate('#FFFF', -90);
     } else {
       img.crop(frame.rect.w, frame.rect.h, frame.rect.x, frame.rect.y);

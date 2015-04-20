@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-12 19:20:43
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-04-17 15:14:19
+ * @Last Modified time: 2015-04-20 14:38:45
  */
 
 'use strict';
@@ -21,7 +21,8 @@ var imagemin = require('gulp-imagemin');
 // var srcPath = "G:\\GameResAnalyse\\candycrushsodasaga_1_40_2\\Payload\\stritz.app\\res_output";
 
 // var srcPath = "G:\\GameResAnalyse\\enfeel_birzzle_2_1_3\\Payload\\BoxDrain.app"
-var srcPath = "G:\\GameResAnalyse\\cat_from_star\\Payload\\Abduction.app"
+// var srcPath = "G:\\GameResAnalyse\\cat_from_star\\Payload\\Abduction.app";
+var srcPath = "G:\\GameResAnalyse\\Walkr_com_fourdesire_spacewalk_1_3_8_4\\Payload\\Space Walk.app";
 
 // var srcPath = 'C:\\WorkProj\\LtcProject\\crayon\\sprite_sheet_tmp\\src';
 // var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'
@@ -59,7 +60,7 @@ function main() {
       var dirname = path.dirname(plistFile);
       var extname = path.extname(plistFile);
       var basename = path.basename(plistFile, extname);
-      var pngFile = path.join(dirname, basename + '.png');
+      var pngFile = path.join(dirname, basename + '.1@2x.png');
       var outPath = path.join(dirname, basename);
       if (fs.existsSync(pngFile)) {
         parser(plistFile, function(err, rst) {

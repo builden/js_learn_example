@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-13 11:29:16
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-04-17 14:26:06
+ * @Last Modified time: 2015-04-20 14:38:03
  *
  * note:
  *   cheerio如果处理的是xml文件（非标准的html），则需要在load的时候指定{xmlMode: true}选项，否则会出现如下问题
@@ -36,7 +36,6 @@ var bplist = require('bplist-parser');
  *                 h: sprite裁剪前实际高度,
  *             },
  *             r: true / false // 是否翻转了
- *             rXml: true / false // 是否是xml中定义的r
  *         }, ...]
  * }
  */
@@ -69,8 +68,15 @@ var parser = module.exports = function(plistPath, cb) {
           console.error('bplist parser ' + plistPath + ' failed');
         } else {
           console.log('parse ' + plistPath);
+          // console.log(obj);
           var frames = obj[0].frames;
-          parseType4(frames, rst);
+          if (frames) {
+            parseType4(frames, rst);
+          } else {
+            frames = obj[0].images[0].subimages;
+            // console.log(JSON.stringify(frames));
+            parseType5(frames, rst);
+          }
         }
         cb && cb(err, rst);
       });
@@ -104,9 +110,7 @@ function parseType1($, rst) {
         y: parseInt($(this).attr('oY')) || 0,
         w: parseInt($(this).attr('oW')) || (r ? h : w),
         h: parseInt($(this).attr('oH')) || (r ? w : h)
-      },
-
-      rXml: true
+      }
     });
   });
 }
@@ -137,6 +141,11 @@ function parseType2($, rst) {
         oSize = parseSize($(this).next().text());
       }
     });
+    if (frame.r) {
+      var tmp = frame.rect.w;
+      frame.rect.w = frame.rect.h;
+      frame.rect.h = tmp;
+    }
     frame.oRect.w = oSize.w;
     frame.oRect.h = oSize.h;
     rst.frames.push(frame);
@@ -172,6 +181,11 @@ function parseType3($, rst) {
         frame.oRect.h = num;
       }
     });
+    if (frame.r) {
+      var tmp = frame.rect.w;
+      frame.rect.w = frame.rect.h;
+      frame.rect.h = tmp;
+    }
     frame.oRect.x = parseInt(((frame.oRect.w - frame.rect.w) / 2) + frame.oRect.x);
     frame.oRect.y = parseInt(((frame.oRect.h - frame.rect.h) / 2) - frame.oRect.y);
     rst.frames.push(frame);
@@ -186,7 +200,6 @@ function parseType4(frames, rst) {
         rect: {},
         oRect: {}
       };
-
       if (frames[n].frame) {
         frame.rect = parseRect(frames[n].frame);
         frame.oRect = parseRect(frames[n].sourceColorRect);
@@ -205,9 +218,35 @@ function parseType4(frames, rst) {
         frame.oRect.y = parseInt(((frame.oRect.h - frame.rect.h) / 2) - frame.oRect.y);
       }
 
+      if (frame.r) {
+        var tmp = frame.rect.w;
+        frame.rect.w = frame.rect.h;
+        frame.rect.h = tmp;
+      }
       rst.frames.push(frame);
     }
   }
+}
+
+function parseType5(frames, rst) {
+  frames.forEach(function(item) {
+    var frame = {
+      n: item.name,
+      rect: {},
+      oRect: {}
+    };
+
+    frame.rect = parseRect(item.textureRect);
+    frame.r = item.textureRotated;
+    var offset = parseSize(item.spriteOffset);
+    frame.oRect.x = offset.w;
+    frame.oRect.y = offset.h;
+    frame.oSize = parseSize(item.spriteSourceSize);
+    frame.oRect.w = frame.oSize.w;
+    frame.oRect.h = frame.oSize.h;
+
+    rst.frames.push(frame);
+  });
 }
 
 /**
