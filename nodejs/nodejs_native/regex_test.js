@@ -3,7 +3,7 @@
  * @Author: Bill
  * @Date:   2014-11-20 13:50:44
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-27 20:38:07
+ * @Last Modified time: 2015-04-21 14:44:17
  */
 
 var assert = require('assert');
@@ -13,7 +13,14 @@ function main() {
     // numberTest();
     // getShortFaceurlTest();
     // multilineTest();
-    replaceAllTest();
+    // replaceAllTest();
+    replaceSpaceTest();
+}
+
+function replaceSpaceTest() {
+    var str = 'line string  line\r\n\r\n string    line   ';
+    var newStr = str.replace(/\s+/g, ' ');
+    console.log(newStr);
 }
 
 function replaceAllTest() {
