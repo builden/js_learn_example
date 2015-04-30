@@ -2,7 +2,7 @@
  * @Author: dengtao
  * @Date:   2014-11-29 22:56:12
  * @Last Modified by:   Bill
- * @Last Modified time: 2014-12-30 17:44:12
+ * @Last Modified time: 2015-04-30 11:05:26
  */
 
 'use strict';
@@ -39,7 +39,7 @@ function main() {
     //=> [ 'whi', 'tes', 'pac', 'e' ]
 
     // 清除多余的空格
-    console.log(_s.clean(' foo    bar  '));
+    console.log(_s.clean(' foo    bar  \n new line\t    test'));
     //=> foo bar
 
     // 字符串拆成数组
