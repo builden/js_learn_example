@@ -2,13 +2,16 @@
 * @Author: Bill
 * @Date:   2015-05-11 20:08:03
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-05-11 20:29:28
+* @Last Modified time: 2015-05-11 21:18:56
 */
 
 'use strict';
 
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
+
+var buildRes = require('./node-lib/build-res.js');
+buildRes.build();
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -51,5 +54,7 @@ app.on('ready', function() {
     setWindow = null;
   });
 
-  setWindow.openDevTools();
+  setWindow.openDevTools({
+    detach: true
+  });
 });
