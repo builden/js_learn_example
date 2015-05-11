@@ -37,9 +37,8 @@ var HelloWorldLayer = cc.Layer.extend({
       },
 
       onTouchCancelled: function(touch, event) {}
-  },
-
-
+    });
+  }
 });
 
 var HelloWorldScene = cc.Scene.extend({

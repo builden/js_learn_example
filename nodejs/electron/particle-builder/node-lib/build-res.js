@@ -1,8 +1,8 @@
-/* 
+/*
  * @Author: Bill
  * @Date:   2015-05-11 21:02:51
- * @Last Modified by:   Bill
- * @Last Modified time: 2015-05-11 21:23:00
+ * @Last Modified by:   dengtao
+ * @Last Modified time: 2015-05-11 23:43:56
  */
 
 'use strict';
@@ -26,7 +26,12 @@ function writeResFile(files) {
     }
   });
 
-  fs.writeFileSync('src/resource2.js', 'var res = ' + JSON.stringify(res, null, 2) + ';');
+  var content = 'var res = ' + JSON.stringify(res, null, 2) + ';\n\n';
+  content += 'var g_resources = [];\n' +
+    'for (var i in res) {\n' +
+    '  g_resources.push(res[i]);\n' +
+    '}';
+  fs.writeFileSync('src/resource.js', content);
 }
 
 exports.build = function() {

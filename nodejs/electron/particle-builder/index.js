@@ -1,8 +1,8 @@
-/* 
+/*
 * @Author: Bill
 * @Date:   2015-05-11 20:08:03
-* @Last Modified by:   Bill
-* @Last Modified time: 2015-05-11 21:18:56
+* @Last Modified by:   dengtao
+* @Last Modified time: 2015-05-11 23:36:39
 */
 
 'use strict';
@@ -31,7 +31,7 @@ app.on('window-all-closed', function() {
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
   // Create the browser window.
-/*  mainWindow = new BrowserWindow({width: 800, height: 600});
+ mainWindow = new BrowserWindow({width: 800, height: 600});
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
@@ -44,9 +44,11 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  mainWindow.openDevTools();*/
+  mainWindow.openDevTools({
+    detach: false
+  });
 
-
+/*
   setWindow = new BrowserWindow({width: 800, height: 600});
   setWindow.loadUrl('file://' + __dirname + '/set.html');
 
@@ -56,5 +58,5 @@ app.on('ready', function() {
 
   setWindow.openDevTools({
     detach: true
-  });
+  });*/
 });
