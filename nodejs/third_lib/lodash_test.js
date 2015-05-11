@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2014-12-17 16:14:48
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-01-14 14:33:14
+ * @Last Modified time: 2015-05-05 12:02:01
  *
  * https://lodash.com/docs
  */
@@ -12,6 +12,7 @@
 var _ = require('lodash');
 
 function main() {
+    sumTest();
     // mapTest();
     // eachTest();
     // cloneTest();
@@ -28,6 +29,17 @@ function main() {
     if (_.isUndefined(require2)) {
         console.log('require2 is undefined');
     }
+}
+
+function sumTest() {
+    var arr = [{
+        star: 1,
+        score: 12
+    }, {
+        star: 2,
+        score: 13
+    }];
+    console.log('sum: ' + _.sum(arr, 'star'));
 }
 
 function mergeTest() {
