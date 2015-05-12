@@ -1,8 +1,8 @@
 /*
 * @Author: Bill
 * @Date:   2015-05-11 20:08:03
-* @Last Modified by:   dengtao
-* @Last Modified time: 2015-05-11 23:36:39
+* @Last Modified by:   Bill
+* @Last Modified time: 2015-05-12 17:15:53
 */
 
 'use strict';
@@ -44,9 +44,9 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  mainWindow.openDevTools({
-    detach: false
-  });
+  // mainWindow.openDevTools({
+  //   detach: false
+  // });
 
 /*
   setWindow = new BrowserWindow({width: 800, height: 600});

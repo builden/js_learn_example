@@ -19,7 +19,39 @@
   <div class="ui segment">
     <h1>test</h1>
   </div>
-  <script scr="bower_components/semantic-ui/dist/semantic.min.js"></script>
+  <div class="ui fullscreen demo modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Update Your Settings
+    </div>
+    <div class="content">
+      <div class="ui form">
+        <h4 class="ui dividing header">Give us your feedback</h4>
+        <div class="field">
+          <label>Feedback</label>
+          <textarea></textarea>
+        </div>
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" checked="checked" name="contact-me">
+            <label>It's okay to contact me.</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui button">Cancel</div>
+      <div class="ui green button">Send</div>
+    </div>
+  </div>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
+  <script>
+  $('.three .button').click(function() {
+    console.log('click button');
+    $('.fullscreen.demo.modal').modal('show');
+  });
+  </script>
 </body>
 
 </html>

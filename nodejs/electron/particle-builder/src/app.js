@@ -33,12 +33,24 @@ var HelloWorldLayer = cc.Layer.extend({
 
       onTouchEnded: function(touch, event) {
         var pos = touch.getLocation();
-        self.touchPos(pos);
+        // self.addParticle(res.ghost_star_plist, pos.x, pos.y);
+        $('.fullscreen.demo.modal').modal('show');
       },
 
       onTouchCancelled: function(touch, event) {}
     });
-  }
+
+    cc.eventManager.addListener(this.touchListener, this);
+  },
+
+  addParticle: function(xml, x, y) {
+    console.log('addParticle ' + xml)
+    var particleSystem = new cc.ParticleSystem(xml);
+    particleSystem.x = x;
+    particleSystem.y = y;
+    this.addChild(particleSystem);
+    return particleSystem;
+  },
 });
 
 var HelloWorldScene = cc.Scene.extend({
