@@ -2,7 +2,7 @@
 * @Author: Bill
 * @Date:   2015-05-11 20:08:03
 * @Last Modified by:   Bill
-* @Last Modified time: 2015-05-12 17:15:53
+* @Last Modified time: 2015-05-13 09:57:30
 */
 
 'use strict';
@@ -44,9 +44,9 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  // mainWindow.openDevTools({
-  //   detach: false
-  // });
+  mainWindow.openDevTools({
+    detach: true
+  });
 
 /*
   setWindow = new BrowserWindow({width: 800, height: 600});

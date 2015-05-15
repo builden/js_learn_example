@@ -2,7 +2,7 @@
  * @Author: Bill
  * @Date:   2015-03-12 19:20:43
  * @Last Modified by:   Bill
- * @Last Modified time: 2015-05-12 20:17:30
+ * @Last Modified time: 2015-05-15 17:47:50
  */
 
 'use strict';
@@ -25,7 +25,8 @@ var imagemin = require('gulp-imagemin');
 // var srcPath = "G:\\GameResAnalyse\\Walkr_com_fourdesire_spacewalk_1_3_8_4\\Payload\\Space Walk.app";
 // var srcPath = 'G:\\GameResAnalyse\\stellap\\Payload\\CookiePang.app\\game';
 // var srcPath = "G:\\GameResAnalyse\\angle_bird\\Payload\\BirdKeeperiOS.app";
-var srcPath = "G:\\GameResAnalyse\\petrescuesaga_1_42_1\\Payload\\petrescuesaga.app\\res_output";
+// var srcPath = "G:\\GameResAnalyse\\petrescuesaga_1_42_1\\Payload\\petrescuesaga.app\\res_output";
+var srcPath = 'G:\\GameResAnalyse\\brainwars_1_0_38\\Payload\\brainwars.app';
 
 // var srcPath = 'C:\\WorkProj\\LtcProject\\crayon\\sprite_sheet_tmp\\src';
 // var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'

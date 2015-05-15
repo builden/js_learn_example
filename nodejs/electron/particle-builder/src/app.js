@@ -1,9 +1,17 @@
 var HelloWorldLayer = cc.Layer.extend({
-  sprite: null,
+  pIdx: 0,
+  p: null,
+  lName: null,
   ctor: function() {
     this._super();
 
     var size = cc.winSize;
+
+    dataMgr.initParticleList();
+    this.lName = new cc.LabelTTF('', 'Arial', '24');
+    this.lName.x = size.width / 2;
+    this.lName.y = size.height - 60;
+    this.addChild(this.lName);
 
     this.listenTouchEvent();
     return true;
@@ -33,14 +41,29 @@ var HelloWorldLayer = cc.Layer.extend({
 
       onTouchEnded: function(touch, event) {
         var pos = touch.getLocation();
-        // self.addParticle(res.ghost_star_plist, pos.x, pos.y);
-        $('.fullscreen.demo.modal').modal('show');
+        self.touchOnPos(pos);
       },
 
       onTouchCancelled: function(touch, event) {}
     });
 
     cc.eventManager.addListener(this.touchListener, this);
+  },
+
+  touchOnPos: function(pos) {
+    if (this.p) {
+      this.p.removeFromParent();
+    }
+    
+    var plist = dataMgr.particleList[this.pIdx];
+    var plistPath = res[plist];
+    this.lName.setString(plist);
+    this.p = this.addParticle(plistPath, pos.x, pos.y);
+    this.pIdx++;
+    if (this.pIdx === dataMgr.particleList.length) {
+      this.pIdx = 0;
+    }
+    // $('.fullscreen.demo.modal').modal('show');
   },
 
   addParticle: function(xml, x, y) {
