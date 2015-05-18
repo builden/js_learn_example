@@ -44,6 +44,13 @@
       <div class="ui green button">Send</div>
     </div>
   </div>
+  <script type="text/javascript">
+  if (typeof(require) !== 'undefined') {
+    window.$ = window.jQuery = require('./bower_components/jquery/dist/jquery.min.js');
+    var s = require('./bower_components/underscore.string/dist/underscore.string.min.js');
+    var _ = require('./bower_components/lodash/lodash.min.js');
+  }
+  </script>
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
   <script>
