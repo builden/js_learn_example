@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var glob = require('glob');
 var path = require('path');
 var argv = require('optimist').argv;

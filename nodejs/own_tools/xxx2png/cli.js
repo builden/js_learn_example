@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var glob = require('glob-all');
 var p2p = require('./lib/pvr2png.js');
 var k2p = require('./lib/ktx2png.js');
