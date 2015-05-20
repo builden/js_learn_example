@@ -26,7 +26,9 @@ var imagemin = require('gulp-imagemin');
 // var srcPath = 'G:\\GameResAnalyse\\stellap\\Payload\\CookiePang.app\\game';
 // var srcPath = "G:\\GameResAnalyse\\angle_bird\\Payload\\BirdKeeperiOS.app";
 // var srcPath = "G:\\GameResAnalyse\\petrescuesaga_1_42_1\\Payload\\petrescuesaga.app\\res_output";
-var srcPath = 'G:\\GameResAnalyse\\brainwars_1_0_38\\Payload\\brainwars.app';
+// var srcPath = 'G:\\GameResAnalyse\\brainwars_1_0_38\\Payload\\brainwars.app';
+// var srcPath = 'G:\\GameResAnalyse\\jinjidexiaoguaiwu_1_0_3\\Payload\\KuaiYong.app'
+var srcPath = 'G:\\GameResAnalyse\\CosmicCrash';
 
 // var srcPath = 'C:\\WorkProj\\LtcProject\\crayon\\sprite_sheet_tmp\\src';
 // var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'
