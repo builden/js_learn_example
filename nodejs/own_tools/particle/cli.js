@@ -5,7 +5,7 @@ var path = require('path');
 var argv = require('optimist').argv;
 
 function main() {
-  if (argv.h || argv.help) {
+  if (argv.h || argv.help || process.argv.length === 2) {
     console.log([
       'usage: particle [options] file',
       '  -e --extra    just extra embed texture to file, filename from tag',
