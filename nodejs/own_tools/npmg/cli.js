@@ -12,7 +12,7 @@ require('shelljs/global');
 
 var isWin32 = false;
 function main() {
-  if (argv.h || argv.help) {
+  if (argv.h || argv.help || process.argv.length === 2) {
     console.log([
       'usage: npmg [options]',
       '',

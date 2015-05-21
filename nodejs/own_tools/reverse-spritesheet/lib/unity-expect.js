@@ -105,7 +105,7 @@ function main() {
   var files = glob.sync(['resources.assets', 'sharedassets*.assets', 'sharedassets*.assets.split0']);
   // console.log(files);
   files.forEach(function(file) {
-    // disunity(file, function(err, stdout) {
+    disunity(file, function(err, stdout) {
     var dir = _s.strLeftBack(file, '.');
     if (fs.existsSync(dir)) {
       files2png(dir);

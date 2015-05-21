@@ -127,21 +127,31 @@ function parseType2($, rst) {
     var frame = {
       n: $(this).text()
     };
+    if (path.extname(frame.n) === '') {
+      frame.n += '.png';
+    }
 
     var oSize = null;
+    var needExchange = true;
     $(this).next().children('key').each(function() {
       var v = $(this).text();
-      if (v === 'frame') {
+      if (v === 'frame' || v === 'textureRect') {
         frame.rect = parseRect($(this).next().text());
-      } else if (v === 'sourceColorRect') {
+      } else if (v === 'sourceColorRect' || v === 'spriteColorRect') {
         frame.oRect = parseRect($(this).next().text());
-      } else if (v === 'rotated') {
+        if (v === 'spriteColorRect') {
+          frame.oRect.x = frame.oRect.y = 0;
+        }
+      } else if (v === 'rotated' || v === 'textureRotated') {
         frame.r = $(this).next()[0].tagName === 'true' ? true : false;
-      } else if (v === 'sourceSize') {
+        if (v === 'textureRotated') {
+          needExchange = false;
+        }
+      } else if (v === 'sourceSize' || v === 'spriteSourceSize') {
         oSize = parseSize($(this).next().text());
       }
     });
-    if (frame.r) {
+    if (frame.r && needExchange) {
       var tmp = frame.rect.w;
       frame.rect.w = frame.rect.h;
       frame.rect.h = tmp;
