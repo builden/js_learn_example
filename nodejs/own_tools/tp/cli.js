@@ -1,12 +1,10 @@
-var bp = require('./lib/bplist-parse.js');
+var plist = require('./lib/plist-parse.js');
+var fs = require('fs');
 
-var o1 = bp.parse('xa');
-var o2 = bp.parse('xx');
-var o3 = bp.parse('xb');
+var file = './test/res/ui_ingameplay.plist';
+var nFile = './test/res/effects.plist';
 
-console.log(o1.file);
-console.log(o1.isB);
-console.log(o2.file);
-console.log(o2.isB);
-console.log(o3.file);
-console.log(o3.isB);
+plist.parse(file, function(err, obj) {
+  fs.writeFileSync(file + '.parsed', plist.build(obj));
+});
+
