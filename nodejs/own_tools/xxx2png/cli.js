@@ -3,6 +3,7 @@
 var glob = require('glob-all');
 var p2p = require('./lib/pvr2png.js');
 var k2p = require('./lib/ktx2png.js');
+var a2p = require('./lib/atf2png.js');
 var argv = require('optimist').argv;
 var async = require('async');
 var chalk = require('chalk');
@@ -45,6 +46,7 @@ function processFiles(files) {
   var pvrFiles = [];
   var cczFiles = [];
   var ktxFiles = [];
+  var atfFiles = [];
   files.forEach(function(file) {
     var ext = path.extname(file);
     if (ext === '.pvr') {
@@ -53,12 +55,15 @@ function processFiles(files) {
       cczFiles.push(file);
     } else if (ext === '.ktx') {
       ktxFiles.push(file);
+    } else if (ext === '.atf') {
+      atfFiles.push(file);
     }
   });
 
   var pvrLen = pvrFiles.length;
   var cczLen = cczFiles.length;
   var ktxLen = ktxFiles.length;
+  var atfLen = atfFiles.length;
   if (pvrLen !== 0 || cczLen !== 0) {
     if (!which('TexturePacker')) {
       console.log("can't find global module TexturePacker");
@@ -86,7 +91,7 @@ function processFiles(files) {
         if (cczLen !== 0) {
           console.log(chalk.red('process ' + cczLen + ' ccz files complete'));
         }
-        callback(cczFiles.length);
+        callback(null, cczFiles.length);
       });
     },
     ktx: function(callback) {
@@ -94,7 +99,15 @@ function processFiles(files) {
         if (ktxLen !== 0) {
           console.log(chalk.red('process ' + ktxLen + ' ktx files complete'));
         }
-        callback(ktxFiles.length);
+        callback(null, ktxFiles.length);
+      });
+    },
+    atf: function(callback) {
+      atf2pngFiles(atfFiles, function(err, results) {
+        if (atfFiles !== 0) {
+          console.log(chalk.red('process ' + atfLen + ' atf files complete'));
+        }
+        callback(null, atfFiles.length);
       });
     }
   }, function(err, results) {
@@ -111,6 +124,12 @@ function pvr2pngFiles(files, cb) {
 function ktx2pngFiles(files, cb) {
   async.mapLimit(files, 2, function(file, callback) {
     k2p(file, callback);
+  }, cb);
+}
+
+function atf2pngFiles(files, cb) {
+  async.mapLimit(files, 2, function(file, callback) {
+    a2p(file, callback);
   }, cb);
 }
 
