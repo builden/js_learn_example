@@ -3,7 +3,7 @@
 var glob = require('glob-all');
 var p2p = require('./lib/pvr2png.js');
 var k2p = require('./lib/ktx2png.js');
-var a2p = require('./lib/atf2png.js');
+// var a2p = require('./lib/atf2png.js');
 var argv = require('optimist').argv;
 var async = require('async');
 var chalk = require('chalk');
@@ -103,12 +103,13 @@ function processFiles(files) {
       });
     },
     atf: function(callback) {
-      atf2pngFiles(atfFiles, function(err, results) {
-        if (atfFiles !== 0) {
-          console.log(chalk.red('process ' + atfLen + ' atf files complete'));
-        }
-        callback(null, atfFiles.length);
-      });
+      // atf2pngFiles(atfFiles, function(err, results) {
+      //   if (atfFiles !== 0) {
+      //     console.log(chalk.red('process ' + atfLen + ' atf files complete'));
+      //   }
+      //   callback(null, atfFiles.length);
+      // });
+      callback(null);
     }
   }, function(err, results) {
     del.sync('out.plist');
