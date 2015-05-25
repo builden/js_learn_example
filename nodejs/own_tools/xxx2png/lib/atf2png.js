@@ -1,5 +1,6 @@
 // 破解流程：
-// 用PVRCL工具创建一个
+// PowerVR 中有各个格式的文档
+// PVRTexTool 创建一个空白工程
 
 var fs = require('fs');
 var s = require('underscore.string');
@@ -87,8 +88,8 @@ function buildPVRFile(file, width, height, imgData) {
   buf.writeUIntLE(0x3, offset += 4, 8); // Pixel Format
   buf.writeUInt32LE(0, offset += 8); // Color Space
   buf.writeUInt32LE(0, offset += 4); // Channel Type
-  buf.writeUInt32LE(width, offset += 4); // Width
-  buf.writeUInt32LE(height, offset += 4); // height
+  buf.writeUInt32LE(height, offset += 4); // Width
+  buf.writeUInt32LE(width, offset += 4); // height
   buf.writeUInt32LE(1, offset += 4); // Depth
   buf.writeUInt32LE(1, offset += 4); // Num. Surfaces
   buf.writeUInt32LE(1, offset += 4); // Num. Faces

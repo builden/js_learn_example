@@ -31,7 +31,8 @@ var imagemin = require('gulp-imagemin');
 // var srcPath = 'G:\\GameResAnalyse\\CosmicCrash';
 // var srcPath = 'G:\\GameResAnalyse\\0521\\Cupcake 1.4.0\\Payload\\Cakery.app';
 // var srcPath = 'G:\\GameResAnalyse\\0521\\BubblyPop\\Payload\\BubblyPop.app\\Resource\\hd';
-var srcPath = 'G:\\GameResAnalyse\\0521\\mianyang2\\Payload\\TinyPang2.app'
+// var srcPath = 'G:\\GameResAnalyse\\0521\\mianyang2\\Payload\\TinyPang2.app';
+var srcPath = 'G:\\GameResAnalyse\\bookoflife\\Payload\\match.app\\spritesheets';
 
 // var srcPath = 'C:\\WorkProj\\LtcProject\\crayon\\sprite_sheet_tmp\\src';
 // var srcPath = 'D:\\CandyCrushSoga\\Android\\res_output\\shared\\game\\common\\tex\\candy'

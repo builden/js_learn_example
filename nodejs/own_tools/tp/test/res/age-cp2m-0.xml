@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:c5496a1df1d45460f4f2a94719d39391:dffd53f921d5a77477887ad96f0362c9:dcbc40dcdcd1bf1cb8e032bb5210701b$ -->
+<TextureAtlas imagePath="age-cp2m-0.png">
+    <SubTexture name="00" x="124" y="431" rotated="true" width="116" height="71" frameX="-4" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="01" x="450" y="2" width="35" height="117" frameX="-22" frameY="-21" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="02" x="293" y="308" width="64" height="116" frameX="-8" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="03" x="2" y="308" width="65" height="117" frameX="-7" frameY="-21" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="04" x="73" y="308" width="61" height="117" frameX="-9" frameY="-21" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="05" x="246" y="430" rotated="true" width="116" height="68" frameX="-6" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="06" x="217" y="308" width="70" height="116" frameX="-5" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="07" x="363" y="308" width="63" height="116" frameX="-8" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="08" x="2" y="431" rotated="true" width="116" height="72" frameX="-4" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="09" x="140" y="308" width="71" height="116" frameX="-4" frameY="-22" frameWidth="80" frameHeight="160"/>
+    <SubTexture name="AgeGradation" x="2" y="2" width="442" height="300"/>
+</TextureAtlas>
