@@ -1,6 +1,11 @@
+// 破解流程：
+// 用PVRCL工具创建一个
+
 var fs = require('fs');
-var path = require('path');
-var png = require('pngjs-image');
+var s = require('underscore.string');
+var p2p = require('./pvr2png');
+var del = require('del');
+
 var debug = true;
 function log() {
   debug && console.log(require('util').format.apply(null, arguments));
@@ -11,6 +16,7 @@ var a2p = module.exports = function(file, cb) {
   if (buf.slice(0, 'ATF'.length).toString('utf8') !== 'ATF') {
     return console.error("Invalid binary atf. Expected 'ATF' at offset 0.");
   }
+  console.log('atf2png: ' + file);
 
   var offset = 0;
   log('Signature: ' + buf.slice(offset, 'ATF'.length).toString('utf8'));
@@ -20,7 +26,8 @@ var a2p = module.exports = function(file, cb) {
   var tmp = buf.readUInt8(offset += 4);
   log('Cubemap: ' + ((tmp >> 7 === 0) ? 'normal texture' : 'cube map texture'));
   var fmtArr = ['RGB888', 'RGBA8888', 'Compressed', 'RAW Compressed', 'Compressed With Alpha', 'RAW Compressed With Alpha'];
-  log('Format: ' + fmtArr[tmp & 0x7F]);
+  var fmt = tmp & 0x7F;
+  log('Format: ' + fmtArr[fmt] + '[' + fmt + ']');
   var width = Math.pow(2, buf.readUInt8(offset += 1));
   log('Log2Width: ' + width);
   var height = Math.pow(2, buf.readUInt8(offset += 1));
@@ -37,38 +44,61 @@ var a2p = module.exports = function(file, cb) {
     var pvrtcLen = buf.readUInt32BE(offset);
     log('PVRTCImageDataLength: ' + pvrtcLen.toString(16));
     var pvrBuf = buf.slice(offset + 4, offset + 4 + pvrtcLen);
-
-    var off = 0;
-    var outBuf = new Buffer(0x34 + pvrtcLen);
-    outBuf.writeUInt32LE(0x34, off);
-    outBuf.writeUInt32LE(height, off += 4);
-    outBuf.writeUInt32LE(width, off += 4);
-    outBuf.writeUInt32LE(0, off += 4);
-    outBuf.writeUInt32LE(8019, off += 4);
-    outBuf.writeUInt32LE(pvrtcLen, off += 4);
-    outBuf.writeUInt32LE(4, off += 4);
-    outBuf.writeUInt32LE(0, off += 4);
-    outBuf.writeUInt32LE(0, off += 4);
-    outBuf.writeUInt32LE(0, off += 4);
-    outBuf.writeUInt32LE(1, off += 4);
-    outBuf.writeUInt32LE(1232323, off += 4);
-    outBuf.writeUInt32LE(1, off += 4);
-    log(pvrBuf);
-    for (var i = 0; i < pvrBuf.length; i++) {
-      outBuf.writeUInt8(pvrBuf[i], 0x34 + i);
-    }
-    // outBuf.writeUIntLE(pvrBuf, 0x34, pvrtcLen);
-    log(outBuf.slice(0x34, outBuf.length));
-    log(outBuf.length.toString(16));
-    fs.writeFileSync('tt.pvr', outBuf);
+    offset += pvrtcLen + 4;
+   
+    var pvrfile = s.strLeft(file, '.atf') + '.pvr';
+    buildPVRFile(pvrfile, width, height, pvrBuf);
+    p2p(pvrfile, function() {
+      del.sync(pvrfile);
+      cb && cb(null);
+    });
+    
 
     var etcLen = buf.readUInt32BE(offset);
     log('ETC1ImageDataLength: ' + etcLen.toString(16));
     offset += etcLen + 4;
   }
-  parseRawCompressedAlpha();
+
+  if (fmt === 5 || fmt === 3) {
+  //for (var i = 0; i < tCount; i++) {
+    parseRawCompressedAlpha(cb);
+  // }
+  } else {
+    console.error('unknown fmt ' + fmt);
+    cb && cb(null, 'error');
+  }
 };
 
-a2p('../test/res/age-cp2m-0.atf');
+/**
+ * 生成pvr文件
+ * @param  {String} file     pvr文件路径
+ * @param  {[type]} width    图片宽度
+ * @param  {[type]} height   图片高度
+ * @param  {[type]} imgData  RVRTC 4bpp格式的图片原始数据
+ */
+function buildPVRFile(file, width, height, imgData) {
+  var len = imgData.length;
+  var buf = new Buffer(0x34 + len);
 
+  // header
+  var offset = 0;
+  buf.writeUInt32BE(0x50565203, offset); // version: 'PVR'0x3
+  buf.writeUInt32LE(0, offset += 4); // flags
+  buf.writeUIntLE(0x3, offset += 4, 8); // Pixel Format
+  buf.writeUInt32LE(0, offset += 8); // Color Space
+  buf.writeUInt32LE(0, offset += 4); // Channel Type
+  buf.writeUInt32LE(width, offset += 4); // Width
+  buf.writeUInt32LE(height, offset += 4); // height
+  buf.writeUInt32LE(1, offset += 4); // Depth
+  buf.writeUInt32LE(1, offset += 4); // Num. Surfaces
+  buf.writeUInt32LE(1, offset += 4); // Num. Faces
+  buf.writeUInt32LE(1, offset += 4); // MIP-Map Count
+  buf.writeUInt32LE(0, offset += 4); // Meta Data Size
 
+  // copy imgData
+  for (var i = 0; i < len; i++) {
+    buf[i + 0x34] = imgData[i];
+  }
+  
+  fs.writeFileSync(file, buf);
+}

@@ -17,12 +17,12 @@ var s = require('underscore.string');
 module.exports = function pvr2png(file, cb) {
   var f = path.parse(file);
   var ext = f.ext;
-  var name = f.dir + '/' + f.name;
+  var name = (f.dir ? (f.dir + '/') : '') + f.name;
   if (ext === '.ccz') {
     name = s.strLeft(name, '.pvr');
     ext = '.pvr.ccz';
   }
-  var cmd = 'TexturePacker --opt RGBA8888 --sheet "' + name + '.png" "' + name + ext + '"' + ' --no-trim --allow-free-size';
+  var cmd = 'TexturePacker --opt RGBA8888 --sheet "' + name + '.png" "' + name + ext + '"' + ' --no-trim --allow-free-size --shape-padding 0 --border-padding 0 --padding 0'
   exec(cmd, function(err, stdout, stderr) {
     console.log(stdout);
     if (err) {

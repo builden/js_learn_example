@@ -30,4 +30,5 @@ var parse = exports.parse = function(file) {
   console.log(buf.slice(headerLen));
 }
 
-parse('../test/res/_0000_chip2.pvr');
+// parse('../test/res/_0000_chip2.pvr');
+parse('fire.pvr');
