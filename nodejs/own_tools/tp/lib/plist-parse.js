@@ -15,6 +15,7 @@ var parse = exports.parse = function parse(file, cb) {
         cb && cb(err);
       } else {
         cb(null, doc[0]);
+        fs.writeFileSync(file + '.parsed', build(doc[0]));
       }
     });
   } else {

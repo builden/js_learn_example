@@ -145,5 +145,69 @@ function isXmlValid(obj) {
 }
 
 function parsePlist(file, cb) {
+  plist.parse(file, function(err, obj) {
+    if (err) {
+      console.err('parse plist error ' + err);
+      cb && cb();
+      return;
+    }
 
+    if (!isPlistValid(obj)) {
+      console.error('unknown plist: ' + file);
+      cb && cb('error');
+      return;
+    }
+    
+    var rst = {
+      img: obj.metadata.realTextureFileName,
+      frames: []
+    };
+
+    for (var frame in obj.frames) {
+      var f = obj.frames[frame];
+      var one = {
+        n: frame,
+        rect: parseRect(f.frame),
+        oRect: parseRect(f.sourceColorRect),
+        r: (f.rotated === true)
+      };
+      rst.frames.push(one);
+    }
+
+    cb && cb(null, rst);
+  });
+}
+
+function isPlistValid(obj) {
+  var isValid = false;
+  if (obj.frames && obj.metadata) {
+    isValid = true;
+  }
+  return isValid;
+}
+
+/**
+ * 解析字符串类型的Rect
+ * @param  {[String]} str eg. {{2,244},{115,44}}
+ * @return {[Object]} {x:2, y:244, w:115, h:44}
+ */
+function parseRect(str) {
+  // 去掉大括号
+  str = str.replace(/{/g, "").replace(/}/g, "");
+  var arr = str.split(',');
+  return {
+    x: parseInt(arr[0]),
+    y: parseInt(arr[1]),
+    w: parseInt(arr[2]),
+    h: parseInt(arr[3])
+  }
+}
+
+function parseSize(str) {
+  str = str.replace(/{/g, "").replace(/}/g, "");
+  var arr = str.split(',');
+  return {
+    w: parseInt(arr[0]),
+    h: parseInt(arr[1]),
+  }
 }
