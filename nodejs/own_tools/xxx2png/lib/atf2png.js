@@ -7,7 +7,7 @@ var s = require('underscore.string');
 var p2p = require('./pvr2png');
 var del = require('del');
 
-var debug = true;
+var debug = false;
 function log() {
   debug && console.log(require('util').format.apply(null, arguments));
 }

@@ -1,19 +1,51 @@
-var plist = require('./lib/plist-parse.js');
-var fs = require('fs');
+var argv = require('optimist').argv;
 var glob = require('glob-all');
-var parseString = require('xml2js').parseString;
+var path = require('path');
+var async = require('async');
+var parser = require('./lib/tp-parser.js');
+var splitImg = require('./lib/split-img.js');
+var del = require('del');
 
-var file = './test/res/ui_ingameplay.plist';
-var nFile = './test/res/effects.plist';
-var xmlFile = './test/res/age-cp2m-0.xml';
+var cwd = process.cwd();
 
-// plist.parse(file, function(err, obj) {
-//   // fs.writeFileSync(file + '.parsed', plist.build(obj));
-//   console.log(obj);
-// });
+function main() {
+  if (argv.h || argv.help || process.argv.length === 2) {
+    console.log([
+      'usage: tp glob ...',
+      '',
+      'options:',
+      '  -h --help        print the help list'
+    ].join('\n'));
+    return;
+  }
 
-var ctx = fs.readFileSync(xmlFile, 'utf8');
-parseString(ctx, function(err, obj) {
-  console.log(JSON.stringify(obj, null, 2));
-  console.log(obj.TextureAtlas.$.imagePath);
-});
+  var globArr = [];
+  argv._.forEach(function(item) {
+    globArr.push(path.join(cwd, item))
+  });
+
+  var files = glob.sync(globArr);
+  async.mapLimit(files, 1, function(file, callback) {
+    var ext = path.extname(file);
+    if (ext !== '.xml' && ext !== '.plist') {
+      callback();
+      return;
+    }
+    parser(file, function(err, obj) {
+      if (err) {
+        callback(null, err);
+      } else {
+        var f = path.parse(file);
+        var imgPath = path.join(f.dir, obj.img);
+        var outPath = path.join(f.dir, f.name);
+        console.log(outPath);
+        splitImg(imgPath, obj, outPath, callback);
+      }
+    });
+  }, function(err, results) {
+    console.log('split complete');
+    del.sync('tmp');
+  });
+}
+
+main();

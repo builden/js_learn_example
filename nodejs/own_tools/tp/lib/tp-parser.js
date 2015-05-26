@@ -28,6 +28,7 @@ var plist = require('./plist-parse.js');
  *   }
  */
 var parser = module.exports = function(file, cb) {
+  console.log('parser: ' + file);
   var ext = path.extname(file);
   if (ext === '.plist') {
     parsePlist(file, cb);
@@ -59,44 +60,75 @@ function parseXml(file, cb) {
       frames: []
     };
 
-    var frames = obj.TextureAtlas.sprite || obj.TextureAtlas.SubTexture;
-    frames.forEach(function(frame) {
-      var f = frame.$;
-      var w = parseInt(f.w) || parseInt(f.width);
-      var h = parseInt(f.h) || parseInt(f.height);
-      var r = (f.r === 'y') || (f.rotated === 'true');
+    function parseSpriteType(frames) {
+      frames.forEach(function(frame) {
+        var f = frame.$;
+        var w = parseInt(f.w);
+        var h = parseInt(f.h);
+        var r = (f.r === 'y');
 
-      var one = {
-        n: f.n || f.name,
-        rect: {
-          x: parseInt(f.x),
-          y: parseInt(f.y),
-          w: w,
-          h: h
-        },
-        oRect: {
-          x: parseInt(f.oX) || 0,
-          y: parseInt(f.oY) || 0,
-          w: parseInt(f.oW) || (r ? h : w),
-          h: parseInt(f.oH) || (r ? w : h)
-        },
-        r: r
-      };
+        var one = {
+          n: f.n || f.name,
+          rect: {
+            x: parseInt(f.x),
+            y: parseInt(f.y),
+            w: w,
+            h: h
+          },
+          oRect: {
+            x: parseInt(f.oX) || 0,
+            y: parseInt(f.oY) || 0,
+            w: parseInt(f.oW) || (r ? h : w),
+            h: parseInt(f.oH) || (r ? w : h)
+          },
+          r: r
+        };
 
-      if (!path.extname(one.n)) {
-        one.n += '.png';
-      }
+        if (!path.extname(one.n)) {
+          one.n += '.png';
+        }
 
-      if (obj.TextureAtlas.SubTexture) {
-        var oW = parseInt(f.frameWidth);
-        var oH = parseInt(f.framwHeight)
-        one.oRect.x = -1 * parseInt(f.frameX) || 0;
-        one.oRect.y = -1 * parseInt(f.frameY) || 0;
-        one.oRect.w = oW || w;
-        one.oRect.h = oH || h;
-      }
-      rst.frames.push(one);
-    });
+        rst.frames.push(one);
+      });
+    }
+
+    function parseSubTextureType(frames) {
+      frames.forEach(function(frame) {
+        var f = frame.$;
+        var w = parseInt(f.width);
+        var h = parseInt(f.height);
+        var r = (f.rotated === 'true');
+
+        var one = {
+          n: f.n || f.name,
+          rect: {
+            x: parseInt(f.x),
+            y: parseInt(f.y),
+            w: w,
+            h: h
+          },
+          oRect: {
+            x: -1 * parseInt(f.frameX) || 0,
+            y: -1 * parseInt(f.frameY) || 0,
+            w: parseInt(f.frameWidth) || (r ? h : w),
+            h: parseInt(f.frameHeight) || (r ? w : h)
+          },
+          r: r
+        };
+
+        if (!path.extname(one.n)) {
+          one.n += '.png';
+        }
+
+        rst.frames.push(one);
+      });
+    }
+
+    if (obj.TextureAtlas.sprite) {
+      parseSpriteType(obj.TextureAtlas.sprite);
+    } else if (obj.TextureAtlas.SubTexture) {
+      parseSubTextureType(obj.TextureAtlas.SubTexture);
+    }
 
     cb && cb(null, rst);
   });
@@ -115,10 +147,3 @@ function isXmlValid(obj) {
 function parsePlist(file, cb) {
 
 }
-
-// var file = '../test/res/candy_c_hi_hd.xml';
-var file = '../test/res/age-cp2m-0.xml';
-
-parseXml(file, function(err, obj) {
-  console.log(JSON.stringify(obj, null, 2));
-});
