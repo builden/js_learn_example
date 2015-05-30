@@ -10,8 +10,8 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 
-var buildRes = require('./node-lib/build-res.js');
-buildRes.build();
+// var buildRes = require('./node-lib/build-res.js');
+// buildRes.build();
 
 // Report crashes to our server.
 require('crash-reporter').start();
