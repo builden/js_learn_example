@@ -15,6 +15,7 @@ require('shelljs/global');
 // pvr - 方便ios加载的一种格式
 // ccz - pvr的压缩格式，还可加密
 // ktx - unity3d中的用到的格式
+// pkm - 开心消消乐用到的格式
 function main() {
   if (argv.h || argv.help) {
     console.log([
@@ -32,7 +33,7 @@ function main() {
     var files = glob.sync(gFile);
   } else {
     var dir = argv.d || argv.dir || process.cwd();
-    files = glob.sync([path.join(dir, '**/*.pvr'), path.join(dir, '**/*.pvr.ccz')]);
+    files = glob.sync([path.join(dir, '**/*.+(pvr|pvr.ccz|ktx|pkm)')]);
   }
 
   if (files) {
@@ -47,6 +48,7 @@ function processFiles(files) {
   var cczFiles = [];
   var ktxFiles = [];
   var atfFiles = [];
+  var pkmFiles = [];
   files.forEach(function(file) {
     var ext = path.extname(file);
     if (ext === '.pvr') {
@@ -57,6 +59,8 @@ function processFiles(files) {
       ktxFiles.push(file);
     } else if (ext === '.atf') {
       atfFiles.push(file);
+    } else if (ext === '.pkm') {
+      pkmFiles.push(file);
     }
   });
 
@@ -64,6 +68,7 @@ function processFiles(files) {
   var cczLen = cczFiles.length;
   var ktxLen = ktxFiles.length;
   var atfLen = atfFiles.length;
+  var pkmLen = pkmFiles.length;
   if (pvrLen !== 0 || cczLen !== 0) {
     if (!which('TexturePacker')) {
       console.log("can't find global module TexturePacker");
@@ -109,7 +114,14 @@ function processFiles(files) {
         }
         callback(null, atfFiles.length);
       });
-      // callback(null);
+    },
+    pkm: function(callback) {
+      pvr2pngFiles(pkmFiles, function(err, results) {
+        if (atfFiles !== 0) {
+          console.log(chalk.red('process ' + pkmLen + ' pkm files complete'));
+        }
+        callback(null, atfFiles.length);
+      });
     }
   }, function(err, results) {
     del.sync('out.plist');
